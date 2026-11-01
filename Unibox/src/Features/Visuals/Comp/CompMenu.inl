@@ -1,6 +1,20 @@
 // Full Comp module controls, using the original menu components.
 static void FullCompSettings()
 {
+if(Section("Main ESP - Comp")) {
+ FToggle(Vars::Comp::ESP::Enabled);
+ FDropdown(Vars::Comp::ESP::Draw);
+ FDropdown(Vars::Comp::ESP::Player);
+ FDropdown(Vars::Comp::ESP::Building);
+ FDropdown(Vars::Comp::ESP::Projectile);
+ FDropdown(Vars::Comp::ESP::Objective);
+ FSlider(Vars::Comp::ESP::ActiveAlpha);
+ FSlider(Vars::Comp::ESP::DormantAlpha);
+ FSlider(Vars::Comp::ESP::DormantDuration);
+ FToggle(Vars::Comp::ESP::DormantPriority);
+ FColorPicker(Vars::Comp::Palette::NPC);
+} EndSection();
+
 if (Section("UberTracker - Comp")) {
 FToggle(Vars::Comp::Features::UberTracker);
 FToggle(Vars::Comp::UberTracker::ShowTopBox);

@@ -2,7 +2,7 @@
 void CCompEntities::Refresh()
 {
     m_gargoyles.clear();m_books.clear();m_powerups.clear();
-    if (!Vars::Comp::Radar::Main::Enabled.Value || !Vars::Comp::Radar::World::Enabled.Value) return;
+    if (!(Vars::Comp::Radar::Main::Enabled.Value && Vars::Comp::Radar::World::Enabled.Value) && !(Vars::Comp::ESP::Enabled.Value && (Vars::Comp::ESP::Draw.Value & (Vars::Comp::ESP::DrawEnum::Powerups|Vars::Comp::ESP::DrawEnum::Spellbook|Vars::Comp::ESP::DrawEnum::Gargoyle)))) return;
     for(int i=1;i<=I::ClientEntityList->GetHighestEntityIndex();++i)
     {
         auto client=I::ClientEntityList->GetClientEntity(i);if(!client) continue;
@@ -19,6 +19,10 @@ const std::vector<CBaseEntity*>& CCompEntities::GetGroup(CompGroup group)
 {
     switch(group)
     {
+    case CompGroup::WORLD_PROJECTILES:return H::Entities.GetGroup(EntityEnum::WorldProjectile);
+    case CompGroup::WORLD_OBJECTIVE:return H::Entities.GetGroup(EntityEnum::WorldObjective);
+    case CompGroup::WORLD_NPC:return H::Entities.GetGroup(EntityEnum::WorldNPC);
+    case CompGroup::MISC_DOTS:return H::Entities.GetGroup(EntityEnum::SniperDots);
     case CompGroup::PLAYERS_ALL:return H::Entities.GetGroup(EntityEnum::PlayerAll);
     case CompGroup::BUILDINGS_ALL:return H::Entities.GetGroup(EntityEnum::BuildingAll);
     case CompGroup::PICKUPS_HEALTH:return H::Entities.GetGroup(EntityEnum::PickupHealth);

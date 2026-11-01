@@ -56,7 +56,9 @@
     <ClInclude Include="src\Features\Visuals\EnemyCam\EnemyCam.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Features\Visuals\Comp\MainESP.cpp" />
     <ClCompile Include="src\Features\Visuals\Comp\CompDraw.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\MainESP.h" />
     <ClInclude Include="src\Features\Visuals\Comp\CompDraw.h" />
     <ClInclude Include="src\Features\Visuals\Comp\CompMenu.inl" />
     <ClCompile Include="src\Features\Visuals\Comp\CompVisuals.cpp" />

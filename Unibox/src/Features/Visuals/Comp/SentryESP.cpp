@@ -59,7 +59,7 @@ void CFullSentryESP::Draw()
 
         // Draw ESP box
         Group_t* nativeGroup=nullptr;
-        const bool nativeBox=F::Groups.GetGroup(pEntity,nativeGroup,false) && nativeGroup && (nativeGroup->m_tESP.Draw & ESPEnum::Box);
+        const bool nativeBox=!Vars::Comp::ESP::Enabled.Value && F::Groups.GetGroup(pEntity,nativeGroup,false) && nativeGroup && (nativeGroup->m_tESP.Draw & ESPEnum::Box);
         if (Vars::Comp::SentryESP::ShowBoxes.Value && !nativeBox)
         {
             Vec3 vPos = pEntity->GetAbsOrigin();

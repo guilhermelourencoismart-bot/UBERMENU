@@ -68,7 +68,7 @@ void CFullHealthBarESP::Draw()
 
         // Draw health bar if enabled and visible (or through walls enabled for bars)
         Group_t* nativeGroup=nullptr;
-        const bool nativeBar=F::Groups.GetGroup(pPlayer,nativeGroup,false) && nativeGroup && (nativeGroup->m_tESP.Draw & ESPEnum::HealthBar);
+        const bool nativeBar=!Vars::Comp::ESP::Enabled.Value && F::Groups.GetGroup(pPlayer,nativeGroup,false) && nativeGroup && (nativeGroup->m_tESP.Draw & ESPEnum::HealthBar);
         if (Vars::Comp::HealthBarESP::ShowHealthBars.Value && !nativeBar)
         {
             if (Vars::Comp::HealthBarESP::ShowThroughWalls.Value || isVisible)

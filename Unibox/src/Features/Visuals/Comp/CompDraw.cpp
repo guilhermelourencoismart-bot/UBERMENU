@@ -5,30 +5,50 @@
 #ifndef TEXTMODE
 #include <ImGui/imgui.h>
 #endif
+
+void CCompDraw::Record(CompDrawCommand command) {
+    if(command.points.empty())return;
+    for(auto& p:command.points)if(!std::isfinite(p.x)||!std::isfinite(p.y))return;
+    command.color.a=byte(std::clamp(float(command.color.a)*m_alpha,0.f,255.f));
+    m_pending.push_back(std::move(command));
+}
+void CCompDraw::LineRectOutline(int x,int y,int w,int h,Color_t color,Color_t outline) {
+    LineRect(x-1,y-1,w+2,h+2,outline); LineRect(x+1,y+1,w-2,h-2,outline); LineRect(x,y,w,h,color);
+}
+void CCompDraw::DrawHudTexture(int x,int y,float scale,const CHudTexture* icon,Color_t color) {
+    if(!icon || !std::isfinite(scale) || scale<=0.f)return;
+    CompDrawCommand command{CompDrawCommand::Type::Image,{{float(x),float(y)},{x+icon->Width()*scale,y+icon->Height()*scale}},color};
+    if(icon->bRenderUsingFont && icon->hFont)command.text=std::format("#font:{}:{}",(unsigned long)icon->hFont,(unsigned)(unsigned char)icon->cCharacterInFont);
+    else { command.text=icon->szTextureFile; command.uv0={icon->texCoords[0],icon->texCoords[1]};command.uv1={icon->texCoords[2],icon->texCoords[3]}; }
+    if(command.text.empty())return;
+    PrepareESPIconTexture(command.text);
+    Record(std::move(command));
+}
+
 void CCompDraw::Line(int x,int y,int x2,int y2,Color_t color)
-{ m_pending.push_back({CompDrawCommand::Type::Line, {{float(x),float(y)},{float(x2),float(y2)}},color}); }
+{ Record({CompDrawCommand::Type::Line, {{float(x),float(y)},{float(x2),float(y2)}},color}); }
 void CCompDraw::FillRect(int x,int y,int w,int h,Color_t color)
-{ m_pending.push_back({CompDrawCommand::Type::FilledRectangle, {{float(x),float(y)},{float(x+w),float(y+h)}},color}); }
+{ Record({CompDrawCommand::Type::FilledRectangle, {{float(x),float(y)},{float(x+w),float(y+h)}},color}); }
 void CCompDraw::LineRect(int x,int y,int w,int h,Color_t color)
-{ m_pending.push_back({CompDrawCommand::Type::Rectangle, {{float(x),float(y)},{float(x+w),float(y+h)}},color}); }
+{ Record({CompDrawCommand::Type::Rectangle, {{float(x),float(y)},{float(x+w),float(y+h)}},color}); }
 void CCompDraw::String(const Font_t& font,int x,int y,Color_t color,EAlign align,const char* text)
 {
     if (!text) return;
     CompDrawCommand command{CompDrawCommand::Type::Text,{{float(x),float(y)}},color};
     command.text=text; command.fontSize=float(font.m_nTall); command.align=align;
-    m_pending.push_back(std::move(command));
+    Record(std::move(command));
 }
 void CCompDraw::FillPolygon(std::vector<Vertex_t> vertices,Color_t color)
 {
     CompDrawCommand command{CompDrawCommand::Type::Polygon,{},color};
     for (auto& vertex:vertices) command.points.emplace_back(vertex.m_Position.x,vertex.m_Position.y);
-    if (command.points.size()>=3) m_pending.push_back(std::move(command));
+    if (command.points.size()>=3) Record(std::move(command));
 }
 void CCompDraw::LinePolygon(std::vector<Vertex_t> vertices,Color_t color)
 {
     CompDrawCommand command{CompDrawCommand::Type::Outline,{},color};
     for (auto& vertex:vertices) command.points.emplace_back(vertex.m_Position.x,vertex.m_Position.y);
-    if (command.points.size()>=3) m_pending.push_back(std::move(command));
+    if (command.points.size()>=3) Record(std::move(command));
 }
 void CCompDraw::FillCircle(int x,int y,float radius,int segments,Color_t color)
 {
@@ -53,7 +73,7 @@ void AlignBox(int& x,int& y,int w,int h,EAlign align) {
 void CCompDraw::Avatar(int x,int y,int w,int h,uint32_t account,EAlign align) {
  AlignBox(x,y,w,h,align); F::SteamProfileCache.TouchAvatar(account);
  CompDrawCommand command{CompDrawCommand::Type::Avatar,{{float(x),float(y)},{float(x+w),float(y+h)}},Color_t(255,255,255,255)};
- command.account=account; m_pending.push_back(std::move(command));
+ command.account=account; Record(std::move(command));
 }
 void CCompDraw::Texture(int x,int y,int w,int h,int id,EAlign align) {
  AlignBox(x,y,w,h,align);
@@ -65,10 +85,11 @@ void CCompDraw::Texture(int x,int y,int w,int h,int id,EAlign align) {
  else {
   static const char* icons[]={"obj_sentrygun","obj_sentrygun2","obj_sentrygun3","obj_dispenser","obj_teleporter_entry","obj_teleporter_exit","medic_health_cross","ico_ammo","ico_cash","pumpkin_bomb","ico_powerup","spellbook","gargoyle"};
   if(id>39) return;
-  path=std::string("#font:")+icons[id-27];
+  if(auto icon=H::Draw.GetIcon(icons[id-27])) { DrawHudTexture(x,y,std::min(float(w)/std::max(icon->Width(),1),float(h)/std::max(icon->Height(),1)),icon,{255,255,255,255}); return; }
+  return;
  }
  CompDrawCommand command{CompDrawCommand::Type::Image,{{float(x),float(y)},{float(x+w),float(y+h)}},Color_t(255,255,255,255)};
- command.text=std::move(path);m_pending.push_back(std::move(command));
+ PrepareESPIconTexture(path);command.text=std::move(path);Record(std::move(command));
 }
 void CCompDraw::LineCircle(int x,int y,float radius,int segments,Color_t color) {
  std::vector<Vertex_t> vertices;segments=std::clamp(segments,3,256);
@@ -110,7 +131,7 @@ void CCompDraw::Draw(ImDrawList* list)
         if(command.type==CompDrawCommand::Type::Image || command.type==CompDrawCommand::Type::Avatar) {
             void* texture=command.type==CompDrawCommand::Type::Avatar ? F::SteamProfileCache.GetAvatarTexture(command.account) : GetESPIconTexture(command.text);
             const auto& b=command.points[1];
-            if(texture) list->AddImage(reinterpret_cast<ImTextureID>(texture),{a.x,a.y},{b.x,b.y});
+            if(texture) list->AddImage(reinterpret_cast<ImTextureID>(texture),{a.x,a.y},{b.x,b.y},{command.uv0.x,command.uv0.y},{command.uv1.x,command.uv1.y},color);
             else if(command.type==CompDrawCommand::Type::Avatar) list->AddRectFilled({a.x,a.y},{b.x,b.y},IM_COL32(128,128,128,255));
             else list->AddCircleFilled({(a.x+b.x)*.5f,(a.y+b.y)*.5f},std::min(b.x-a.x,b.y-a.y)*.4f,color);
         }

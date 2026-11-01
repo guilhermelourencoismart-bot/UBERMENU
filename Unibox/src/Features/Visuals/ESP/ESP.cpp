@@ -1998,6 +1998,13 @@ void CESP::Draw(ImDrawList* pDrawList)
 	CleanupAnims();
 }
 
+void PrepareESPIconTexture(const std::string& texture)
+{
+#ifndef TEXTMODE
+ s_bCaptureIcons=true; GetIconTexture(texture); s_bCaptureIcons=false;
+#endif
+}
+
 void* GetESPIconTexture(const std::string& texture)
 {
 #ifndef TEXTMODE

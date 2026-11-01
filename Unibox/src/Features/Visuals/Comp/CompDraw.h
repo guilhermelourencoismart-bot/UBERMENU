@@ -11,13 +11,17 @@ struct CompDrawCommand
     float fontSize = 14.f;
     int align = ALIGN_TOPLEFT;
     uint32_t account = 0;
+    Vec2 uv0 = {0.f,0.f}, uv1 = {1.f,1.f};
 };
 class CCompDraw
 {
     std::vector<CompDrawCommand> m_pending;
+    float m_alpha = 1.f;
+    void Record(CompDrawCommand command);
     CIndicatorCache<std::vector<CompDrawCommand>> m_frame;
 public:
-    void Begin() { m_pending.clear(); }
+    void Begin() { m_pending.clear(); m_alpha=1.f; }
+    void SetAlpha(float alpha) { m_alpha=std::isfinite(alpha)?std::clamp(alpha,0.f,1.f):0.f; }
     void Publish() { m_frame.Set(std::move(m_pending)); m_pending.clear(); }
     void Draw(ImDrawList* list);
     void Line(int x, int y, int x2, int y2, Color_t color);
@@ -29,7 +33,9 @@ public:
     void LineCircle(int x,int y,float radius,int segments,Color_t color);
     void FillRoundRect(int x,int y,int w,int h,int radius,Color_t color);
     void LineRoundRect(int x,int y,int w,int h,int radius,Color_t color);
-    void FillRectPercent(int x,int y,int w,int h,float fraction,Color_t color,Color_t background,EAlign align,bool adjust);
+    void FillRectPercent(int x,int y,int w,int h,float fraction,Color_t color,Color_t background={0,0,0,255},EAlign align=ALIGN_LEFT,bool adjust=false);
+    void LineRectOutline(int x,int y,int w,int h,Color_t color,Color_t outline);
+    void DrawHudTexture(int x,int y,float scale,const CHudTexture* icon,Color_t color);
     void Texture(int x,int y,int w,int h,int id,EAlign align=ALIGN_CENTER);
     void Avatar(int x,int y,int w,int h,uint32_t account,EAlign align=ALIGN_CENTER);
     float Scale(float value=1.f) { return H::Draw.Scale(value); }

@@ -1,4 +1,5 @@
 #include "CompVisuals.h"
+#include "MainESP.h"
 #include "Radar.h"
 #include "OffScreenIndicators.h"
 #include "CompEntities.h"
@@ -22,6 +23,7 @@ void CCompVisuals::Reset()
     F::FullAmmoTracker=CFullAmmoTracker{};
     F::FullSentryESP=CFullSentryESP{};
     F::FullStickyESP=CFullStickyESP{};
+    F::FullMainESP=CFullMainESP{};
     m_serials.clear(); m_time=-1.f;
     F::CompDraw.Begin(); F::CompDraw.Publish();
 }
@@ -45,6 +47,7 @@ void CCompVisuals::Capture(CTFPlayer* local)
 #ifndef TEXTMODE
     if (!SDK::TakingScreenshot())
     {
+        if(Vars::Comp::ESP::Enabled.Value) { F::FullMainESP.Store(local); F::FullMainESP.Draw(); }
         F::FullRadar.Run(local);
         F::FullOffScreenIndicators.Draw();
         F::FullUberTracker.Draw(); F::FullMedicUberBar.Draw(); F::FullPylonESP.Draw();

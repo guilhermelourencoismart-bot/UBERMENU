@@ -73,7 +73,7 @@ void CFullStickyESP::Draw()
         }
 
         Group_t* nativeGroup=nullptr;
-        if(F::Groups.GetGroup(pEntity,nativeGroup,false) && nativeGroup && (nativeGroup->m_tESP.Draw & ESPEnum::Box)) continue;
+        if(!Vars::Comp::ESP::Enabled.Value && F::Groups.GetGroup(pEntity,nativeGroup,false) && nativeGroup && (nativeGroup->m_tESP.Draw & ESPEnum::Box)) continue;
         // Draw 2D box (exactly like Lua script)
         if (Vars::Comp::StickyESP::Box2D.Value)
         {

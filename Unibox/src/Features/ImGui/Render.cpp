@@ -92,7 +92,7 @@ void CRender::Render(IDirect3DDevice9* pDevice)
 		F::Backtrack.Draw();
 		F::NavRender.DrawIndicators();
 
-		F::ESP.Draw(pBackground);
+		if(!Vars::Comp::ESP::Enabled.Value) F::ESP.Draw(pBackground);
 		F::CompDraw.Draw(pBackground);
 		F::EnemyCam.DrawOverlay(pBackground);
 		F::Aimbot.Draw(pBackground);

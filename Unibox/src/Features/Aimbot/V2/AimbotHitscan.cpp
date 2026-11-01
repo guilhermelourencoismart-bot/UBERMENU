@@ -2,6 +2,7 @@
 #include "../AimbotUtils/V2Math.h"
 // Complete V2 port, source ba07d0a9 SHA256 97f76ec300fd743b4f085aaaf514936df2d4ecc4074a75739c2e53fefaf573e4
 #include "AimbotHitscan.h"
+#include "../AimbotUtils/AimSmoothing.h"
 
 #include "../Aimbot.h"
 #include "../../Resolver/Resolver.h"
@@ -689,7 +690,11 @@ bool CV2AimbotHitscan::Aim(Vec3 vCurAngle, Vec3 vToAngle, Vec3& vOut, int iMetho
 		break;
 	case Vars::Aimbot::General::AimTypeEnum::Smooth:
 	case Vars::Aimbot::General::AimTypeEnum::SmoothVelocity:
-		vOut = vCurAngle.LerpAngle(vToAngle, F::Aimbot.GetSmoothStrength(vCurAngle, vToAngle));
+		if (iMethod == Vars::Aimbot::General::AimTypeEnum::Smooth && Vars::Aimbot::General::SmoothingAlgorithm.Value != 0)
+            vOut = AimSmoothing::Apply(vCurAngle, vToAngle, Vars::Aimbot::General::V2SmoothFactor.Value,
+                Vars::Aimbot::General::SmoothingAlgorithm.Value == Vars::Aimbot::General::SmoothingAlgorithmEnum::V2Cubic);
+        else
+			vOut = vCurAngle.LerpAngle(vToAngle, F::Aimbot.GetSmoothStrength(vCurAngle, vToAngle));
 		bReturn = true;
 		break;
 	case Vars::Aimbot::General::AimTypeEnum::Assistive:
