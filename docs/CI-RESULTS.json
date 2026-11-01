@@ -1,0 +1,28 @@
+[
+  {
+    "run_id": 41291735398,
+    "commit": "56a46a57",
+    "scope": "baseline",
+    "observed_status": "success",
+    "jobs_completed": 4,
+    "artifact": "Uniboxx64Release",
+    "artifact_size_reported": "2.51 MB",
+    "artifact_digest_reported": "sha256:1ff1dee2fe1cd4a0510ebc9727b7085766b9b8ec83545c03db4f7e7b2c76194c",
+    "evidence": "public GitHub Actions summary; binary not downloaded"
+  },
+  {
+    "run_id": 41293344283,
+    "commit": "59c37e66",
+    "scope": "integration",
+    "observed_status": "failure",
+    "failing_step": "Run native calculation tests with MSVC x64",
+    "diagnosis": "Cause not exposed in first public summary; replaced fragile CMD discovery with explicit VS2022 discovery and .cmd script; retry required"
+  },
+  {
+    "run_id": 41293599980,
+    "commit": "cdbfb518",
+    "scope": "integration retry",
+    "observed_status": "in_progress",
+    "evidence": "public Actions listing"
+  }
+]

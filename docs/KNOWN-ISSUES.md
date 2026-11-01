@@ -1,10 +1,15 @@
 # Pendências e bloqueios
 
-1. **Build não comprovada.** Não há MSVC local. `gh` encontra CONNECT/403 no
+1. **Build da integração não comprovada.** A referência `56a46a57` passou na
+   execução 41291735398, mas a integração é posterior. Não há MSVC local. `gh` encontra CONNECT/403 no
    proxy para api.github.com, apesar de git push funcionar em github.com.
    O domínio está salvo no rascunho; aplicar nas configurações do ambiente,
    publicar quando solicitado pela interface e repetir a consulta dos logs.
    Não é necessário inventar credenciais ou reenviar um token em chat.
+   A execução 41293344283 falhou na etapa dos testes nativos, antes da DLL;
+   descoberta/ativação do MSVC foi simplificada e logs/resumos foram adicionados
+   para a tentativa 41293599980. Isso é uma hipótese de correção a validar, não
+   uma causa comprovada sem o log detalhado original.
 2. **ProfileStalker:** .cpp/.h originais não distribuídos. Referências, variáveis
    e integração condicional preservadas, com diagnóstico explícito. Sem stub.
 3. **Paridade parcial com Comp/V2:** escopo por módulo em INTEGRATION-STATUS.md.

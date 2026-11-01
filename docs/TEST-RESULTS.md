@@ -6,13 +6,15 @@ Executados nesta máquina Linux após as alterações:
 |---|---|
 | `validate_unibox.py` | 1.276 referências verificadas; nenhuma obrigatória ausente/duplicada; aviso esperado de ProfileStalker |
 | `unittest discover` | 10 testes executados, 10 aprovados |
-| Cálculos C++20 com GCC, `-Wall -Wextra -Werror` | 29 verificações aprovadas |
+| Cálculos/cache C++20 com GCC, `-Wall -Wextra -Werror -pthread` | 31 verificações aprovadas |
 | `git diff --check` | Aprovado |
 | Includes locais dos novos módulos | Resolvidos na inspeção |
 
 Os testes Python exercitam perda de fonte obrigatória, módulo opcional parcial,
 duplicação de referência, pacote ausente e rejeição de PE incorreto/truncado.
 Os testes PE usam cabeçalhos sintéticos e não constituem prova de uma DLL real.
+O cache real `CIndicatorCache` foi exercitado com cópias independentes e
+publicação/leitura concorrente de frames; isso não é teste de races no jogo.
 Os cálculos cobrem rotação/clipping/bordas do radar, valores não finitos,
 velocidade, invalidação/reutilização do cache e fórmulas V2 com wrap angular.
 O teste de repetição confirma que o callback não é reexecutado no mesmo
@@ -35,4 +37,13 @@ no workspace.
 
 Execução da integração `59c37e66`:
 https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41293344283
-Em andamento na primeira consulta. Deve ser avaliada separadamente da referência.
+Terminou com falha na etapa dos testes nativos MSVC, antes da DLL. Os demais
+jobs foram cancelados por fail-fast. A causa detalhada não estava exposta no
+resumo inicial; a ativação CMD foi substituída por descoberta explícita VS2022
+e script temporário, com logs e resumos públicos de falhas, em `cdbfb518`.
+
+Nova execução dessa correção:
+https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41293599980
+O resultado dessa execução deve ser avaliado antes de afirmar que a correção
+resolveu a etapa. `CI-RESULTS.json` registra os IDs e commits, sem confundir
+build da referência, build da integração e testes locais.

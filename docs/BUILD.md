@@ -39,7 +39,7 @@ negando CONNECT 403. Não remover proxy nem desabilitar TLS para contornar isso.
 ```bash
 python3 scripts/validate_unibox.py
 python3 -m unittest discover -s tests -p 'test_*.py' -v
-g++ -std=c++20 -Wall -Wextra -Werror tests/radar_math_tests.cpp -o /tmp/unibox-tests
+g++ -std=c++20 -Wall -Wextra -Werror -pthread tests/radar_math_tests.cpp -o /tmp/unibox-tests
 /tmp/unibox-tests
 ```
 
