@@ -630,12 +630,6 @@ static void VisualsView()
 
 	TableNextColumn();
 	FullCompSettings();
-	if (Section("Offscreen indicators"))
-	{
-		FToggle(Vars::OffScreenIndicators::Enabled);
-		FSlider(Vars::OffScreenIndicators::Radius);
-		FTooltip("Uses existing ESP groups. Replaces player arrows only; native indicators for other entities remain active.");
-	} EndSection();
 	if (Section("Enemy camera"))
 	{
 		FToggle(Vars::EnemyCam::Enabled);

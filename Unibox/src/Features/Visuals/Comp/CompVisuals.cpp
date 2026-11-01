@@ -1,5 +1,6 @@
 #include "CompVisuals.h"
 #include "Radar.h"
+#include "OffScreenIndicators.h"
 #include "CompEntities.h"
 #include "UberTracker.h"
 #include "MedicUberBar.h"
@@ -45,6 +46,7 @@ void CCompVisuals::Capture(CTFPlayer* local)
     if (!SDK::TakingScreenshot())
     {
         F::FullRadar.Run(local);
+        F::FullOffScreenIndicators.Draw();
         F::FullUberTracker.Draw(); F::FullMedicUberBar.Draw(); F::FullPylonESP.Draw();
         F::FullFocusFire.Draw(); F::FullHiderESP.Draw();
         F::FullHealthBarESP.Draw();

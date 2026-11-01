@@ -93,6 +93,10 @@
     <ClCompile Include="src\Features\Visuals\Comp\Radar.cpp" />
     <ClInclude Include="src\Features\Visuals\Comp\Radar.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Features\Visuals\Comp\OffScreenIndicators.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\OffScreenIndicators.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

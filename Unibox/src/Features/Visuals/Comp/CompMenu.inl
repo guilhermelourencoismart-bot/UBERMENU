@@ -205,4 +205,15 @@ FColorPicker(Vars::Comp::Palette::IndicatorGood);
 FColorPicker(Vars::Comp::Palette::IndicatorBad);
 FColorPicker(Vars::Comp::Palette::IndicatorMisc);
 } EndSection();
+if(Section("Offscreen players - Comp")) {
+FToggle(Vars::Comp::Features::OffScreenIndicators);
+FToggle(Vars::Comp::Features::OffScreenIndicatorsName);
+FToggle(Vars::Comp::Features::OffScreenIndicatorsClass);
+FToggle(Vars::Comp::Features::OffScreenIndicatorsHealth);
+FToggle(Vars::Comp::Features::OffScreenIndicatorsDistance);
+FSlider(Vars::Comp::Features::OffScreenIndicatorsRange);
+FSlider(Vars::Comp::Features::OffScreenIndicatorsSize);
+FSlider(Vars::Comp::Features::OffScreenIndicatorsAlpha);
+FToggle(Vars::Comp::Features::OffScreenIndicatorsAvatars);
+} EndSection();
 }

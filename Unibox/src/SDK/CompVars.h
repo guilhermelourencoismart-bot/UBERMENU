@@ -226,5 +226,16 @@ NAMESPACE_BEGIN(Palette)
 		CVar(IndicatorBad, "Indicator bad", Color_t(255, 0, 0, 255), NOSAVE | DEBUGVAR);
 		CVar(IndicatorMisc, "Indicator misc", Color_t(75, 175, 255, 255), NOSAVE | DEBUGVAR);
 NAMESPACE_END(Palette)
+namespace Features {
+inline auto& OffScreenIndicators=Vars::OffScreenIndicators::Enabled;
+			CVar(OffScreenIndicatorsName, "Show player names", true, VISUAL);
+			CVar(OffScreenIndicatorsClass, "Show player classes", true, VISUAL);
+			CVar(OffScreenIndicatorsHealth, "Show player health", true, VISUAL);
+			CVar(OffScreenIndicatorsDistance, "Show distance", false, VISUAL);
+inline auto& OffScreenIndicatorsRange=Vars::OffScreenIndicators::Radius;
+			CVar(OffScreenIndicatorsSize, "Arrow size", 15, VISUAL | SLIDER_CLAMP, 5, 30, 1);
+			CVar(OffScreenIndicatorsAlpha, "Text transparency", 255, VISUAL | SLIDER_CLAMP, 100, 255, 5);
+			CVar(OffScreenIndicatorsAvatars, "Use Steam avatars", true, VISUAL);
+}
 NAMESPACE_END(Comp)
 }

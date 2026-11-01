@@ -111,7 +111,8 @@ void CCompDraw::Draw(ImDrawList* list)
             void* texture=command.type==CompDrawCommand::Type::Avatar ? F::SteamProfileCache.GetAvatarTexture(command.account) : GetESPIconTexture(command.text);
             const auto& b=command.points[1];
             if(texture) list->AddImage(reinterpret_cast<ImTextureID>(texture),{a.x,a.y},{b.x,b.y});
-            else {list->AddCircleFilled({(a.x+b.x)*.5f,(a.y+b.y)*.5f},std::min(b.x-a.x,b.y-a.y)*.4f,color);}
+            else if(command.type==CompDrawCommand::Type::Avatar) list->AddRectFilled({a.x,a.y},{b.x,b.y},IM_COL32(128,128,128,255));
+            else list->AddCircleFilled({(a.x+b.x)*.5f,(a.y+b.y)*.5f},std::min(b.x-a.x,b.y-a.y)*.4f,color);
         }
         else if (command.type==CompDrawCommand::Type::Polygon || command.type==CompDrawCommand::Type::Outline)
         {
