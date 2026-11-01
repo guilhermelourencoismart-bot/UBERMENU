@@ -85,6 +85,14 @@
     <ClCompile Include="src\Features\Visuals\Comp\StickyESP.cpp" />
     <ClInclude Include="src\Features\Visuals\Comp\StickyESP.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Features\Visuals\Comp\CompColor.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\CompColor.h" />
+    <ClCompile Include="src\Features\Visuals\Comp\CompEntities.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\CompEntities.h" />
+    <ClCompile Include="src\Features\Visuals\Comp\Radar.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\Radar.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

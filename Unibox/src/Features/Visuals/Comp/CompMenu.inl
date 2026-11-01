@@ -158,4 +158,51 @@ FColorPicker(Vars::Comp::StickyESP::TeamVisibleColor);
 FColorPicker(Vars::Comp::StickyESP::TeamInvisibleColor);
 FToggle(Vars::Comp::StickyESP::EnableChams);
 } EndSection();
+if(Section("Radar Main - Comp")) {
+FToggle(Vars::Comp::Radar::Main::Enabled);
+FToggle(Vars::Comp::Radar::Main::DrawOutOfRange);
+FDropdown(Vars::Comp::Radar::Main::Style);
+FSlider(Vars::Comp::Radar::Main::Range);
+FSlider(Vars::Comp::Radar::Main::BackgroundAlpha);
+FSlider(Vars::Comp::Radar::Main::LineAlpha);
+} EndSection();
+if(Section("Radar Player - Comp")) {
+FToggle(Vars::Comp::Radar::Player::Enabled);
+FToggle(Vars::Comp::Radar::Player::Background);
+FDropdown(Vars::Comp::Radar::Player::Draw);
+FDropdown(Vars::Comp::Radar::Player::Icon);
+FSlider(Vars::Comp::Radar::Player::Size);
+FToggle(Vars::Comp::Radar::Player::Health);
+FToggle(Vars::Comp::Radar::Player::Height);
+} EndSection();
+if(Section("Radar Building - Comp")) {
+FToggle(Vars::Comp::Radar::Building::Enabled);
+FToggle(Vars::Comp::Radar::Building::Background);
+FDropdown(Vars::Comp::Radar::Building::Draw);
+FSlider(Vars::Comp::Radar::Building::Size);
+FToggle(Vars::Comp::Radar::Building::Health);
+} EndSection();
+if(Section("Radar World - Comp")) {
+FToggle(Vars::Comp::Radar::World::Enabled);
+FToggle(Vars::Comp::Radar::World::Background);
+FDropdown(Vars::Comp::Radar::World::Draw);
+FSlider(Vars::Comp::Radar::World::Size);
+} EndSection();
+if(Section("Radar colors - Comp")) {
+FToggle(Vars::Comp::Palette::Relative);
+FColorPicker(Vars::Comp::Palette::TeamRed);
+FColorPicker(Vars::Comp::Palette::TeamBlu);
+FColorPicker(Vars::Comp::Palette::Enemy);
+FColorPicker(Vars::Comp::Palette::Team);
+FColorPicker(Vars::Comp::Palette::Local);
+FColorPicker(Vars::Comp::Palette::Target);
+FColorPicker(Vars::Comp::Palette::Health);
+FColorPicker(Vars::Comp::Palette::Ammo);
+FColorPicker(Vars::Comp::Palette::Money);
+FColorPicker(Vars::Comp::Palette::Powerup);
+FColorPicker(Vars::Comp::Palette::Halloween);
+FColorPicker(Vars::Comp::Palette::IndicatorGood);
+FColorPicker(Vars::Comp::Palette::IndicatorBad);
+FColorPicker(Vars::Comp::Palette::IndicatorMisc);
+} EndSection();
 }

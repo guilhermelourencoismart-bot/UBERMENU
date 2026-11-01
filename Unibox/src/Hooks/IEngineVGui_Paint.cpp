@@ -65,7 +65,6 @@ MAKE_HOOK(IEngineVGui_Paint, U::Memory.GetVirtual(I::EngineVGui, 14), void,
 		{
 			CTFPlayer* pCacheFor = SDK::TakingScreenshot() ? nullptr : pLocal;
 			F::ESP.CacheDrawInfo(pCacheFor);
-			F::Radar.CacheDrawInfo(pCacheFor);
 			F::OffScreenIndicators.CacheDrawInfo(pCacheFor);
 			F::EnemyCam.CacheDrawInfo(pCacheFor);
 			F::CompVisuals.Capture(pCacheFor);

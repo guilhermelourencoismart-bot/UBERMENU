@@ -161,5 +161,70 @@ inline auto& Box3D = Vars::StickyESP::Box3D;
 			CVar(TeamInvisibleColor, "Team invisible color", Color_t(0, 0, 255, 255), VISUAL);
 			CVar(EnableChams, "Enable chams", false, VISUAL);
 NAMESPACE_END(StickyESP)
+NAMESPACE_BEGIN(Radar)
+
+		NAMESPACE_BEGIN(Main)
+			inline auto& Enabled=Vars::Radar::Enabled;
+			CVar(DrawOutOfRange, "Draw out of range", true, VISUAL);
+			CVarEnum(Style, VA_LIST("Style", "Radar style"), 0, VISUAL, nullptr,
+				VA_LIST("Circle", "Rectangle"),
+				Circle, Rectangle);
+			CVar(Window, "Radar window", WindowBox_t(), VISUAL | NOBIND);
+			inline auto& Range=Vars::Radar::Range;
+			CVar(BackgroundAlpha, VA_LIST("Background alpha", "Radar background alpha"), 128, VISUAL | SLIDER_CLAMP, 0, 255, 5);
+			CVar(LineAlpha, VA_LIST("Line alpha", "Radar line alpha"), 255, VISUAL | SLIDER_CLAMP, 0, 255, 5);
+		}
+
+		NAMESPACE_BEGIN(Player)
+			inline auto& Enabled=Vars::Radar::Players;
+			CVar(Background, VA_LIST("Background", "Radar player background"), true, VISUAL);
+			CVarEnum(Draw, VA_LIST("Draw", "Radar player draw"), 0b1001010, VISUAL | DROPDOWN_MULTI, nullptr,
+				VA_LIST("Local", "Enemy", "Team", "Friends", "Party", "Prioritized", "Cloaked"),
+				Local = 1 << 0, Enemy = 1 << 1, Team = 1 << 2, Prioritized = 1 << 3, Friends = 1 << 4, Party = 1 << 5, Cloaked = 1 << 6);
+			CVarEnum(Icon, VA_LIST("Icon", "Radar player icon"), 1, VISUAL, nullptr,
+				VA_LIST("Icons", "Portraits", "Avatar"),
+				Icons, Portraits, Avatars);
+			CVar(Size, VA_LIST("Size", "Radar player size"), 24, VISUAL, 12, 30, 2);
+			CVar(Health, VA_LIST("Health bar", "Radar player health bar"), false, VISUAL);
+			CVar(Height, VA_LIST("Height indicator", "Radar player height indicator"), false, VISUAL);
+		}
+
+		NAMESPACE_BEGIN(Building)
+			inline auto& Enabled=Vars::Radar::Buildings;
+			CVar(Background, VA_LIST("Background", "Radar building background"), true, VISUAL);
+			CVarEnum(Draw, VA_LIST("Draw", "Radar building draw"), 0b001011, VISUAL | DROPDOWN_MULTI, nullptr,
+				VA_LIST("Local", "Enemy", "Team", "Friends", "Party", "Prioritized"),
+				Local = 1 << 0, Enemy = 1 << 1, Team = 1 << 2, Prioritized = 1 << 3, Friends = 1 << 4, Party = 1 << 5);
+			CVar(Size, VA_LIST("Size", "Radar building size"), 18, VISUAL, 12, 30, 2);
+			CVar(Health, VA_LIST("Health bar", "Radar building health bar"), false, VISUAL);
+		}
+
+		NAMESPACE_BEGIN(World)
+			inline auto& Enabled=Vars::Radar::Pickups;
+			CVar(Background, VA_LIST("Background", "Radar world background"), true, VISUAL);
+			CVarEnum(Draw, VA_LIST("Draw", "Radar world draw"), 0b0000011, VISUAL | DROPDOWN_MULTI, nullptr,
+				VA_LIST("Health", "Ammo", "Money", "Bombs", "Powerup", "Spellbook", "Gargoyle"),
+				Health = 1 << 0, Ammo = 1 << 1, Money = 1 << 2, Bombs = 1 << 3, Powerup = 1 << 4, Spellbook = 1 << 5, Gargoyle = 1 << 6);
+			CVar(Size, VA_LIST("Size", "Radar world size"), 14, VISUAL, 12, 30, 2);
+		}
+
+NAMESPACE_END(Radar)
+NAMESPACE_BEGIN(Palette)
+		CVar(Relative, "Relative colors", false, VISUAL);
+		CVar(TeamRed, "RED color", Color_t(225, 60, 60, 255), VISUAL);
+		CVar(TeamBlu, "BLU color", Color_t(75, 175, 225, 255), VISUAL);
+		CVar(Enemy, "Enemy color", Color_t(225, 60, 60, 255), VISUAL);
+		CVar(Team, "Team color", Color_t(75, 175, 225, 255), VISUAL);
+		CVar(Local, "Local color", Color_t(255, 255, 255, 255), VISUAL);
+		CVar(Target, "Target color", Color_t(255, 0, 0, 255), VISUAL);
+		CVar(Health, "Health color", Color_t(0, 225, 75, 255), VISUAL);
+		CVar(Ammo, "Ammo color", Color_t(127, 127, 127, 255), VISUAL);
+		CVar(Money, "Money color", Color_t(0, 150, 75, 255), VISUAL);
+		CVar(Powerup, "Powerup color", Color_t(255, 175, 0, 255), VISUAL);
+		CVar(Halloween, "Halloween color", Color_t(100, 0, 255, 255), VISUAL);
+		CVar(IndicatorGood, "Indicator good", Color_t(0, 255, 100, 255), NOSAVE | DEBUGVAR);
+		CVar(IndicatorBad, "Indicator bad", Color_t(255, 0, 0, 255), NOSAVE | DEBUGVAR);
+		CVar(IndicatorMisc, "Indicator misc", Color_t(75, 175, 255, 255), NOSAVE | DEBUGVAR);
+NAMESPACE_END(Palette)
 NAMESPACE_END(Comp)
 }

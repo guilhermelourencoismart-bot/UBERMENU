@@ -92,7 +92,6 @@ void CRender::Render(IDirect3DDevice9* pDevice)
 		F::NavRender.DrawIndicators();
 
 		F::ESP.Draw(pBackground);
-		F::Radar.Draw(pBackground);
 		F::OffScreenIndicators.Draw(pBackground);
 		F::CompDraw.Draw(pBackground);
 		F::Aimbot.Draw(pBackground);

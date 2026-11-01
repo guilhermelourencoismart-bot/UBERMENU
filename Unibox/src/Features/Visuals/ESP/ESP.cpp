@@ -1998,6 +1998,15 @@ void CESP::Draw(ImDrawList* pDrawList)
 	CleanupAnims();
 }
 
+void* GetESPIconTexture(const std::string& texture)
+{
+#ifndef TEXTMODE
+	return GetIconTexture(texture);
+#else
+	return nullptr;
+#endif
+}
+
 void CESP::DrawEntities(ImDrawList* pDrawList, const std::vector<ESPDrawEntity_t>& vEntities, bool bPlayers)
 {
 	if (vEntities.empty())

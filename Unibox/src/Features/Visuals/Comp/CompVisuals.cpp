@@ -1,4 +1,6 @@
 #include "CompVisuals.h"
+#include "Radar.h"
+#include "CompEntities.h"
 #include "UberTracker.h"
 #include "MedicUberBar.h"
 #include "PylonESP.h"
@@ -37,10 +39,12 @@ void CCompVisuals::Capture(CTFPlayer* local)
     }
     if (map!=m_map || now<m_time || recycled) Reset();
     m_serials=std::move(serials); m_map=map; m_time=now;
+    F::CompEntities.Refresh();
     F::CompDraw.Begin();
 #ifndef TEXTMODE
     if (!SDK::TakingScreenshot())
     {
+        F::FullRadar.Run(local);
         F::FullUberTracker.Draw(); F::FullMedicUberBar.Draw(); F::FullPylonESP.Draw();
         F::FullFocusFire.Draw(); F::FullHiderESP.Draw();
         F::FullHealthBarESP.Draw();
