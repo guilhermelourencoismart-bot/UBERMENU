@@ -1,3 +1,4 @@
+#include "BacktrackAdapter.h"
 #include "../AimbotUtils/V2Math.h"
 // Complete V2 port, source ba07d0a9 SHA256 39d95c5c1a7fca16dd56c3b48c82a5e8fa25a431cf0e7bc3831150c4c4a3da55
 #include "AimbotProjectile.h"
@@ -409,7 +410,8 @@ std::unordered_map<int, Vec3> CV2AimbotProjectile::GetDirectPoints()
 		case BOUNDS_HEAD:
 			if (tTarget.m_nAimedHitbox == HITBOX_HEAD)
 			{
-				auto pHitboxInfos = F::Backtrack.GetHitboxInfos(tTarget.m_pEntity);
+				auto boxes=V2Backtrack::Latest(tTarget.m_pEntity);
+        auto pHitboxInfos=&boxes;
 				if (!pHitboxInfos)
 					break;
 
@@ -1224,7 +1226,8 @@ bool CV2AimbotProjectile::TestAngle(const Vec3& vPoint, const Vec3& vAngles, int
 					|| Vars::Aimbot::General::AimType.Value == Vars::Aimbot::General::AimTypeEnum::SmoothVelocity
 					|| Vars::Aimbot::General::AimType.Value == Vars::Aimbot::General::AimTypeEnum::Assistive))
 				{	// loop and see if closest hitbox is head
-					auto pHitboxInfos = F::Backtrack.GetHitboxInfos(tTarget.m_pEntity);
+					auto boxes=V2Backtrack::Latest(tTarget.m_pEntity);
+        auto pHitboxInfos=&boxes;
 					if (!pHitboxInfos)
 						break;
 

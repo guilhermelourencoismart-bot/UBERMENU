@@ -1,3 +1,4 @@
+#include "BacktrackAdapter.h"
 #include "../AimbotUtils/V2Math.h"
 // Complete V2 port, source ba07d0a9 SHA256 df6c27f88c4473cc9640b121eeb5c4c068d7c9447db526833efc9e174564eaf3
 #include "AimbotGlobal.h"
@@ -79,7 +80,8 @@ void CV2AimbotGlobal::SortTargetsPost(std::vector<Target_t>& vTargets, int iMeth
 // this won't prevent shooting bones outside of fov
 bool CV2AimbotGlobal::PlayerBoneInFOV(CTFPlayer* pTarget, Vec3 vLocalPos, Vec3 vLocalAngles, float& flFOVTo, Vec3& vPos, Vec3& vAngleTo, int iHitboxes)
 {
-	std::vector<HitboxInfo_t>* vHitboxInfos = F::Backtrack.GetHitboxInfos(pTarget);
+	auto recordBoxes=V2Backtrack::Latest(pTarget);
+    std::vector<HitboxInfo_t>* vHitboxInfos = &recordBoxes;
 	if (!Vars::Visuals::Removals::Interpolation.Value)
 	{
 		std::vector<TickRecord*> vRecords = {};
@@ -90,7 +92,7 @@ bool CV2AimbotGlobal::PlayerBoneInFOV(CTFPlayer* pTarget, Vec3 vLocalPos, Vec3 v
 			{
 				if (F::EnginePrediction.m_flOldCurrentTime - pRecord->m_flSimTime > flLerp)
 				{
-					vHitboxInfos = &pRecord->m_vHitboxInfos;
+					recordBoxes=V2Backtrack::ForRecord(pTarget,*pRecord);
 					break;
 				}
 			}

@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup><ClInclude Include="src\Features\Aimbot\AimbotUtils\V2Math.h" /></ItemGroup>
   <ItemGroup><ClInclude Include="src\Features\Configs\ConfigCodec.h" /></ItemGroup>
+  <ItemGroup><ClInclude Include="src\Features\Aimbot\V2\BacktrackAdapter.h" /></ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

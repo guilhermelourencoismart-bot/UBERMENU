@@ -1,3 +1,4 @@
+#include "BacktrackAdapter.h"
 #include "../AimbotUtils/V2Math.h"
 // Complete V2 port, source ba07d0a9 SHA256 97f76ec300fd743b4f085aaaf514936df2d4ecc4074a75739c2e53fefaf573e4
 #include "AimbotHitscan.h"
@@ -274,7 +275,11 @@ int CV2AimbotHitscan::CanHit(Target_t& tTarget, CTFPlayer* pLocal, CTFWeaponBase
 			Math::VectorTransform((iMin + iMax) / 2, aBones[iBone], vCenter);
 			vHitboxInfos.emplace_back(iBone, nHitbox, vCenter, iMin, iMax);
 		}
-		F::Backtrack.m_tRecord = { tTarget.m_pEntity->m_flSimulationTime(), tTarget.m_pEntity->m_vecOrigin(), Vec3(), Vec3(), vHitboxInfos };
+		F::Backtrack.m_tRecord = {};
+        F::Backtrack.m_tRecord.m_flSimTime=tTarget.m_pEntity->m_flSimulationTime();
+        F::Backtrack.m_tRecord.m_vOrigin=tTarget.m_pEntity->m_vecOrigin();
+        F::Backtrack.m_tRecord.m_vMins=tTarget.m_pEntity->m_vecMins();
+        F::Backtrack.m_tRecord.m_vMaxs=tTarget.m_pEntity->m_vecMaxs();
 		memcpy(F::Backtrack.m_tRecord.m_aBones, aBones, sizeof(F::Backtrack.m_tRecord.m_aBones));
 		vRecords = { &F::Backtrack.m_tRecord };
 	}
@@ -369,9 +374,10 @@ int CV2AimbotHitscan::CanHit(Target_t& tTarget, CTFPlayer* pLocal, CTFWeaponBase
 				continue;
 
 			std::vector<std::tuple<HitboxInfo_t, int, int>> vHitboxes;
-			for (int i = 0; i < pRecord->m_vHitboxInfos.size(); i++)
+            auto recordBoxes=V2Backtrack::ForRecord(tTarget.m_pEntity,*pRecord);
+			for (int i = 0; i < recordBoxes.size(); i++)
 			{
-				auto HitboxInfo = pRecord->m_vHitboxInfos[i];
+				auto HitboxInfo = recordBoxes[i];
 				const int nHitbox = HitboxInfo.m_nHitbox;
 
 				int iPriority = GetHitboxPriority(nHitbox, pLocal, pWeapon, tTarget.m_pEntity);

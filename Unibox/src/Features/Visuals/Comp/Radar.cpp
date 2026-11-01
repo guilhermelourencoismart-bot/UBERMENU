@@ -10,7 +10,7 @@
 bool CFullRadar::GetDrawPosition(CTFPlayer* pLocal, CBaseEntity* pEntity, int& x, int& y, int& z)
 {
 	const float flRange = std::max(1.f,Vars::Comp::Radar::Main::Range.Value);
-	const float flYaw = -DEG2RAD(I::EngineClient->GetViewAngles().y);
+	const float flYaw = -Math::Deg2Rad(I::EngineClient->GetViewAngles().y);
 	const float flSin = sinf(flYaw), flCos = cosf(flYaw);
 
 	Vec3 vDelta = pLocal->GetAbsOrigin() - pEntity->GetAbsOrigin();
