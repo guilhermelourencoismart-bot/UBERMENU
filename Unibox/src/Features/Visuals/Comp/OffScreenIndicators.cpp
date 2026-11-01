@@ -262,7 +262,7 @@ void CFullOffScreenIndicators::Draw()
         if (Vars::Comp::Features::OffScreenIndicatorsName.Value)
         {
             Vec2 nameSize = F::CompDraw.GetTextSize(playerName.c_str(), font);
-            F::CompDraw.String(font, finalX - static_cast<int>(nameSize.x) / 2, currentY, {255, 255, static_cast<byte>(alpha)}, ALIGN_TOPLEFT, playerName.c_str());
+            F::CompDraw.String(font, finalX - static_cast<int>(nameSize.x) / 2, currentY, {255, 255, 255, static_cast<byte>(alpha)}, ALIGN_TOPLEFT, playerName.c_str());
             currentY += 15;
         }
 
@@ -271,7 +271,7 @@ void CFullOffScreenIndicators::Draw()
         {
             std::string className = GetPlayerClassName(pPlayer->m_iClass());
             Vec2 classSize = F::CompDraw.GetTextSize(className.c_str(), font);
-            F::CompDraw.String(font, finalX - static_cast<int>(classSize.x) / 2, currentY, {255, 0, static_cast<byte>(alpha)}, ALIGN_TOPLEFT, className.c_str());
+            F::CompDraw.String(font, finalX - static_cast<int>(classSize.x) / 2, currentY, {255, 0, 255, static_cast<byte>(alpha)}, ALIGN_TOPLEFT, className.c_str());
             currentY += 15;
         }
 
@@ -279,7 +279,7 @@ void CFullOffScreenIndicators::Draw()
         if (Vars::Comp::Features::OffScreenIndicatorsHealth.Value)
         {
             Vec2 healthSize = F::CompDraw.GetTextSize(healthText.c_str(), font);
-            F::CompDraw.String(font, finalX - static_cast<int>(healthSize.x) / 2, currentY, {0, 0, static_cast<byte>(alpha)}, ALIGN_TOPLEFT, healthText.c_str());
+            F::CompDraw.String(font, finalX - static_cast<int>(healthSize.x) / 2, currentY, {0, 0, 255, static_cast<byte>(alpha)}, ALIGN_TOPLEFT, healthText.c_str());
             currentY += 15;
         }
 
@@ -288,7 +288,7 @@ void CFullOffScreenIndicators::Draw()
         {
             std::string distanceText = std::to_string(static_cast<int>(distance)) + "u";
             Vec2 distSize = F::CompDraw.GetTextSize(distanceText.c_str(), font);
-            F::CompDraw.String(font, finalX - static_cast<int>(distSize.x) / 2, currentY, {200, 200, static_cast<byte>(alpha)}, ALIGN_TOPLEFT, distanceText.c_str());
+            F::CompDraw.String(font, finalX - static_cast<int>(distSize.x) / 2, currentY, {200, 200, 255, static_cast<byte>(alpha)}, ALIGN_TOPLEFT, distanceText.c_str());
         }
     }
 }

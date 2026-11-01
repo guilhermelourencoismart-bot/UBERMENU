@@ -338,6 +338,7 @@ void CFullAmmoTracker::DrawHudOverlay(const Vec3& vPlayerPos)
 
 void CFullAmmoTracker::DrawClockFill(int iCenterX, int iCenterY, int iRadius, float flPercentage, int iVertices, const Color_t& color)
 {
+    iVertices=std::clamp(iVertices,3,256);
     if (flPercentage <= 0.0f || flPercentage > 1.0f)
         return;
 
@@ -372,6 +373,7 @@ void CFullAmmoTracker::DrawClockFill(int iCenterX, int iCenterY, int iRadius, fl
 
 void CFullAmmoTracker::DrawFilledProgress(const Vec3& vPos, int iRadius, float flPercentage, int iSegments, const Color_t& color)
 {
+    iSegments=std::clamp(iSegments,3,256);
     Vec3 vCenterScreen;
     Vec3 vCenterWorld = {vPos.x, vPos.y, vPos.z + 1.0f};
     if (!SDK::W2S(vCenterWorld, vCenterScreen))
