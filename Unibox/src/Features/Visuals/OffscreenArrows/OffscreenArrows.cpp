@@ -75,5 +75,13 @@ void COffscreenArrows::Draw(CTFPlayer* pLocal)
 
 	Vec3 vLocalPos = pLocal->GetEyePosition();
 	for (auto& [pEntity, tCache] : m_mCache)
+	{
+#ifndef TEXTMODE
+		// The ImGui alternative replaces player arrows only; retain building,
+		// projectile and other native group indicators.
+		if (Vars::OffScreenIndicators::Enabled.Value && pEntity->IsPlayer())
+			continue;
+#endif
 		DrawArrowTo(vLocalPos, pEntity->GetCenter(), tCache.m_tColor, tCache.m_iOffset, tCache.m_flMaxDistance);
+	}
 }

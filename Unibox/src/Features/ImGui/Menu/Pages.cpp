@@ -663,7 +663,7 @@ static void VisualsView()
 	{
 		FToggle(Vars::OffScreenIndicators::Enabled);
 		FSlider(Vars::OffScreenIndicators::Radius);
-		FTooltip("Uses existing ESP groups with offscreen arrows enabled. Replaces base arrows while active.");
+		FTooltip("Uses existing ESP groups. Replaces player arrows only; native indicators for other entities remain active.");
 	} EndSection();
 	if (Section("Pickup tracker"))
 	{

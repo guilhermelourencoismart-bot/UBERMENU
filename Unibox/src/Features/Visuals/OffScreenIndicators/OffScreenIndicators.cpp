@@ -32,7 +32,7 @@ void COffScreenIndicators::CacheDrawInfo(CTFPlayer* local)
         if (length < .0001f) continue;
         const float x = direction.x / length, y = direction.y / length;
         const float cx = width * .5f + x * radius, cy = height * .5f + y * radius;
-        arrows.push_back({{cx + x * 10, cy + y * 10}, {cx - x * 8 - y * 6, cy - y * 8 + x * 6}, {cx - x * 8 + y * 6, cy - y * 8 - x * 6}, group->m_tColor});
+        arrows.push_back({{cx + x * 10, cy + y * 10}, {cx - x * 8 - y * 6, cy - y * 8 + x * 6}, {cx - x * 8 + y * 6, cy - y * 8 - x * 6}, F::Groups.GetColor(entity, group)});
     }
     m_cache.Set(std::move(arrows));
 }

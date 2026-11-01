@@ -33,7 +33,8 @@ implementada nem declarada concluída.
 - O ESP principal e seus grupos continuam intactos.
 - HealthBarESP não adiciona barra se o grupo já define HealthBar.
 - SentryESP/StickyESP não adicionam caixas se o grupo já define Box.
-- OffScreenIndicators substitui as setas originais enquanto ativado.
+- OffScreenIndicators substitui as setas de jogadores enquanto ativado;
+  indicadores nativos de construções/projéteis/outros grupos são preservados.
 - AmmoTracker substitui o desenho dos timers originais enquanto ativado.
 - Chams e Glow continuam pertencendo exclusivamente aos grupos da base.
 - Configurações novas começam desligadas; o modo de suavização padrão é Unibox.
