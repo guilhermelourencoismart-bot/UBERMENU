@@ -1,4 +1,5 @@
 #include "../Unibox/src/Features/Visuals/Radar/RadarMath.h"
+#include "../Unibox/src/Features/Aimbot/AimbotUtils/VelocityScale.h"
 #include <cstdlib>
 #include <iostream>
 #include <limits>
@@ -26,5 +27,21 @@ int main()
     Require(!RadarMath::Project(std::numeric_limits<float>::quiet_NaN(), 0, 0, 1000, true, true, p), "NaN rejected");
     Require(!RadarMath::Project(0, 0, std::numeric_limits<float>::infinity(), 1000, true, true, p), "infinite yaw rejected");
     Require(!RadarMath::Project(std::numeric_limits<float>::max(), 0, 0, .001f, true, true, p), "overflow rejected");
-    std::cout << checks << " radar math checks passed\n";
+    Require(Near(AimSmoothing::VelocityScale(0), .65f), "stationary velocity factor");
+    Require(Near(AimSmoothing::VelocityScale(320), 1.05f), "normal velocity factor");
+    Require(Near(AimSmoothing::VelocityScale(2000), 1.35f), "velocity factor saturation");
+    Require(Near(AimSmoothing::VelocityScale(std::numeric_limits<float>::quiet_NaN()), 1.f), "invalid velocity neutral factor");
+    AimSmoothing::VelocityCache cache;
+    int calls = 0;
+    const auto compute = [&] { ++calls; return .8f; };
+    Require(Near(cache.Get(5, 1, compute), .8f) && calls == 1, "first cache calculation");
+    cache.Get(5, 1, compute);
+    Require(calls == 1, "same tick and target reuse calculation");
+    cache.Get(5, 2, compute);
+    Require(calls == 2, "target change invalidates cache");
+    cache.Get(6, 2, compute);
+    Require(calls == 3, "tick change invalidates cache");
+    cache.Get(0, 2, compute);
+    Require(calls == 4, "tick rollback invalidates cache");
+    std::cout << checks << " calculation checks passed\n";
 }

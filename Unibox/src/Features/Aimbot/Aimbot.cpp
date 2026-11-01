@@ -1,4 +1,5 @@
 #include "Aimbot.h"
+#include "AimbotUtils/VelocityScale.h"
 
 #include "AimbotHitscan/AimbotHitscan.h"
 #include "AimbotProjectile/AimbotProjectile.h"
@@ -56,12 +57,15 @@ float CAimbot::GetSmoothStrength(const Vec3& vCurAngle, const Vec3& vToAngle) co
 	float flVelocityScale = 1.f;
 	if (Vars::Aimbot::General::AimType.Value == Vars::Aimbot::General::AimTypeEnum::SmoothVelocity && G::AimTarget.m_iEntIndex > 0)
 	{
-		if (auto pTarget = I::ClientEntityList->GetClientEntity(G::AimTarget.m_iEntIndex)->As<CBaseEntity>())
+		// V2's tick/target cache; contains values only, never persistent entity pointers.
+		static AimSmoothing::VelocityCache s_cache;
+		flVelocityScale = s_cache.Get(I::GlobalVars->tickcount, G::AimTarget.m_iEntIndex, []
 		{
-			const float flSpeed = pTarget->GetAbsVelocity().Length2D();
-			const float flSpeedRatio = std::clamp(flSpeed / 320.f, 0.f, 1.75f);
-			flVelocityScale = std::clamp(0.65f + flSpeedRatio * 0.4f, 0.35f, 1.35f);
-		}
+			auto pEntity = I::ClientEntityList->GetClientEntity(G::AimTarget.m_iEntIndex);
+			if (!pEntity)
+				return 1.f;
+			return AimSmoothing::VelocityScale(pEntity->As<CBaseEntity>()->GetAbsVelocity().Length2D());
+		});
 	}
 
 	return std::clamp(flStrength * std::clamp(flCurve, 0.05f, 1.f) * flVelocityScale, 0.f, 1.f);

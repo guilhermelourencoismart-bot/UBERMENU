@@ -38,6 +38,7 @@
     <ClCompile Include="src\Features\Visuals\Radar\Radar.cpp" />
     <ClInclude Include="src\Features\Visuals\Radar\Radar.h" />
     <ClInclude Include="src\Features\Visuals\Radar\RadarMath.h" />
+    <ClInclude Include="src\Features\Aimbot\AimbotUtils\VelocityScale.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
