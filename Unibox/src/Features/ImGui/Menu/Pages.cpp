@@ -645,48 +645,11 @@ static void VisualsView()
 		FSlider(Vars::Radar::PositionY);
 		FLabel("Based on Unibox - GatoPotato658/Unibox");
 	} EndSection();
-	if (Section("Health overlay"))
-	{
-		FToggle(Vars::HealthOverlay::Enabled);
-		FToggle(Vars::HealthOverlay::MedicMode);
-		FToggle(Vars::HealthOverlay::Bars);
-		FToggle(Vars::HealthOverlay::Polygons);
-		FToggle(Vars::HealthOverlay::ThroughWalls);
-		FSlider(Vars::HealthOverlay::MaxDistance);
-	} EndSection();
-	if (Section("Player trails"))
-	{
-		FToggle(Vars::PlayerTrails::Enabled);
-		FToggle(Vars::PlayerTrails::ThroughWalls);
-		FSlider(Vars::PlayerTrails::Duration);
-		FSlider(Vars::PlayerTrails::MaxDistance);
-	} EndSection();
 	if (Section("Offscreen indicators"))
 	{
 		FToggle(Vars::OffScreenIndicators::Enabled);
 		FSlider(Vars::OffScreenIndicators::Radius);
 		FTooltip("Uses existing ESP groups. Replaces player arrows only; native indicators for other entities remain active.");
-	} EndSection();
-	if (Section("Pickup tracker"))
-	{
-		FToggle(Vars::AmmoTracker::Enabled);
-		FSlider(Vars::AmmoTracker::RespawnSeconds);
-		FSlider(Vars::AmmoTracker::MaxDistance);
-		FTooltip("Estimated pickup respawns at known map supply positions; adjust interval for the server. Replaces base pickup timers while enabled.");
-	} EndSection();
-	if (Section("Sentry overlay"))
-	{
-		FToggle(Vars::SentryESP::Enabled);
-		FToggle(Vars::SentryESP::ThroughWalls);
-		FSlider(Vars::SentryESP::MaxDistance);
-	} EndSection();
-	if (Section("Sticky overlay"))
-	{
-		FToggle(Vars::StickyESP::Enabled);
-		FToggle(Vars::StickyESP::EnemyOnly);
-		FToggle(Vars::StickyESP::ThroughWalls);
-		FToggle(Vars::StickyESP::Box3D);
-		FSlider(Vars::StickyESP::MaxDistance);
 	} EndSection();
 	if (Section("Enemy camera"))
 	{

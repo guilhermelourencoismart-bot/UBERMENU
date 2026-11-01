@@ -73,6 +73,18 @@
     <ClInclude Include="src\Features\Visuals\Comp\UberTracker.h" />
     <ClInclude Include="src\SDK\CompVars.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Features\Visuals\Comp\AmmoTracker.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\AmmoTracker.h" />
+    <ClCompile Include="src\Features\Visuals\Comp\HealthBarESP.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\HealthBarESP.h" />
+    <ClCompile Include="src\Features\Visuals\Comp\PlayerTrails.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\PlayerTrails.h" />
+    <ClCompile Include="src\Features\Visuals\Comp\SentryESP.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\SentryESP.h" />
+    <ClCompile Include="src\Features\Visuals\Comp\StickyESP.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\StickyESP.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

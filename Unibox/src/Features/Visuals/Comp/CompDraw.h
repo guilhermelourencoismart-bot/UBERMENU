@@ -22,6 +22,9 @@ public:
     void Line(int x, int y, int x2, int y2, Color_t color);
     void FillRect(int x, int y, int w, int h, Color_t color);
     void LineRect(int x, int y, int w, int h, Color_t color);
+    void FillPolygon(std::vector<Vertex_t> vertices, Color_t color);
+    void LinePolygon(std::vector<Vertex_t> vertices, Color_t color);
+    void FillCircle(int x, int y, float radius, int segments, Color_t color);
     void String(const Font_t& font, int x, int y, Color_t color, EAlign align, const char* text);
     Vec2 GetTextSize(const char* text, const Font_t& font) { return H::Draw.GetTextSize(text, font); }
 };

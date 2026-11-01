@@ -77,5 +77,89 @@ NAMESPACE_BEGIN(HiderESP)
 			CVar(MovementThreshold, "Movement Threshold", 1.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 0.1f, 10.0f, 0.1f);
 			CVar(MaxDistance, "Max Distance", 1650.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 100.0f, 5000.0f, 50.0f);
 		NAMESPACE_END(HiderESP)
+namespace Features { inline auto& HealthBarESP = Vars::HealthOverlay::Enabled; }
+NAMESPACE_BEGIN(HealthBarESP)
+			CVar(Alpha, "Transparency", 70, VISUAL | SLIDER_CLAMP, 0, 255, 5);
+			CVar(BarHeight, "Bar height", 10, VISUAL | SLIDER_CLAMP, 5, 25, 1);
+			CVar(BarWidth, "Bar width", 90, VISUAL | SLIDER_CLAMP, 50, 150, 5);
+inline auto& MaxDistance = Vars::HealthOverlay::MaxDistance;
+inline auto& MedicMode = Vars::HealthOverlay::MedicMode;
+			CVar(OverhealColor, "Overheal color", Color_t(71, 166, 255, 255), VISUAL);
+inline auto& ShowHealthBars = Vars::HealthOverlay::Bars;
+inline auto& ShowThroughWalls = Vars::HealthOverlay::ThroughWalls;
+inline auto& ShowPolygons = Vars::HealthOverlay::Polygons;
+			CVar(PolygonThroughWalls, "Show polygons through walls", false, VISUAL);
+			CVar(PolygonRadius, "Polygon radius", 50.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 20.0f, 200.0f, 5.0f);
+			CVar(PolygonSegments, "Polygon segments", 16, VISUAL | SLIDER_CLAMP, 8, 64, 1);
+			CVar(ShowPolygonFill, "Show polygon fill", true, VISUAL);
+			CVar(ShowPolygonEdge, "Show polygon edge", true, VISUAL);
+NAMESPACE_END(HealthBarESP)
+namespace Features { inline auto& PlayerTrails = Vars::PlayerTrails::Enabled; }
+NAMESPACE_BEGIN(PlayerTrails)
+			CVar(MaxTrailLength, "Max trail length", 19, VISUAL | SLIDER_CLAMP, 10, 50, 1);
+inline auto& TrailLifetime = Vars::PlayerTrails::Duration;
+inline auto& MaxDistance = Vars::PlayerTrails::MaxDistance;
+			CVar(UpdateInterval, "Update interval", 6, VISUAL | SLIDER_CLAMP, 1, 20, 1);
+			CVar(VisibilityTimeout, "Visibility timeout", 4.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 1.0f, 10.0f, 0.5f);
+			CVar(MaxVisibleDuration, "Max visible duration", 2.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 0.5f, 10.0f, 0.5f);
+			CVar(TrailHeight, "Trail height", 1.5f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 0.0f, 10.0f, 0.5f);
+			CVar(MinMovementDistance, "Min movement distance", 10.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 5.0f, 50.0f, 1.0f);
+NAMESPACE_END(PlayerTrails)
+namespace Features { inline auto& AmmoTracker = Vars::AmmoTracker::Enabled; }
+NAMESPACE_BEGIN(AmmoTracker)
+			CVar(ShowGroundPieChart, "Show ground pie charts", false, VISUAL);
+			CVar(ShowScreenPieChart, "Show screen pie charts", true, VISUAL);
+			CVar(ShowSeconds, "Show seconds timer", false, VISUAL);
+			CVar(ShowMilliseconds, "Show milliseconds", false, VISUAL);
+			CVar(ShowThroughWalls, "Show through walls", false, VISUAL);
+			CVar(ShowHudOverlay, "Show HUD overlay when standing on supplies", true, VISUAL);
+			CVar(ScaleWithDistance, "Scale with distance", true, VISUAL);
+			CVar(ScaleTextWithDistance, "Scale text with distance", true, VISUAL);
+			CVar(MaxDistanceGroundPieChart, "Max distance for ground charts", 1000.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 100.0f, 3000.0f, 50.0f);
+			CVar(MaxDistanceScreenPieChart, "Max distance for screen charts", 1000.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 100.0f, 3000.0f, 50.0f);
+inline auto& MaxDistanceText = Vars::AmmoTracker::MaxDistance;
+			CVar(PieChartSize, "Pie chart size", 20, VISUAL | SLIDER_CLAMP, 10, 50, 2);
+			CVar(PieChartSegments, "Pie chart segments", 32, VISUAL | SLIDER_CLAMP, 8, 64, 4);
+			CVar(MinScreenChartSize, "Min screen chart size", 5, VISUAL | SLIDER_CLAMP, 3, 15, 1);
+			CVar(MaxScreenChartSize, "Max screen chart size", 20, VISUAL | SLIDER_CLAMP, 10, 50, 2);
+			CVar(MaxScaleDistance, "Max scale distance", 1000.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 500.0f, 2000.0f, 50.0f);
+			CVar(TextSizeMin, "Min text size", 12, VISUAL | SLIDER_CLAMP, 8, 20, 1);
+			CVar(TextSizeMax, "Max text size", 20, VISUAL | SLIDER_CLAMP, 14, 30, 1);
+			CVar(TextSizeDefault, "Default text size", 16, VISUAL | SLIDER_CLAMP, 10, 24, 1);
+			CVar(HealthColor, "Health pack color", Color_t(155, 200, 155, 200), VISUAL);
+			CVar(AmmoColor, "Ammo pack color", Color_t(255, 255, 155, 200), VISUAL);
+			CVar(SecondsColor, "Timer text color", Color_t(255, 255, 255, 255), VISUAL);
+NAMESPACE_END(AmmoTracker)
+namespace Features { inline auto& SentryESP = Vars::SentryESP::Enabled; }
+NAMESPACE_BEGIN(SentryESP)
+			CVar(ShowLine, "Show aim line", true, VISUAL);
+			CVar(ShowBoxes, "Show ESP boxes", true, VISUAL);
+			CVar(ShowChams, "Show chams on targeting sentries", true, VISUAL);
+inline auto& ShowThroughWalls = Vars::SentryESP::ThroughWalls;
+			CVar(ShowFriendly, "Show friendly sentries", false, VISUAL);
+			CVar(UseCorners, "Use corner boxes", true, VISUAL);
+			CVar(CornerLength, "Corner length", 10, VISUAL | SLIDER_CLAMP, 5, 25, 1);
+			CVar(BoxThickness, "Box thickness", 2, VISUAL | SLIDER_CLAMP, 1, 5, 1);
+			CVar(LineLength, "Aim line length", 1100.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 200.0f, 2000.0f, 50.0f);
+			CVar(SafeColor, "Safe color (visible)", Color_t(0, 255, 0, 125), VISUAL);
+			CVar(DangerColor, "Danger color (targeting)", Color_t(255, 0, 0, 255), VISUAL);
+			CVar(HiddenColor, "Hidden color (not visible)", Color_t(150, 150, 150, 125), VISUAL);
+			CVar(LineColor, "Aim line color", Color_t(255, 0, 0, 255), VISUAL);
+			CVar(TextColor, "Level text color", Color_t(255, 255, 255, 255), VISUAL);
+NAMESPACE_END(SentryESP)
+namespace Features { inline auto& StickyESP = Vars::StickyESP::Enabled; }
+NAMESPACE_BEGIN(StickyESP)
+inline auto& MaxDistance = Vars::StickyESP::MaxDistance;
+			CVar(BoxSize, "Box size", 20, VISUAL | SLIDER_CLAMP, 10, 50, 2);
+inline auto& EnemyOnly = Vars::StickyESP::EnemyOnly;
+inline auto& Box3D = Vars::StickyESP::Box3D;
+			CVar(Box2D, "2D boxes", true, VISUAL);
+			CVar(BoxOnlyWhenVisible, "Only show when visible", true, VISUAL);
+			CVar(EnemyVisibleColor, "Enemy visible color", Color_t(255, 100, 100, 255), VISUAL);
+			CVar(EnemyInvisibleColor, "Enemy invisible color", Color_t(255, 0, 0, 255), VISUAL);
+			CVar(TeamVisibleColor, "Team visible color", Color_t(100, 100, 255, 255), VISUAL);
+			CVar(TeamInvisibleColor, "Team invisible color", Color_t(0, 0, 255, 255), VISUAL);
+			CVar(EnableChams, "Enable chams", false, VISUAL);
+NAMESPACE_END(StickyESP)
 NAMESPACE_END(Comp)
 }

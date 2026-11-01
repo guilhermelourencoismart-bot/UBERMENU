@@ -93,12 +93,7 @@ void CRender::Render(IDirect3DDevice9* pDevice)
 
 		F::ESP.Draw(pBackground);
 		F::Radar.Draw(pBackground);
-		F::HealthBarESP.Draw(pBackground);
-		F::PlayerTrails.Draw(pBackground);
 		F::OffScreenIndicators.Draw(pBackground);
-		F::AmmoTracker.Draw(pBackground);
-		F::SentryESP.Draw(pBackground);
-		F::StickyESP.Draw(pBackground);
 		F::CompDraw.Draw(pBackground);
 		F::Aimbot.Draw(pBackground);
 		F::Visuals.DrawBestAimPos(pBackground);

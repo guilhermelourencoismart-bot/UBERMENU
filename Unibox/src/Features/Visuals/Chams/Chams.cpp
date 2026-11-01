@@ -6,6 +6,8 @@
 #include "../FakeAngle/FakeAngle.h"
 #include "../../Backtrack/Backtrack.h"
 #include "../Comp/FocusFire.h"
+#include "../Comp/SentryESP.h"
+#include "../Comp/StickyESP.h"
 
 static inline bool GetDistanceThing(float flDistance, const ChamsMaterial_t& tMaterial, Color_t& tColorOut)
 {
@@ -169,7 +171,7 @@ void CChams::Store(CTFPlayer* pLocal)
 {
 	m_vEntities.clear();
 	m_compMaterials.clear();
-	if (!pLocal || (!F::Groups.GroupsActive() && !Vars::Comp::Features::FocusFire.Value))
+	if (!pLocal || (!F::Groups.GroupsActive() && !Vars::Comp::Features::FocusFire.Value && !Vars::Comp::Features::SentryESP.Value && !Vars::Comp::Features::StickyESP.Value))
 		return;
 
 	Vector vLocalOrigin = pLocal->m_vecOrigin();
@@ -207,14 +209,28 @@ void CChams::Store(CTFPlayer* pLocal)
 	}
 
 	F::FullFocusFire.UpdateChamsEntities();
-	for (auto entity : H::Entities.GetGroup(EntityEnum::PlayerEnemy))
+	F::FullSentryESP.UpdateChamsEntities();
+	F::FullStickyESP.UpdateChamsEntities();
+	std::vector<CBaseEntity*> compEntities;
+	for (int group : {EntityEnum::PlayerEnemy, EntityEnum::BuildingAll, EntityEnum::WorldProjectile})
+		for (auto entity : H::Entities.GetGroup(group)) compEntities.push_back(entity);
+	for (auto entity : compEntities)
 	{
-		if (!entity || entity->IsDormant() || !F::FullFocusFire.m_mEntities.contains(entity->entindex()))
+		if (!entity || entity->IsDormant())
 			continue;
+		Color_t compColor; bool hidden = true;
+		const int index = entity->entindex();
+		if (entity->IsPlayer() && F::FullFocusFire.m_mEntities.contains(index))
+		{ compColor = Vars::Comp::FocusFire::Color.Value; hidden = !Vars::Comp::FocusFire::VisibleOnly.Value; }
+		else if (entity->GetClassID() == ETFClassID::CObjectSentrygun && F::FullSentryESP.m_mEntities.contains(index))
+			compColor = Vars::Comp::SentryESP::DangerColor.Value;
+		else if (entity->GetClassID() == ETFClassID::CTFGrenadePipebombProjectile && F::FullStickyESP.m_mEntities.contains(index))
+			compColor = entity->m_iTeamNum() != pLocal->m_iTeamNum() ? Vars::Comp::StickyESP::EnemyVisibleColor.Value : Vars::Comp::StickyESP::TeamVisibleColor.Value;
+		else continue;
 		auto& material = m_compMaterials[entity->entindex()];
-		material.Visible = {{"Flat", ChamsMaterial_t{Vars::Comp::FocusFire::Color.Value}}};
+		material.Visible = {{"Flat", ChamsMaterial_t{compColor}}};
 		material.Occluded.clear();
-		if (!Vars::Comp::FocusFire::VisibleOnly.Value)
+		if (hidden)
 			material.Occluded = material.Visible;
 		std::erase_if(m_vEntities, [entity](const ChamsInfo_t& entry) { return entry.m_pEntity == entity && !entry.m_iFlags; });
 		m_vEntities.emplace_back(entity, &material, pLocal->GetAbsOrigin().DistTo(entity->GetAbsOrigin()));

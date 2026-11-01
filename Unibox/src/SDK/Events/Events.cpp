@@ -67,7 +67,6 @@ void CEventListener::FireGameEvent(IGameEvent* pEvent)
 	F::AutoHeal.Event(pEvent, uHash);
 	F::Misc.Event(pEvent, uHash);
 #ifndef TEXTMODE
-	F::AmmoTracker.Event(pEvent, uHash);
 	F::CompVisuals.Event(pEvent, uHash);
 	F::Visuals.Event(pEvent, uHash);
 #else
