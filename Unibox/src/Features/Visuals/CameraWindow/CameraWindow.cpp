@@ -8,7 +8,7 @@ using CViewRenderRenderViewFn = void(__fastcall*)(void*, const CViewSetup&, Clea
 // Draws camera to the screen
 void CCameraWindow::Draw()
 {
-	if (!m_pCameraMaterial || !m_pCameraTexture || !(m_bShouldDraw || m_bEnemyView) || !I::EngineClient->IsInGame())
+	if (!m_pCameraMaterial || !m_pCameraTexture || m_pCameraTexture->IsError() || m_pCameraTexture->GetActualWidth()<=0 || m_pCameraTexture->GetActualHeight()<=0 || !(m_bShouldDraw || m_bEnemyView) || !I::EngineClient->IsInGame())
 		return;
 
 	const auto enemy = F::EnemyCam.GetView();
@@ -35,7 +35,7 @@ void CCameraWindow::RenderView(void* rcx, const CViewSetup& pViewSetup)
 {
 	const auto enemy = F::EnemyCam.GetView();
 	m_bEnemyView = !m_bShouldDraw && enemy.active;
-	if (!(m_bShouldDraw || m_bEnemyView) || !m_pCameraTexture || m_bDrawing)
+	if (!(m_bShouldDraw || m_bEnemyView) || !m_pCameraTexture || m_pCameraTexture->IsError() || m_pCameraTexture->GetActualWidth()<=0 || m_pCameraTexture->GetActualHeight()<=0 || m_bDrawing)
 		return;
 
 	m_bDrawing = true;
@@ -49,8 +49,8 @@ void CCameraWindow::RenderView(void* rcx, const CViewSetup& pViewSetup)
 	tViewSetup.origin = m_bEnemyView ? enemy.origin : m_vCameraOrigin;
 	tViewSetup.angles = m_bEnemyView ? enemy.angles : m_vCameraAngles;
 
-	tViewSetup.width = std::clamp(tWindowBox.w + 1, 1, m_pCameraTexture->GetActualWidth());
-	tViewSetup.height = std::clamp(tWindowBox.h + 1, 1, m_pCameraTexture->GetActualHeight());
+	tViewSetup.width = std::clamp(tWindowBox.w, 0, m_pCameraTexture->GetActualWidth()-1)+1;
+	tViewSetup.height = std::clamp(tWindowBox.h, 0, m_pCameraTexture->GetActualHeight()-1)+1;
 	tViewSetup.m_flAspectRatio = float(tViewSetup.width) / float(tViewSetup.height);
 	tViewSetup.fov = 90;
 
