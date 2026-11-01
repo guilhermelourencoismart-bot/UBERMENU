@@ -649,6 +649,11 @@ NAMESPACE_BEGIN(Vars)
 		CVar(Enabled, "ImGui offscreen indicators", false, VISUAL);
 		CVar(Radius, "Offscreen radius", 250.f, VISUAL | SLIDER_CLAMP, 50.f, 600.f, 10.f);
 	NAMESPACE_END(OffScreenIndicators)
+	NAMESPACE_BEGIN(AmmoTracker)
+		CVar(Enabled, "Pickup respawn tracker", false, VISUAL);
+		CVar(RespawnSeconds, "Pickup respawn seconds", 10.f, VISUAL | SLIDER_CLAMP, 1.f, 60.f, 1.f);
+		CVar(MaxDistance, "Pickup tracker distance", 3500.f, VISUAL | SLIDER_CLAMP, 50.f, 10000.f, 50.f);
+	NAMESPACE_END(AmmoTracker)
 
 	NAMESPACE_BEGIN(Visuals)
 		NAMESPACE_BEGIN(UI)

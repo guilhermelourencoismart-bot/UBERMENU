@@ -5,6 +5,7 @@
 #include "../Features/Visuals/HealthBarESP/HealthBarESP.h"
 #include "../Features/Visuals/PlayerTrails/PlayerTrails.h"
 #include "../Features/Visuals/OffScreenIndicators/OffScreenIndicators.h"
+#include "../Features/Visuals/AmmoTracker/AmmoTracker.h"
 #include "../Features/Visuals/OffscreenArrows/OffscreenArrows.h"
 #include "../Features/Visuals/CameraWindow/CameraWindow.h"
 #include "../Features/Visuals/Visuals.h"
@@ -64,6 +65,7 @@ MAKE_HOOK(IEngineVGui_Paint, U::Memory.GetVirtual(I::EngineVGui, 14), void,
 			F::HealthBarESP.CacheDrawInfo(pCacheFor);
 			F::PlayerTrails.CacheDrawInfo(pCacheFor);
 			F::OffScreenIndicators.CacheDrawInfo(pCacheFor);
+			F::AmmoTracker.CacheDrawInfo(pCacheFor);
 			F::Aimbot.CacheDrawInfo(pCacheFor);
 			F::Visuals.CacheBestAimPos(pCacheFor);
 		}
@@ -76,7 +78,8 @@ MAKE_HOOK(IEngineVGui_Paint, U::Memory.GetVirtual(I::EngineVGui, 14), void,
 				F::CameraWindow.Draw();
 
 				F::AntiAim.Draw(pLocal);
-				F::Visuals.DrawPickupTimers();
+				if (!Vars::AmmoTracker::Enabled.Value)
+					F::Visuals.DrawPickupTimers();
 				if (!Vars::OffScreenIndicators::Enabled.Value)
 					F::OffscreenArrows.Draw(pLocal);
 

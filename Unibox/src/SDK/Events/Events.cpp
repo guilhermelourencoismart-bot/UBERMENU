@@ -1,4 +1,5 @@
 #include "Events.h"
+#include "../../Features/Visuals/AmmoTracker/AmmoTracker.h"
 
 #include "../../Core/Core.h"
 #include "../../Features/Aimbot/AutoHeal/AutoHeal.h"
@@ -65,6 +66,7 @@ void CEventListener::FireGameEvent(IGameEvent* pEvent)
 	F::AutoHeal.Event(pEvent, uHash);
 	F::Misc.Event(pEvent, uHash);
 #ifndef TEXTMODE
+	F::AmmoTracker.Event(pEvent, uHash);
 	F::Visuals.Event(pEvent, uHash);
 #else
 	F::NamedPipe.Event(pEvent, uHash);

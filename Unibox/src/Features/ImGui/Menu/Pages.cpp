@@ -654,6 +654,10 @@ static void VisualsView()
 		FSlider(Vars::PlayerTrails::MaxDistance);
 		FToggle(Vars::OffScreenIndicators::Enabled);
 		FSlider(Vars::OffScreenIndicators::Radius);
+		FToggle(Vars::AmmoTracker::Enabled);
+		FSlider(Vars::AmmoTracker::RespawnSeconds);
+		FSlider(Vars::AmmoTracker::MaxDistance);
+		FTooltip("Estimated pickup respawns at known map supply positions; adjust interval for the server. Replaces base pickup timers while enabled.");
 		FTooltip("Uses the existing ESP groups with offscreen arrows enabled. Replaces base arrows while active.");
 		FDropdown(Vars::Visuals::UI::StreamerMode);
 		FDropdown(Vars::Visuals::UI::ChatTags, FDropdownEnum::None, -28);
