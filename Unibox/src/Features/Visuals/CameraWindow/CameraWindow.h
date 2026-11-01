@@ -8,6 +8,7 @@ private:
 
 	IMaterial* m_pCameraMaterial;
 	ITexture* m_pCameraTexture;
+	bool m_bEnemyView = false;
 
 public:
 	void Draw();

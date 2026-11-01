@@ -666,6 +666,11 @@ NAMESPACE_BEGIN(Vars)
 		CVar(Box3D, "Sticky 3D bounds", false, VISUAL);
 		CVar(MaxDistance, "Sticky overlay distance", 3500.f, VISUAL | SLIDER_CLAMP, 50.f, 10000.f, 50.f);
 	NAMESPACE_END(StickyESP)
+	NAMESPACE_BEGIN(EnemyCam)
+		CVar(Enabled, "Enemy viewpoint camera", false, VISUAL);
+		CVar(VisibleOnly, "Visible camera targets only", true, VISUAL);
+		CVar(MaxDistance, "Enemy camera distance", 3500.f, VISUAL | SLIDER_CLAMP, 50.f, 10000.f, 50.f);
+	NAMESPACE_END(EnemyCam)
 
 	NAMESPACE_BEGIN(Visuals)
 		NAMESPACE_BEGIN(UI)

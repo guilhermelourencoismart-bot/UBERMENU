@@ -1,19 +1,22 @@
 #include "CameraWindow.h"
 
 #include "../../Visuals/Materials/Materials.h"
+#include "../EnemyCam/EnemyCam.h"
 
 using CViewRenderRenderViewFn = void(__fastcall*)(void*, const CViewSetup&, ClearFlags_t, RenderViewInfo_t);
 
 // Draws camera to the screen
 void CCameraWindow::Draw()
 {
-	if (!m_pCameraMaterial || !m_bShouldDraw || !I::EngineClient->IsInGame())
+	if (!m_pCameraMaterial || !m_pCameraTexture || !(m_bShouldDraw || m_bEnemyView) || !I::EngineClient->IsInGame())
 		return;
 
 	auto& tWindowBox = Vars::Visuals::Simulation::ProjectileWindow.Value;
 
 	// Draw to screen
 	auto pRenderContext = I::MaterialSystem->GetRenderContext();
+	if (!pRenderContext)
+		return;
 	pRenderContext->DrawScreenSpaceRectangle(
 		m_pCameraMaterial,
 		tWindowBox.x - tWindowBox.w / 2, tWindowBox.y, tWindowBox.w, tWindowBox.h,
@@ -27,7 +30,9 @@ void CCameraWindow::Draw()
 // Renders another view onto a texture
 void CCameraWindow::RenderView(void* rcx, const CViewSetup& pViewSetup)
 {
-	if (!m_bShouldDraw || !m_pCameraTexture)
+	const auto enemy = F::EnemyCam.GetView();
+	m_bEnemyView = !m_bShouldDraw && enemy.active;
+	if (!(m_bShouldDraw || m_bEnemyView) || !m_pCameraTexture || m_bDrawing)
 		return;
 
 	m_bDrawing = true;
@@ -38,11 +43,11 @@ void CCameraWindow::RenderView(void* rcx, const CViewSetup& pViewSetup)
 	tViewSetup.x = 0;
 	tViewSetup.y = 0;
 
-	tViewSetup.origin = m_vCameraOrigin;
-	tViewSetup.angles = m_vCameraAngles;
+	tViewSetup.origin = m_bEnemyView ? enemy.origin : m_vCameraOrigin;
+	tViewSetup.angles = m_bEnemyView ? enemy.angles : m_vCameraAngles;
 
-	tViewSetup.width = tWindowBox.w + 1;
-	tViewSetup.height = tWindowBox.h + 1;
+	tViewSetup.width = std::clamp(tWindowBox.w + 1, 1, m_pCameraTexture->GetActualWidth());
+	tViewSetup.height = std::clamp(tWindowBox.h + 1, 1, m_pCameraTexture->GetActualHeight());
 	tViewSetup.m_flAspectRatio = float(tViewSetup.width) / float(tViewSetup.height);
 	tViewSetup.fov = 90;
 
@@ -54,12 +59,19 @@ void CCameraWindow::RenderView(void* rcx, const CViewSetup& pViewSetup)
 void CCameraWindow::RenderCustomView(void* rcx, const CViewSetup& pViewSetup, ITexture* pTexture)
 {
 	auto pRenderContext = I::MaterialSystem->GetRenderContext();
+	if (!pRenderContext)
+		return;
+	const auto hook = U::Hooks.m_mHooks.find("CViewRender_RenderView");
+	if (hook == U::Hooks.m_mHooks.end() || !hook->second)
+	{
+		pRenderContext->Release();
+		return;
+	}
 
 	pRenderContext->PushRenderTargetAndViewport();
 	pRenderContext->SetRenderTarget(pTexture);
 
-	static auto CViewRender_RenderView = U::Hooks.m_mHooks["CViewRender_RenderView"];
-	CViewRender_RenderView->As<CViewRenderRenderViewFn>()(
+	hook->second->As<CViewRenderRenderViewFn>()(
 		rcx, pViewSetup, static_cast<ClearFlags_t>(VIEW_CLEAR_COLOR | VIEW_CLEAR_DEPTH), RENDERVIEW_UNSPECIFIED);
 
 	pRenderContext->PopRenderTargetAndViewport();
@@ -98,6 +110,7 @@ void CCameraWindow::Initialize()
 
 void CCameraWindow::Unload()
 {
+	m_bEnemyView = m_bDrawing = m_bShouldDraw = false;
 	if (m_pCameraMaterial)
 	{
 		m_pCameraMaterial->DecrementReferenceCount();

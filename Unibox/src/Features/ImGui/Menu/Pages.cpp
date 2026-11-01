@@ -665,6 +665,10 @@ static void VisualsView()
 		FToggle(Vars::StickyESP::ThroughWalls);
 		FToggle(Vars::StickyESP::Box3D);
 		FSlider(Vars::StickyESP::MaxDistance);
+		FToggle(Vars::EnemyCam::Enabled);
+		FToggle(Vars::EnemyCam::VisibleOnly);
+		FSlider(Vars::EnemyCam::MaxDistance);
+		FTooltip("Nearest enemy viewpoint in the existing Camera window. Projectile camera has priority. Drag the window with the menu open.");
 		FTooltip("Estimated pickup respawns at known map supply positions; adjust interval for the server. Replaces base pickup timers while enabled.");
 		FTooltip("Uses the existing ESP groups with offscreen arrows enabled. Replaces base arrows while active.");
 		FDropdown(Vars::Visuals::UI::StreamerMode);

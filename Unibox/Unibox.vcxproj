@@ -51,6 +51,8 @@
     <ClInclude Include="src\Features\Visuals\SentryESP\SentryESP.h" />
     <ClCompile Include="src\Features\Visuals\StickyESP\StickyESP.cpp" />
     <ClInclude Include="src\Features\Visuals\StickyESP\StickyESP.h" />
+    <ClCompile Include="src\Features\Visuals\EnemyCam\EnemyCam.cpp" />
+    <ClInclude Include="src\Features\Visuals\EnemyCam\EnemyCam.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

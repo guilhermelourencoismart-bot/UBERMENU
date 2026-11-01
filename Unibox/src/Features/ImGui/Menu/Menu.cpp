@@ -3964,7 +3964,7 @@ void CMenu::Render()
 		AddDraggable("Conditions", Vars::Menu::ConditionsDisplay, m_bIsOpen && (FGet(Vars::Menu::Indicators) & Vars::Menu::IndicatorsEnum::Conditions));
 		AddDraggable("Seed prediction", Vars::Menu::SeedPredictionDisplay, m_bIsOpen && (FGet(Vars::Menu::Indicators) & Vars::Menu::IndicatorsEnum::SeedPrediction));
 		AddDraggable("Nav bot", Vars::Menu::NavBotDisplay, m_bIsOpen && (FGet(Vars::Menu::Indicators) & Vars::Menu::IndicatorsEnum::NavBot));
-		AddResizableDraggable("Camera", Vars::Visuals::Simulation::ProjectileWindow, m_bIsOpen && FGet(Vars::Visuals::Simulation::ProjectileCamera), OptionalConstraints);
+		AddResizableDraggable("Camera", Vars::Visuals::Simulation::ProjectileWindow, m_bIsOpen && (FGet(Vars::Visuals::Simulation::ProjectileCamera) || FGet(Vars::EnemyCam::Enabled)), OptionalConstraints);
 
 		DrawMenu();
 		if (m_bNoticePending)
