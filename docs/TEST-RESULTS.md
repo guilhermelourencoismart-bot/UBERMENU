@@ -27,7 +27,12 @@ testes portáveis.
 
 CI de referência da Fase 1:
 https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41291735398
-O resumo público consultado não forneceu comprovação de conclusão. As consultas
-autenticadas à API foram bloqueadas pelo proxy. Não há DLL confirmada no workspace.
-As execuções posteriores à publicação desta integração devem ser consultadas
-pelo SHA da branch, não confundidas com a execução da Fase 1 acima.
+O resumo público atualizado confirmou **Success**, quatro jobs e 12 artefatos,
+incluindo `Uniboxx64Release` (2,51 MB), PDB e binlog. Ver PHASE1-UNIBOX.md.
+Isso comprova a compilação da referência `56a46a57`, anterior às integrações.
+As consultas autenticadas à API foram bloqueadas pelo proxy. Não há DLL baixada
+no workspace.
+
+Execução da integração `59c37e66`:
+https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41293344283
+Em andamento na primeira consulta. Deve ser avaliada separadamente da referência.

@@ -6,7 +6,8 @@ Entrega de desenvolvimento parcial; não é uma versão Windows validada.
 |---|---|---|
 | Inspeção/proveniência | Concluída e testada | Fontes locais, commits dos ZIPs e SHA-256 em SOURCES.json |
 | Preflight e testes portáveis | Concluída e testada | Referências, falhas de build, geometria e suavização |
-| Build Release x64 | Pendente por bloqueio identificado | API GitHub bloqueada pelo proxy; sem MSVC local |
+| Build da referência Release x64 | Concluída e testada | Execução 41291735398: Success, quatro jobs, artefato Release; sem execução TF2 |
+| Build da integração Release x64 | Pendente por bloqueio identificado | Execução 41293344283 iniciada; API de logs bloqueada pelo proxy; sem MSVC local |
 | Radar | Implementada, mas não testada em execução | Jogadores/construções/pickups, círculo/retângulo, alcance e bordas; sem ícones/avatars do Comp |
 | HealthBarESP | Implementada, mas não testada em execução | Barras, overheal, seleção médico e contorno de solo; sem preenchimento do polígono nem todos os ajustes do Comp |
 | PlayerTrails | Implementada, mas não testada em execução | Trilhas de inimigos, expiração, serial e limpeza; sem a máquina de estados de visibilidade completa do Comp |

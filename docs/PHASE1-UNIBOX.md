@@ -131,3 +131,22 @@ até este registro. Nome esperado: `Uniboxx64Release.dll`, no artefato
 Nenhum erro de compilador foi corrigido nesta fase, pois seus logs ainda não
 estão disponíveis. A Fase 1 permanece pendente de validação real concluída;
 a integração do ESP não foi iniciada.
+
+## Evidência posterior — referência Windows aprovada
+
+Na continuação do trabalho, a página pública da execução 41291735398,
+consultada com `?attempt=1`, informou **Success**, quatro jobs concluídos,
+duração 10m42s e 12 artefatos. O artefato `Uniboxx64Release` aparece com
+2,51 MB e digest SHA-256
+`1ff1dee2fe1cd4a0510ebc9727b7085766b9b8ec83545c03db4f7e7b2c76194c`.
+Também aparecem PDB e binlog Release. O workflow desse commit exige a DLL
+`Uniboxx64Release.dll` não vazia antes do upload. Isso comprova a build de
+referência do commit `56a46a57`; o binário não foi baixado ou executado localmente.
+Os quatro avisos visíveis são sobre migração Node.js 20/24 das actions.
+
+A Fase 1 de compilação da referência está concluída pela evidência pública da
+CI. Isso não valida a integração posterior. Os commits seguintes implementam
+adaptações descritas em INTEGRATION-STATUS.md e geraram a execução
+https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41293344283
+para o commit `59c37e66`. A API autenticada de logs continua bloqueada pela
+política de rede do ambiente.

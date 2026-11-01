@@ -11,6 +11,7 @@ jobs:
     timeout-minutes: 45
 
     strategy:
+      fail-fast: false
       matrix:
         configuration: [Release, ReleaseAVX2, ReleaseTextmode, ReleaseTextmodeAVX2]
         platform: [x64]
@@ -46,17 +47,40 @@ jobs:
       run: python scripts/validate_unibox.py --require-packages
 
     - name: Run native calculation tests with MSVC x64
-      shell: cmd
+      shell: pwsh
       run: |
-        for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -version "[17.0,18.0)" -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do call "%%i\VC\Auxiliary\Build\vcvars64.bat"
+        $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+        $installation = & $vswhere -latest -version '[17.0,18.0)' -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+        if (!$installation) { throw 'VS2022 C++ x64 tools not found' }
+        $testScript = Join-Path $env:RUNNER_TEMP 'unibox-native-tests.cmd'
+        @"
+        @echo off
+        call "$installation\VC\Auxiliary\Build\vcvars64.bat"
+        if errorlevel 1 exit /b 1
         cl /nologo /EHsc /std:c++20 tests\radar_math_tests.cpp /Fe:radar_math_tests.exe
         if errorlevel 1 exit /b 1
         radar_math_tests.exe
         if errorlevel 1 exit /b 1
+        "@ | Set-Content -Path $testScript -Encoding ascii
+        & $env:ComSpec /d /c $testScript 2>&1 | Tee-Object -FilePath native-tests-${{ matrix.configuration }}.log
+        $testExit = $LASTEXITCODE
+        if ($testExit -ne 0) {
+          $summary = (Get-Content native-tests-${{ matrix.configuration }}.log -Tail 12) -join ' | '
+          Write-Output "::error title=Native calculation tests::$summary"
+          exit $testExit
+        }
 
     - name: Build
       working-directory: ${{ env.GITHUB_WORKSPACE }}
-      run: msbuild Unibox.sln /m:2 /p:Platform=${{ matrix.platform }} /p:Configuration=${{ matrix.configuration }} /bl:msbuild-${{ matrix.configuration }}.binlog
+      shell: pwsh
+      run: |
+        msbuild Unibox.sln /m:2 /p:Platform=${{ matrix.platform }} /p:Configuration=${{ matrix.configuration }} /bl:msbuild-${{ matrix.configuration }}.binlog 2>&1 | Tee-Object -FilePath msbuild-${{ matrix.configuration }}.log
+        $buildExit = $LASTEXITCODE
+        if ($buildExit -ne 0) {
+          $errors = Select-String -Path msbuild-${{ matrix.configuration }}.log -Pattern '\berror\s+[A-Z]+\d+' | Select-Object -First 12
+          foreach ($errorLine in $errors) { Write-Output "::error title=MSBuild::$($errorLine.Line)" }
+          exit $buildExit
+        }
 
     - name: Require the expected DLL
       shell: pwsh
@@ -85,5 +109,8 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: build-log-${{ matrix.configuration }}
-        path: msbuild-${{ matrix.configuration }}.binlog
+        path: |
+          msbuild-${{ matrix.configuration }}.binlog
+          msbuild-${{ matrix.configuration }}.log
+          native-tests-${{ matrix.configuration }}.log
         if-no-files-found: ignore
