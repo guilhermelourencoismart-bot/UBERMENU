@@ -141,8 +141,9 @@ void CCompDraw::Draw(ImDrawList* list)
             std::vector<ImVec2> points; points.reserve(command.points.size());
             for (auto& point:command.points) points.emplace_back(point.x,point.y);
             if (command.type==CompDrawCommand::Type::Polygon) {
-                if(PolygonMath::IsConvex(points))list->AddConvexPolyFilled(points.data(),int(points.size()),color);
-                else list->AddConcavePolyFilled(points.data(),int(points.size()),color);
+                const auto kind=PolygonMath::Classify(points);
+                if(kind==PolygonMath::Kind::Convex)list->AddConvexPolyFilled(points.data(),int(points.size()),color);
+                else if(kind==PolygonMath::Kind::Concave)list->AddConcavePolyFilled(points.data(),int(points.size()),color);
             }
             else list->AddPolyline(points.data(),int(points.size()),color,ImDrawFlags_Closed,1.f);
         }

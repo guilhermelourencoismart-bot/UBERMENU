@@ -134,12 +134,12 @@ int main()
     Require(!SolverPolicy::NeedsNativeExtension(false,false,false,true,false,false),"ordinary projectiles dispatch to V2");
     Require(!V2Math::PrioritizedBefore(true,true)&&V2Math::PrioritizedBefore(true,false),"target comparator is irreflexive");
     struct Point2{float x,y;};
-    Require(PolygonMath::IsConvex(std::vector<Point2>{{0,0},{1,0},{1,1},{0,1}}),"rectangular overlay remains convex");
-    Require(PolygonMath::IsConvex(std::vector<Point2>{{0,1},{1,1},{1,0},{0,0}}),"reverse winding remains convex");
-    Require(PolygonMath::IsConvex(std::vector<Point2>{{0,0},{1,0},{0,1}}),"small pie sector is convex");
-    Require(!PolygonMath::IsConvex(std::vector<Point2>{{0,0},{1,0},{0,1},{-1,0},{0,-1}}),"270 degree pickup pie requires concave triangulation");
-    Require(!PolygonMath::IsConvex(std::vector<Point2>{{0,0},{1,0}}),"degenerate polygon rejected");
-    Require(!PolygonMath::IsConvex(std::vector<Point2>{{0,0},{1,0},{2,0}}),"collinear polygon rejected");
-    Require(!PolygonMath::IsConvex(std::vector<Point2>{{0,0},{1,0},{0,std::numeric_limits<float>::quiet_NaN()}}),"nonfinite polygon rejected");
+    Require(PolygonMath::Classify(std::vector<Point2>{{0,0},{1,0},{1,1},{0,1}})==PolygonMath::Kind::Convex,"rectangular overlay remains convex");
+    Require(PolygonMath::Classify(std::vector<Point2>{{0,1},{1,1},{1,0},{0,0}})==PolygonMath::Kind::Convex,"reverse winding remains convex");
+    Require(PolygonMath::Classify(std::vector<Point2>{{0,0},{1,0},{0,1}})==PolygonMath::Kind::Convex,"small pie sector is convex");
+    Require(PolygonMath::Classify(std::vector<Point2>{{0,0},{1,0},{0,1},{-1,0},{0,-1}})==PolygonMath::Kind::Concave,"270 degree pickup pie requires concave triangulation");
+    Require(PolygonMath::Classify(std::vector<Point2>{{0,0},{1,0}})==PolygonMath::Kind::Invalid,"degenerate polygon rejected");
+    Require(PolygonMath::Classify(std::vector<Point2>{{0,0},{1,0},{2,0}})==PolygonMath::Kind::Invalid,"collinear polygon rejected");
+    Require(PolygonMath::Classify(std::vector<Point2>{{0,0},{1,0},{0,std::numeric_limits<float>::quiet_NaN()}})==PolygonMath::Kind::Invalid,"nonfinite polygon rejected");
     std::cout << checks << " calculation/cache/policy checks passed\n";
 }
