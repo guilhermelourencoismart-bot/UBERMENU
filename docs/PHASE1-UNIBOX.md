@@ -150,3 +150,13 @@ adaptações descritas em INTEGRATION-STATUS.md e geraram a execução
 https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41293344283
 para o commit `59c37e66`. A API autenticada de logs continua bloqueada pela
 política de rede do ambiente.
+
+## Estado final da rodada de integração
+
+A revisão `ce9d5442` passou na execução
+https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41294520208
+com quatro jobs x64, incluindo Release, e 12 artefatos. O workflow exige
+compilação, testes e validação PE AMD64/PE32+ da DLL. Nome:
+`output/x64/Release/Uniboxx64Release.dll`; artefato `Uniboxx64Release`.
+A Fase 1 está concluída. As adaptações visuais/V2 e suas limitações estão
+registradas em INTEGRATION-STATUS.md; não são uma validação funcional no TF2.

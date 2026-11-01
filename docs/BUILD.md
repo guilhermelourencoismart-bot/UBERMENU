@@ -4,7 +4,8 @@
 
 Visual Studio 2022, workload Desktop development with C++, MSVC v143 x64/x86,
 Windows SDK, NuGet CLI e Python 3. Abrir `Unibox.sln` e selecionar Release/x64.
-No Developer PowerShell com MSBuild/NuGet no PATH, a partir da raiz:
+No x64 Native Tools Command Prompt/Developer PowerShell configurado para x64,
+com MSBuild/NuGet no PATH, a partir da raiz (comandos abaixo em PowerShell):
 
 ```powershell
 python scripts/validate_unibox.py

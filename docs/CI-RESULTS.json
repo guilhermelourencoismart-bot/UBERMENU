@@ -22,7 +22,36 @@
     "run_id": 41293599980,
     "commit": "cdbfb518",
     "scope": "integration retry",
-    "observed_status": "in_progress",
-    "evidence": "public Actions listing"
+    "observed_status": "success",
+    "evidence": "public summary: Success, 4 jobs, 12 artifacts; required tests, build and PE verification passed; binary not downloaded",
+    "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41293599980",
+    "jobs_completed": 4,
+    "artifact": "Uniboxx64Release",
+    "artifact_size_reported": "2.54 MB",
+    "artifact_digest_reported": "sha256:e8c8687f4191a7204cce8285e6546f302fba43fb762ffa4f1d138b64a09e37ad"
+  },
+  {
+    "run_id": 41294136227,
+    "commit": "11817216",
+    "scope": "integration",
+    "observed_status": "success",
+    "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41294136227",
+    "jobs_completed": 4,
+    "evidence": "public summary: Success, 4 jobs, 12 artifacts; required tests, build and PE verification passed; binary not downloaded",
+    "artifact": "Uniboxx64Release",
+    "artifact_size_reported": "2.54 MB",
+    "artifact_digest_reported": "sha256:941ccc9fc49c793da3cecba8dac692ab27ddc5b9298e96122e269634bf4e027f"
+  },
+  {
+    "run_id": 41294520208,
+    "commit": "ce9d5442",
+    "scope": "integration",
+    "observed_status": "success",
+    "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41294520208",
+    "jobs_completed": 4,
+    "evidence": "public summary: Success, 4 jobs, 12 artifacts; required tests, build and PE verification passed; binary not downloaded",
+    "artifact": "Uniboxx64Release",
+    "artifact_size_reported": "2.54 MB",
+    "artifact_digest_reported": "sha256:e502e4868dfd6a72330c76b5b282bf7b55efe590a6bea3b4b2479241f728fccd"
   }
 ]
