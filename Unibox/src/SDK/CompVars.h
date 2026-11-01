@@ -297,9 +297,9 @@ CVar(NPC, "NPC color", Color_t(255, 255, 0, 255), VISUAL);
 		CVar(Money, "Money color", Color_t(0, 150, 75, 255), VISUAL);
 		CVar(Powerup, "Powerup color", Color_t(255, 175, 0, 255), VISUAL);
 		CVar(Halloween, "Halloween color", Color_t(100, 0, 255, 255), VISUAL);
-		CVar(IndicatorGood, "Indicator good", Color_t(0, 255, 100, 255), NOSAVE | DEBUGVAR);
-		CVar(IndicatorBad, "Indicator bad", Color_t(255, 0, 0, 255), NOSAVE | DEBUGVAR);
-		CVar(IndicatorMisc, "Indicator misc", Color_t(75, 175, 255, 255), NOSAVE | DEBUGVAR);
+		CVar(IndicatorGood, "Indicator good", Color_t(0, 255, 100, 255), VISUAL);
+		CVar(IndicatorBad, "Indicator bad", Color_t(255, 0, 0, 255), VISUAL);
+		CVar(IndicatorMisc, "Indicator misc", Color_t(75, 175, 255, 255), VISUAL);
 NAMESPACE_END(Palette)
 namespace Features {
 inline auto& OffScreenIndicators=Vars::OffScreenIndicators::Enabled;

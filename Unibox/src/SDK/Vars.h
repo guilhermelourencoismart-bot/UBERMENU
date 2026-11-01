@@ -828,7 +828,7 @@ NAMESPACE_BEGIN(Vars)
 			CVar(PlayerDrawDuration, VA_LIST("Draw duration", "Player path draw duration"), 5.f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 0.f, 10.f);
 			CVar(ProjectileDrawDuration, VA_LIST("Draw duration", "Projectile path draw duration"), 5.f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 0.f, 10.f);
 
-			CVarValues(RealPath, "Real path", 0, NOSAVE | DEBUGVAR, nullptr,
+			CVarValues(RealPath, "Real path", 0, VISUAL, nullptr,
 				"Off", "Line", "Separators", "Spaced", "Arrows", "Boxes");
 		NAMESPACE_END(Prediction)
 

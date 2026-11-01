@@ -30,5 +30,20 @@ namespace V2Math
         pitch=float(angle);flight=float(d/(std::cos(angle)*speed));
         return std::isfinite(pitch)&&std::isfinite(flight)&&flight>=0;
     }
+    template<class Vec> bool RayBoxEntry(const Vec& mins,const Vec& maxs,const Vec& start,const Vec& direction,float& entry)
+    {
+        entry=0.f;double enter=0.,exit=std::numeric_limits<double>::infinity();
+        const float lo[]={mins.x,mins.y,mins.z},hi[]={maxs.x,maxs.y,maxs.z},origin[]={start.x,start.y,start.z},delta[]={direction.x,direction.y,direction.z};
+        for(int axis=0;axis<3;++axis)
+        {
+            if(!std::isfinite(lo[axis])||!std::isfinite(hi[axis])||!std::isfinite(origin[axis])||!std::isfinite(delta[axis])||lo[axis]>hi[axis])return false;
+            if(delta[axis]==0.f){if(origin[axis]<lo[axis]||origin[axis]>hi[axis])return false;continue;}
+            double a=(double(lo[axis])-origin[axis])/delta[axis],b=(double(hi[axis])-origin[axis])/delta[axis];
+            if(a>b)std::swap(a,b);
+            enter=std::max(enter,a);exit=std::min(exit,b);if(enter>exit)return false;
+        }
+        if(!std::isfinite(enter)||enter>std::numeric_limits<float>::max())return false;
+        entry=float(enter);return true;
+    }
     constexpr bool PrioritizedBefore(bool a,bool b){return a&&!b;}
 }

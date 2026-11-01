@@ -120,19 +120,19 @@ void CFullMainESP::StorePlayers(CTFPlayer* pLocal)
 				}
 				if (H::Entities.IsFriend(pi.friendsID))
 				{
-					auto pTag = F::PlayerUtils.GetTag(F::PlayerUtils.TagToIndex(FRIEND_TAG));
+					auto pTag = F::PlayerUtils.GetTag(FRIEND_TAG);
 					if (pTag && pTag->m_bLabel)
 						vTags.push_back(pTag);
 				}
 				if (H::Entities.InParty(pi.friendsID))
 				{
-					auto pTag = F::PlayerUtils.GetTag(F::PlayerUtils.TagToIndex(PARTY_TAG));
+					auto pTag = F::PlayerUtils.GetTag(PARTY_TAG);
 					if (pTag && pTag->m_bLabel)
 						vTags.push_back(pTag);
 				}
 				if (H::Entities.IsF2P(pi.friendsID))
 				{
-					auto pTag = F::PlayerUtils.GetTag(F::PlayerUtils.TagToIndex(F2P_TAG));
+					auto pTag = F::PlayerUtils.GetTag(F2P_TAG);
 					if (pTag && pTag->m_bLabel)
 						vTags.push_back(pTag);
 				}
@@ -155,7 +155,7 @@ void CFullMainESP::StorePlayers(CTFPlayer* pLocal)
 		}
 
 		float flHealth = pPlayer->m_iHealth(), flMaxHealth = std::max(pPlayer->GetMaxHealth(), 1);
-		if (tCache.m_bHealthBar = (Vars::Comp::ESP::Player.Value & Vars::Comp::ESP::PlayerEnum::HealthBar) && !(Vars::Comp::Features::HealthBarESP.Value && Vars::Comp::HealthBarESP::ShowHealthBars.Value))
+		if (tCache.m_bHealthBar = (Vars::Comp::ESP::Player.Value & Vars::Comp::ESP::PlayerEnum::HealthBar))
 		{
 			if (flHealth > flMaxHealth)
 			{
@@ -177,7 +177,7 @@ void CFullMainESP::StorePlayers(CTFPlayer* pLocal)
 				if (pMediGunTyped)
 				{
 					tCache.m_flUber = std::clamp(pMediGunTyped->m_flChargeLevel(), 0.f, 1.f);
-					tCache.m_bUberBar = (Vars::Comp::ESP::Player.Value & Vars::Comp::ESP::PlayerEnum::UberBar) && !Vars::Comp::Features::MedicUberBar.Value;
+					tCache.m_bUberBar = (Vars::Comp::ESP::Player.Value & Vars::Comp::ESP::PlayerEnum::UberBar);
 					if (Vars::Comp::ESP::Player.Value & Vars::Comp::ESP::PlayerEnum::UberText)
 						tCache.m_vText.emplace_back(CompESPTextEnum::Uber, std::format("{:.0f}%", tCache.m_flUber * 100.f), Vars::Menu::Theme::Active.Value, Vars::Menu::Theme::Background.Value);
 				}
@@ -514,7 +514,7 @@ void CFullMainESP::StoreBuildings(CTFPlayer* pLocal)
 		CompMainBuildingCache& tCache = m_mCompMainBuildingCache[pEntity];
 		tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 		tCache.m_tColor = GetColor(pLocal, pOwner ? pOwner : pEntity);
-		tCache.m_bBox = (Vars::Comp::ESP::Building.Value & Vars::Comp::ESP::BuildingEnum::Box) && !(pEntity->GetClassID()==ETFClassID::CObjectSentrygun && Vars::Comp::Features::SentryESP.Value && Vars::Comp::SentryESP::ShowBoxes.Value);
+		tCache.m_bBox = (Vars::Comp::ESP::Building.Value & Vars::Comp::ESP::BuildingEnum::Box);
 
 		if (Vars::Comp::ESP::Building.Value & Vars::Comp::ESP::BuildingEnum::Distance)
 		{
@@ -668,7 +668,7 @@ void CFullMainESP::StoreProjectiles(CTFPlayer* pLocal)
 		CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
 		tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 		tCache.m_tColor = GetColor(pLocal, pOwner ? pOwner : pEntity);
-		tCache.m_bBox = (Vars::Comp::ESP::Projectile.Value & Vars::Comp::ESP::ProjectileEnum::Box) && !(pEntity->GetClassID()==ETFClassID::CTFGrenadePipebombProjectile && pEntity->As<CTFGrenadePipebombProjectile>()->m_iType()==1 && Vars::Comp::Features::StickyESP.Value && (Vars::Comp::StickyESP::Box2D.Value || Vars::Comp::StickyESP::Box3D.Value));
+		tCache.m_bBox = (Vars::Comp::ESP::Projectile.Value & Vars::Comp::ESP::ProjectileEnum::Box);
 
 		if (Vars::Comp::ESP::Projectile.Value & Vars::Comp::ESP::ProjectileEnum::Distance)
 		{
@@ -1036,6 +1036,7 @@ void CFullMainESP::DrawPlayers()
 		float x, y, w, h;
 		if (!GetDrawBounds(pBaseEntity, x, y, w, h))
 			continue;
+        tCache.m_bWasDrawn=true;
 
 		int l = x - H::Draw.Scale(6), r = x + w + H::Draw.Scale(6), m = x + w / 2;
 		int t = y - H::Draw.Scale(5), b = y + h + H::Draw.Scale(5);
@@ -1103,15 +1104,15 @@ void CFullMainESP::DrawPlayers()
 		{
 			if (tCache.m_flHealth > 1.f)
 			{
-				Color_t cColor = Vars::Colors::IndicatorGood.Value;
+				Color_t cColor = Vars::Comp::Palette::IndicatorGood.Value;
 				F::CompDraw.FillRectPercent(x - H::Draw.Scale(6), y, H::Draw.Scale(2, Scale_Round), h, 1.f, cColor, { 0, 0, 0, 255 }, ALIGN_BOTTOM, true);
 
-				cColor = Vars::Colors::IndicatorMisc.Value;
+				cColor = Vars::Comp::Palette::IndicatorMisc.Value;
 				F::CompDraw.FillRectPercent(x - H::Draw.Scale(6), y, H::Draw.Scale(2, Scale_Round), h, tCache.m_flHealth - 1.f, cColor, { 0, 0, 0, 0 }, ALIGN_BOTTOM, true);
 			}
 			else
 			{
-				Color_t cColor = Vars::Colors::IndicatorBad.Value.Lerp(Vars::Colors::IndicatorGood.Value, tCache.m_flHealth);
+				Color_t cColor = Vars::Comp::Palette::IndicatorBad.Value.Lerp(Vars::Comp::Palette::IndicatorGood.Value, tCache.m_flHealth);
 				F::CompDraw.FillRectPercent(x - H::Draw.Scale(6), y, H::Draw.Scale(2, Scale_Round), h, tCache.m_flHealth, cColor, { 0, 0, 0, 255 }, ALIGN_BOTTOM, true);
 			}
 			lOffset += H::Draw.Scale(6);
@@ -1119,7 +1120,7 @@ void CFullMainESP::DrawPlayers()
 
 		if (tCache.m_bUberBar)
 		{
-			F::CompDraw.FillRectPercent(x, y + h + H::Draw.Scale(4), w, H::Draw.Scale(2, Scale_Round), tCache.m_flUber, Vars::Colors::IndicatorMisc.Value);
+			F::CompDraw.FillRectPercent(x, y + h + H::Draw.Scale(4), w, H::Draw.Scale(2, Scale_Round), tCache.m_flUber, Vars::Comp::Palette::IndicatorMisc.Value);
 			bOffset += H::Draw.Scale(6);
 		}
 
@@ -1209,6 +1210,7 @@ void CFullMainESP::DrawBuildings()
 		float x, y, w, h;
 		if (!GetDrawBounds(pBaseEntity, x, y, w, h))
 			continue;
+        tCache.m_bWasDrawn=true;
 
 		int l = x - H::Draw.Scale(6), r = x + w + H::Draw.Scale(6), m = x + w / 2;
 		int t = y - H::Draw.Scale(5), b = y + h + H::Draw.Scale(5);
@@ -1221,7 +1223,7 @@ void CFullMainESP::DrawBuildings()
 
 		if (tCache.m_bHealthBar)
 		{
-			Color_t cColor = Vars::Colors::IndicatorBad.Value.Lerp(Vars::Colors::IndicatorGood.Value, tCache.m_flHealth);
+			Color_t cColor = Vars::Comp::Palette::IndicatorBad.Value.Lerp(Vars::Comp::Palette::IndicatorGood.Value, tCache.m_flHealth);
 			F::CompDraw.FillRectPercent(x - H::Draw.Scale(6), y, H::Draw.Scale(2, Scale_Round), h, tCache.m_flHealth, cColor, { 0, 0, 0, 255 }, ALIGN_BOTTOM, true);
 			lOffset += H::Draw.Scale(6);
 		}
@@ -1294,6 +1296,7 @@ void CFullMainESP::DrawWorld()
 		float x, y, w, h;
 		if (!GetDrawBounds(pBaseEntity, x, y, w, h))
 			continue;
+        tCache.m_bWasDrawn=true;
 
 		int l = x - H::Draw.Scale(6), r = x + w + H::Draw.Scale(6), m = x + w / 2;
 		int t = y - H::Draw.Scale(5), b = y + h + H::Draw.Scale(5);

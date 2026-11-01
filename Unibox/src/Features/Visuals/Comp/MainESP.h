@@ -6,6 +6,7 @@ Enum(CompESPText, Top, Bottom, Right, Health, Uber)
 
 struct CompMainPlayerCache
 {
+	bool m_bWasDrawn=false;
 	float m_flAlpha = 1.f;
 	std::vector<std::tuple<int, std::string, Color_t, Color_t>> m_vText = {};
 	Color_t m_tColor = {};
@@ -22,6 +23,7 @@ struct CompMainPlayerCache
 
 struct CompMainBuildingCache
 {
+	bool m_bWasDrawn=false;
 	float m_flAlpha = 1.f;
 	std::vector<std::tuple<int, std::string, Color_t, Color_t>> m_vText = {};
 	Color_t m_tColor = {};
@@ -33,6 +35,7 @@ struct CompMainBuildingCache
 
 struct CompMainWorldCache
 {
+	bool m_bWasDrawn=false;
 	float m_flAlpha = 1.f;
 	std::vector<std::tuple<int, std::string, Color_t, Color_t>> m_vText = {};
 	Color_t m_tColor = {};
@@ -62,6 +65,13 @@ private:
 	std::unordered_map<CBaseEntity*, CompMainWorldCache> m_mCompMainWorldCache = {};
 
 public:
+    bool HasHealthBar(CBaseEntity* entity) const { auto i=m_mPlayerCache.find(entity); return i!=m_mPlayerCache.end() && i->second.m_bWasDrawn && i->second.m_bHealthBar; }
+    bool HasUberBar(CBaseEntity* entity) const { auto i=m_mPlayerCache.find(entity); return i!=m_mPlayerCache.end() && i->second.m_bWasDrawn && i->second.m_bUberBar; }
+    bool HasBox(CBaseEntity* entity) const {
+        auto player=m_mPlayerCache.find(entity); if(player!=m_mPlayerCache.end())return player->second.m_bWasDrawn && player->second.m_bBox;
+        auto building=m_mBuildingCache.find(entity); if(building!=m_mBuildingCache.end())return building->second.m_bWasDrawn && building->second.m_bBox;
+        auto world=m_mWorldCache.find(entity);return world!=m_mWorldCache.end() && world->second.m_bWasDrawn && world->second.m_bBox;
+    }
 	void Store(CTFPlayer* pLocal);
 	void Draw();
 };

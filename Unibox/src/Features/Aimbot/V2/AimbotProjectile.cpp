@@ -896,25 +896,6 @@ std::vector<V2Point_t> CV2AimbotProjectile::GetSplashPointsSimple(Vec3 vOrigin, 
 	return vPoints;
 }
 
-static inline float AABBLine(Vec3 vMins, Vec3 vMaxs, Vec3 vStart, Vec3 vDir)
-{
-	Vec3 a = {
-		(vMins.x - vStart.x) / vDir.x,
-		(vMins.y - vStart.y) / vDir.y,
-		(vMins.z - vStart.z) / vDir.z
-	};
-	Vec3 b = {
-		(vMaxs.x - vStart.x) / vDir.x,
-		(vMaxs.y - vStart.y) / vDir.y,
-		(vMaxs.z - vStart.z) / vDir.z
-	};
-	Vec3 c = {
-		std::min(a.x, b.x),
-		std::min(a.y, b.y),
-		std::min(a.z, b.z)
-	};
-	return std::max(std::max(c.x, c.y), c.z);
-}
 static inline Vec3 PullPoint(Vec3 vPoint, Vec3 vLocalPos, V2Info_t& tInfo, Vec3 vMins, Vec3 vMaxs, Vec3 vTargetPos)
 {
 	auto HeightenLocalPos = [&]()
@@ -938,7 +919,9 @@ static inline Vec3 PullPoint(Vec3 vPoint, Vec3 vLocalPos, V2Info_t& tInfo, Vec3 
 	vLocalPos = HeightenLocalPos();
 	Vec3 vForward, vRight, vUp; Math::AngleVectors(Math::CalcAngle(vLocalPos, vPoint), &vForward, &vRight, &vUp);
 	vLocalPos += (vForward * tInfo.m_vOffset.x) + (vRight * tInfo.m_vOffset.y) + (vUp * tInfo.m_vOffset.z);
-	return vLocalPos + (vPoint - vLocalPos) * fabsf(AABBLine(vMins + vTargetPos, vMaxs + vTargetPos, vLocalPos, vPoint - vLocalPos));
+	float entry=0.f;
+    if(!V2Math::RayBoxEntry(vMins+vTargetPos,vMaxs+vTargetPos,vLocalPos,vPoint-vLocalPos,entry))return vPoint;
+    return vLocalPos+(vPoint-vLocalPos)*entry;
 }
 
 
@@ -1803,9 +1786,9 @@ static inline void DrawVisuals(int iResult, Target_t& tTarget, std::vector<Vec3>
 			if (bProjectilePath)
 			{
 				if (Vars::Colors::ProjectilePathIgnoreZ.Value.a)
-					G::PathStorage.emplace_back(vProjectilePath, (Vars::Visuals::Prediction::PlayerDrawDuration.Value == 0.f) ? -int(vProjectilePath.size()) - TIME_TO_TICKS(F::Backtrack.GetReal()) : I::GlobalVars->curtime + Vars::Visuals::Simulation::DrawDuration.Value, Vars::Colors::ProjectilePathIgnoreZ.Value, Vars::Visuals::Simulation::ProjectilePath.Value);
+					G::PathStorage.emplace_back(vProjectilePath, (Vars::Visuals::Prediction::ProjectileDrawDuration.Value == 0.f) ? -int(vProjectilePath.size()) - TIME_TO_TICKS(F::Backtrack.GetReal()) : I::GlobalVars->curtime + Vars::Visuals::Prediction::ProjectileDrawDuration.Value, Vars::Colors::ProjectilePathIgnoreZ.Value, Vars::Visuals::Simulation::ProjectilePath.Value);
 				if (Vars::Colors::ProjectilePath.Value.a)
-					G::PathStorage.emplace_back(vProjectilePath, (Vars::Visuals::Prediction::PlayerDrawDuration.Value == 0.f) ? -int(vProjectilePath.size()) - TIME_TO_TICKS(F::Backtrack.GetReal()) : I::GlobalVars->curtime + Vars::Visuals::Simulation::DrawDuration.Value, Vars::Colors::ProjectilePath.Value, Vars::Visuals::Simulation::ProjectilePath.Value, true);
+					G::PathStorage.emplace_back(vProjectilePath, (Vars::Visuals::Prediction::ProjectileDrawDuration.Value == 0.f) ? -int(vProjectilePath.size()) - TIME_TO_TICKS(F::Backtrack.GetReal()) : I::GlobalVars->curtime + Vars::Visuals::Prediction::ProjectileDrawDuration.Value, Vars::Colors::ProjectilePath.Value, Vars::Visuals::Simulation::ProjectilePath.Value, true);
 			}
 			if (bBoxes)
 				G::BoxStorage.insert(G::BoxStorage.end(), vBoxes.begin(), vBoxes.end());

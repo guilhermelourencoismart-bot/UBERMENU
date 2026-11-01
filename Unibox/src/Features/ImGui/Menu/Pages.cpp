@@ -118,7 +118,7 @@ static void AimbotGeneral()
 		FDropdown(Vars::Aimbot::General::SmoothingAlgorithm);
 		V2SolverSettings();
 		FSlider(Vars::Aimbot::General::V2SmoothFactor);
-		FTooltip("V2 algorithms apply to Smooth aim for hitscan/projectiles. SmoothVelocity retains its velocity-aware Unibox curve.");
+		FTooltip("V2 cubic/remapped applies to Smooth aim. SmoothVelocity uses the shared velocity-aware curve.");
 		FToggle(Vars::Aimbot::General::AutoShoot);
 		FToggle(Vars::Aimbot::General::LeadAndRestrict);
 		PushDisabled(F::AntiCheatCompatibility.Active());
@@ -204,6 +204,7 @@ static void AimbotWeapons()
 		FToggle(Vars::Aimbot::Melee::IgnoreRazorback);
 		FToggle(Vars::Aimbot::Melee::SwingPrediction);
 		FToggle(Vars::Aimbot::Melee::WhipTeam);
+        Subheader("V2 melee"); V2MeleeSettings();
 	} EndSection();
 	if (Vars::Debug::Options.Value)
 	{
@@ -328,6 +329,7 @@ static void AimbotWeapons()
 	TableNextColumn();
 	if (Section("Projectile"))
 	{
+		Subheader("V2 projectile"); V2ProjectileSettings();
 		FDropdown(Vars::Aimbot::Projectile::StrafePrediction);
 		FDropdown(Vars::Aimbot::Projectile::SplashPrediction);
 		FDropdown(Vars::Aimbot::Projectile::Hitboxes);
@@ -583,6 +585,7 @@ static void AimbotDraw()
 	TableNextColumn();
 	if (Section("Prediction"))
 	{
+		FDropdown(Vars::Visuals::Prediction::RealPath, FDropdownEnum::None, -56);
 		FDropdown(Vars::Visuals::Prediction::PlayerPath, FDropdownEnum::None, -56);
 		PathColors(Vars::Colors::PlayerPath, Vars::Colors::PlayerPathIgnoreZ);
 		FDropdown(Vars::Visuals::Prediction::ProjectilePath, FDropdownEnum::None, -56);
@@ -631,7 +634,6 @@ static void VisualsView()
 		return;
 
 	TableNextColumn();
-	FullCompSettings();
 	if (Section("Interface"))
 	{
 		FDropdown(Vars::Visuals::UI::StreamerMode);
@@ -662,6 +664,8 @@ static void VisualsView()
 		}
 		PopTransparent();
 	} EndSection();
+
+	FullCompSettings();
 
 	TableNextColumn();
 	if (Section("Thirdperson"))

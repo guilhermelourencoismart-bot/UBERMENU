@@ -1,5 +1,7 @@
 // Ported from Amalgam-Comp 366fa0dc; original SHA256 45972f8cd803ab134922649cd2511ae542aac9c514eaca8a0fa5c072ba76f49c.
 #include "CompDraw.h"
+#include "MainESP.h"
+#include "../Groups/Groups.h"
 #include "MedicUberBar.h"
 #include <cmath>
 
@@ -22,9 +24,14 @@ void CFullMedicUberBar::Draw()
     // Process all players looking for medics
     for (auto pEntity : H::Entities.GetGroup(EntityEnum::PlayerAll))
     {
+        if(!pEntity)continue;
         auto pPlayer = pEntity->As<CTFPlayer>();
         if (!pPlayer || !pPlayer->IsAlive() || pPlayer->IsDormant() || pPlayer == pLocal)
             continue;
+
+        if(Vars::Comp::ESP::Enabled.Value && F::FullMainESP.HasUberBar(pPlayer))continue;
+        Group_t* nativeGroup=nullptr;
+        if(!Vars::Comp::ESP::Enabled.Value && F::Groups.GetGroup(pPlayer,nativeGroup,false) && nativeGroup && (nativeGroup->m_tESP.Draw & ESPEnum::UberBar))continue;
 
         // Only process medics
         if (pPlayer->m_iClass() != TF_CLASS_MEDIC)

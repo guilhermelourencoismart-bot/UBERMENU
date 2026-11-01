@@ -22,6 +22,7 @@ private:
 
     // Pre-calculated alpha steps
     std::vector<int> m_AlphaSteps;
+    int m_start=-1,m_end=-1,m_segments=-1;
 
     // Helper functions
     void InitializeAlphaSteps();

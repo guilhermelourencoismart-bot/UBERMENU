@@ -1,5 +1,6 @@
 // Complete Comp port, source 366fa0dc, SHA256 fab86c4219ee1c7e0814e7af8c42242b625324aa84abf23bf403dfc851356516.
 #include "CompDraw.h"
+#include "MainESP.h"
 #include "../Groups/Groups.h"
 #include "SentryESP.h"
 
@@ -60,7 +61,7 @@ void CFullSentryESP::Draw()
         // Draw ESP box
         Group_t* nativeGroup=nullptr;
         const bool nativeBox=!Vars::Comp::ESP::Enabled.Value && F::Groups.GetGroup(pEntity,nativeGroup,false) && nativeGroup && (nativeGroup->m_tESP.Draw & ESPEnum::Box);
-        if (Vars::Comp::SentryESP::ShowBoxes.Value && !nativeBox)
+        if (Vars::Comp::SentryESP::ShowBoxes.Value && !nativeBox && !(Vars::Comp::ESP::Enabled.Value && F::FullMainESP.HasBox(pEntity)))
         {
             Vec3 vPos = pEntity->GetAbsOrigin();
             Vec3 vMins = pEntity->m_vecMins();

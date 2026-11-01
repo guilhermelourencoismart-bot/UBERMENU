@@ -66,9 +66,9 @@ Color_t CCompColor::GetScoreboardColor(int iIndex)
 	if (iIndex == I::EngineClient->GetLocalPlayer())
 		out = Vars::Comp::Palette::Local.Value;
 	else if (H::Entities.IsFriend(iIndex))
-		if (auto tag = F::PlayerUtils.GetTag(FRIEND_TAG)) out = tag->m_tColor;
+    { if (auto tag = F::PlayerUtils.GetTag(FRIEND_TAG)) out = tag->m_tColor; }
 	else if (H::Entities.InParty(iIndex))
-		if (auto tag = F::PlayerUtils.GetTag(PARTY_TAG)) out = tag->m_tColor;
+    { if (auto tag = F::PlayerUtils.GetTag(PARTY_TAG)) out = tag->m_tColor; }
 	else if (auto pTag = F::PlayerUtils.GetSignificantTag(iIndex))
 		out = pTag->m_tColor;
 

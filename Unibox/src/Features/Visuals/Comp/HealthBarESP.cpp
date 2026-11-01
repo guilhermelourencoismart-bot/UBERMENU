@@ -1,5 +1,6 @@
 // Complete Comp port, source 366fa0dc, SHA256 e50e7f1cc0a83e042983057f34983581221a715b6ce456fff0e5ae106d5d886d.
 #include "CompDraw.h"
+#include "MainESP.h"
 #include "../Groups/Groups.h"
 #include "HealthBarESP.h"
 #include <cmath>
@@ -28,6 +29,7 @@ void CFullHealthBarESP::Draw()
     // Process all players (follow native ESP pattern)
     for (auto pEntity : H::Entities.GetGroup(EntityEnum::PlayerAll))
     {
+        if(!pEntity)continue;
         auto pPlayer = pEntity->As<CTFPlayer>();
         if (!pPlayer || !pPlayer->IsAlive() || pPlayer->IsDormant() || pPlayer == pLocal)
             continue;
@@ -69,7 +71,7 @@ void CFullHealthBarESP::Draw()
         // Draw health bar if enabled and visible (or through walls enabled for bars)
         Group_t* nativeGroup=nullptr;
         const bool nativeBar=!Vars::Comp::ESP::Enabled.Value && F::Groups.GetGroup(pPlayer,nativeGroup,false) && nativeGroup && (nativeGroup->m_tESP.Draw & ESPEnum::HealthBar);
-        if (Vars::Comp::HealthBarESP::ShowHealthBars.Value && !nativeBar)
+        if (Vars::Comp::HealthBarESP::ShowHealthBars.Value && !nativeBar && !(Vars::Comp::ESP::Enabled.Value && F::FullMainESP.HasHealthBar(pPlayer)))
         {
             if (Vars::Comp::HealthBarESP::ShowThroughWalls.Value || isVisible)
             {

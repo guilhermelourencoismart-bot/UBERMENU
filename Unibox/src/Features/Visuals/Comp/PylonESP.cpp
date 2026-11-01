@@ -13,6 +13,9 @@ void CFullPylonESP::InitializeAlphaSteps()
 {
     int segments = std::clamp(Vars::Comp::PylonESP::Segments.Value, 1, 128);
     Vars::Comp::PylonESP::Segments.Value = segments;
+    const int start=Vars::Comp::PylonESP::StartAlpha.Value,end=Vars::Comp::PylonESP::EndAlpha.Value;
+    if(segments==m_segments && start==m_start && end==m_end)return;
+    m_segments=segments;m_start=start;m_end=end;
     m_AlphaSteps.clear();
     m_AlphaSteps.reserve(segments + 1);
     for (int i = 0; i <= segments; i++)
@@ -45,6 +48,7 @@ void CFullPylonESP::Draw()
     // Process all players in real-time
     for (auto pEntity : H::Entities.GetGroup(EntityEnum::PlayerAll))
     {
+        if(!pEntity)continue;
         auto pPlayer = pEntity->As<CTFPlayer>();
         if (!pPlayer || !pPlayer->IsAlive() || pPlayer->IsDormant())
             continue;

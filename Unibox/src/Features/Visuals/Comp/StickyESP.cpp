@@ -1,5 +1,6 @@
 // Complete Comp port, source 366fa0dc, SHA256 748b9fafbb26bdef78e02f4de8fd1842b789a13284fc462aaa456c729d6443d9.
 #include "CompDraw.h"
+#include "MainESP.h"
 #include "../Groups/Groups.h"
 #include "StickyESP.h"
 
@@ -72,6 +73,7 @@ void CFullStickyESP::Draw()
             color = isVisible ? Vars::Comp::StickyESP::TeamVisibleColor.Value : Vars::Comp::StickyESP::TeamInvisibleColor.Value;
         }
 
+        if(Vars::Comp::ESP::Enabled.Value && F::FullMainESP.HasBox(pEntity))continue;
         Group_t* nativeGroup=nullptr;
         if(!Vars::Comp::ESP::Enabled.Value && F::Groups.GetGroup(pEntity,nativeGroup,false) && nativeGroup && (nativeGroup->m_tESP.Draw & ESPEnum::Box)) continue;
         // Draw 2D box (exactly like Lua script)

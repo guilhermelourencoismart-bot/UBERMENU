@@ -105,6 +105,15 @@ int main()
     Require(!V2Math::LowerArc(100,800,1000,0,pitch,flight),"unreachable projectile rejected");
     Require(!V2Math::LowerArc(0,800,1,0,pitch,flight),"zero speed rejected");
     Require(!V2Math::LowerArc(1000,800,0,100,pitch,flight),"singular vertical ballistic case rejected");
+    float entry=0.f;
+    Require(V2Math::RayBoxEntry(Angles{1,-1,-1},Angles{2,1,1},Angles{0,0,0},Angles{2,0,0},entry)&&Near(entry,.5f),"axis-parallel hitbox ray entry");
+    Require(!V2Math::RayBoxEntry(Angles{1,2,-1},Angles{2,3,1},Angles{0,0,0},Angles{2,0,0},entry),"parallel ray outside slab rejected");
+    Require(V2Math::RayBoxEntry(Angles{-1,-1,-1},Angles{1,1,1},Angles{0,0,0},Angles{0,0,0},entry)&&Near(entry,0),"stationary point inside bounds");
+    Require(!V2Math::RayBoxEntry(Angles{-1,-1,-1},Angles{1,1,1},Angles{3,0,0},Angles{1,0,0},entry),"ray facing away from box rejected");
+    Require(!V2Math::RayBoxEntry(Angles{1,1,1},Angles{-1,-1,-1},Angles{0,0,0},Angles{1,0,0},entry),"inverted hitbox rejected");
+    Require(!V2Math::RayBoxEntry(Angles{-1,-1,-1},Angles{1,1,1},Angles{0,0,0},Angles{std::numeric_limits<float>::quiet_NaN(),0,0},entry),"nonfinite hitbox ray rejected");
+    Require(V2Math::LowerArc(1000,0,0,100,pitch,flight)&&Near(flight,.1f),"vertical straight projectile");
+    Require(!V2Math::LowerArc(std::numeric_limits<float>::infinity(),0,100,0,pitch,flight),"nonfinite projectile speed rejected");
     SolverPolicy::ContextGuard guard;
     SolverPolicy::Context context{1,10,100,50,true};
     Require(guard.Update(context),"initial solver context invalidates");

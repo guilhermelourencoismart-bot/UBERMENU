@@ -27,7 +27,7 @@ void CCompVisuals::Reset()
     F::FullAmmoTracker=CFullAmmoTracker{};
     F::FullSentryESP=CFullSentryESP{};
     F::FullStickyESP=CFullStickyESP{};
-    F::FullMainESP=CFullMainESP{};
+    F::FullMainESP=CFullMainESP{}; F::FullOffScreenIndicators=CFullOffScreenIndicators{};
     F::FullCraterCheck=CFullCraterCheck{}; F::FullCritHeals=CFullCritHeals{}; F::FullSplashRadius=CFullSplashRadius{};
     m_serials.clear(); m_time=-1.f;
     F::CompDraw.Begin(); F::CompDraw.Publish();
@@ -37,16 +37,17 @@ void CCompVisuals::Capture(CTFPlayer* local)
     if (!local || !I::EngineClient->IsInGame()) { Reset(); return; }
     const std::string map=I::EngineClient->GetLevelName();
     const float now=I::GlobalVars->curtime;
-    bool recycled=false; std::unordered_map<int,int> serials;
-    for (auto entity:H::Entities.GetGroup(EntityEnum::PlayerAll))
+    if(map!=m_map || now<m_time)Reset();
+    const auto& players=H::Entities.GetGroup(EntityEnum::PlayerAll);
+    for(auto entity:players)
     {
-        if (!entity) continue;
-        int index=entity->entindex(), serial=entity->GetRefEHandle().GetSerialNumber();
-        if (auto it=m_serials.find(index); it!=m_serials.end() && it->second!=serial) recycled=true;
-        serials[index]=serial;
+        if(!entity)continue;
+        auto old=m_serials.find(entity->entindex());
+        if(old!=m_serials.end() && old->second!=entity->GetRefEHandle().GetSerialNumber()){Reset();break;}
     }
-    if (map!=m_map || now<m_time || recycled) Reset();
-    m_serials=std::move(serials); m_map=map; m_time=now;
+    // Retain identities across temporary absence, bounded by player slots.
+    for(auto entity:players)if(entity)m_serials[entity->entindex()]=entity->GetRefEHandle().GetSerialNumber();
+    m_map=map;m_time=now;
     F::CompEntities.Refresh();
     F::CompDraw.Begin();
 #ifndef TEXTMODE

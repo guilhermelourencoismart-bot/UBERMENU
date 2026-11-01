@@ -49,22 +49,19 @@ namespace Vars { namespace Aimbot { namespace Projectile {
 CVar(SplashNormalSkip, "Splash normal skip", 1, SLIDER_MIN, 1, 10);
 }}}
 namespace Vars { namespace Visuals { namespace Simulation {
-CVar(DrawDuration, VA_LIST("Draw duration", "Simulation draw duration"), 5.f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 0.f, 10.f);
+inline auto& DrawDuration=Vars::Visuals::Prediction::PlayerDrawDuration;
 }}}
 namespace Vars { namespace Visuals { namespace Simulation {
-CVarValues(PlayerPath, "Player path", 0, VISUAL, nullptr,
-				"Off", "Line", "Separators", "Spaced", "Arrows", "Boxes");
+inline auto& PlayerPath=Vars::Visuals::Prediction::PlayerPath;
 }}}
 namespace Vars { namespace Visuals { namespace Simulation {
-CVarValues(ProjectilePath, "Projectile path", 0, VISUAL, nullptr,
-				"Off", "Line", "Separators", "Spaced", "Arrows", "Boxes");
+inline auto& ProjectilePath=Vars::Visuals::Prediction::ProjectilePath;
 }}}
 namespace Vars { namespace Visuals { namespace Simulation {
-CVarValues(RealPath, "Real path", 0, NONE, nullptr,
-				"Off", "Line", "Separators", "Spaced", "Arrows", "Boxes");
+inline auto& RealPath=Vars::Visuals::Prediction::RealPath;
 }}}
 namespace Vars { namespace Visuals { namespace Simulation {
-CVar(SwingLines, "Swing lines", false, VISUAL);
+inline auto& SwingLines=Vars::Visuals::Prediction::SwingLines;
 }}}
 namespace Vars::Aimbot::General {
 CVarEnum(Solver, "Aimbot solver", 1, NONE, nullptr, VA_LIST("Unibox", "Amalgam V2"), Unibox, V2);
