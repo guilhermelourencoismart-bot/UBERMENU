@@ -17,8 +17,10 @@ void CAmmoTracker::Event(IGameEvent* event, uint32_t hash)
     if (!item) return;
     const bool health = std::strstr(item, "medkit") || std::strstr(item, "healthkit") || std::strstr(item, "health");
     if (!health && !std::strstr(item, "ammopack") && !std::strstr(item, "ammo")) return;
-    auto entity = I::ClientEntityList->GetClientEntity(I::EngineClient->GetPlayerForUserID(event->GetInt("userid")));
-    if (!entity || !entity->IsPlayer()) return;
+    auto clientEntity = I::ClientEntityList->GetClientEntity(I::EngineClient->GetPlayerForUserID(event->GetInt("userid")));
+    if (!clientEntity) return;
+    auto entity = clientEntity->As<CBaseEntity>();
+    if (!entity->IsPlayer()) return;
     const SupplyPosition_t* nearest = nullptr;
     float distance = 128.f;
     for (const auto& supply : m_supplies)
