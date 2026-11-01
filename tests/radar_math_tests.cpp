@@ -1,6 +1,10 @@
 #include "../Unibox/src/Features/Visuals/Radar/RadarMath.h"
 #include "../Unibox/src/Features/Aimbot/AimbotUtils/VelocityScale.h"
 #include "../Unibox/src/Features/Aimbot/AimbotUtils/AimSmoothing.h"
+#include "../Unibox/src/Features/ImGui/IndicatorCache.h"
+#include <atomic>
+#include <thread>
+#include <vector>
 #include <cstdlib>
 #include <iostream>
 #include <limits>
@@ -55,5 +59,21 @@ int main()
     struct Angles { float x, y, z; };
     const auto angle = AimSmoothing::Apply(Angles{0, 179, 0}, Angles{90, -179, 0}, 1.f, false);
     Require(Near(angle.x, 60.f) && Near(angle.y, 179.f + 2.f / 1.5f), "independent pitch/yaw application");
-    std::cout << checks << " calculation checks passed\n";
+    CIndicatorCache<std::vector<int>> snapshot;
+    snapshot.Set({1, 1, 1});
+    auto detached = snapshot.Get(); detached[0] = 9;
+    Require(snapshot.Get()[0] == 1, "snapshot readers receive independent copies");
+    std::atomic<bool> torn = false;
+    std::thread producer([&] { for (int i = 0; i < 1000; ++i) snapshot.Set({i, i, i}); });
+    std::thread consumer([&]
+    {
+        for (int i = 0; i < 1000; ++i)
+        {
+            auto value = snapshot.Get();
+            if (value.size() != 3 || value[0] != value[1] || value[1] != value[2]) torn = true;
+        }
+    });
+    producer.join(); consumer.join();
+    Require(!torn && snapshot.Get()[0] == 999, "snapshot publication does not expose partial frames");
+    std::cout << checks << " calculation/cache checks passed\n";
 }
