@@ -64,6 +64,9 @@ Para a validação remota, publicar estas alterações na branch desejada e usar
 Actions → MSBuild → Run workflow, ou o disparo normal por push/pull_request.
 Este trabalho não fez push nem disparou execução remota.
 
+> O estado acima descreve a Fase 1 inicial. A publicação posterior está
+> registrada na seção Fase 1.5 abaixo.
+
 ## Evidências e limites
 
 - Preflight executado em Linux: 1.257 referências verificadas; nenhum arquivo
@@ -87,3 +90,44 @@ Este trabalho não fez push nem disparou execução remota.
   Outras falhas só poderão ser confirmadas e corrigidas após o build Windows.
 - A ausência das fontes originais de ProfileStalker continua sendo uma
   limitação da distribuição, não resolvida por este diagnóstico.
+
+## Fase 1.5 — publicação e tentativa de validação Windows
+
+- Branch criada: `integration/phase1-unibox`, a partir da branch local `work`.
+- Commit da Fase 1: `56a46a57` (`Prepare Unibox Windows x64 build validation`).
+  Foram incluídos somente os quatro arquivos descritos neste documento.
+- Push confirmado em `guilhermelourencoismart-bot/UBERMENU`.
+- O push iniciou automaticamente o workflow MSBuild:
+  https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41291735398
+- O resumo público identifica o commit `56a46a5`, a branch correta e a matriz
+  de quatro jobs. O workflow desse commit seleciona `windows-2022`, VS 17 e
+  inclui `Release|x64`.
+- O preflight local foi reexecutado com sucesso (1.257 referências); nenhuma
+  alteração em `Unibox/src` foi feita.
+
+### Bloqueio de acompanhamento
+
+A consulta autenticada `gh run list` falhou com `Forbidden`. Um teste sem
+credencial confirmou `CONNECT tunnel failed, response 403` para api.github.com:
+o bloqueio ocorre no proxy antes de alcançar a API GitHub. Isso não demonstra
+falha de autenticação ou erro de compilação. A página pública github.com é
+acessível, mas indica que os logs exigem login.
+
+Foi salvo no rascunho do ambiente o domínio adicional `api.github.com`,
+preservando os presets existentes. Salvar o rascunho não aplica a regra à
+máquina. É necessário revisar/salvar essa configuração nas configurações do
+ambiente e publicar quando solicitado pela interface. Depois, repetir:
+
+```powershell
+gh run view 41291735398 --repo guilhermelourencoismart-bot/UBERMENU
+gh run view 41291735398 --repo guilhermelourencoismart-bot/UBERMENU --log-failed
+```
+
+O despacho manual não chegou a ser executado: a consulta que o precedia foi
+bloqueada. A execução acima foi iniciada pelo evento push, sem necessidade
+de duplicá-la. Não há evidência autenticada de conclusão nem de artefato DLL
+até este registro. Nome esperado: `Uniboxx64Release.dll`, no artefato
+`Uniboxx64Release`; geração e arquitetura binária ainda não confirmadas.
+Nenhum erro de compilador foi corrigido nesta fase, pois seus logs ainda não
+estão disponíveis. A Fase 1 permanece pendente de validação real concluída;
+a integração do ESP não foi iniciada.
