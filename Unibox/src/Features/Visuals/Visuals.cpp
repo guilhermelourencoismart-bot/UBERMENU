@@ -1040,13 +1040,18 @@ void CVisuals::Event(IGameEvent* pEvent, uint32_t uHash)
 	}
 	case FNV1A::Hash32Const("item_pickup"):
 	{
-		auto pEntity = I::ClientEntityList->GetClientEntity(I::EngineClient->GetPlayerForUserID(pEvent->GetInt("userid")))->As<CTFPlayer>();
-		if (!pEntity || !pEntity->IsPlayer())
+		auto pClientEntity = I::ClientEntityList->GetClientEntity(I::EngineClient->GetPlayerForUserID(pEvent->GetInt("userid")));
+		if (!pClientEntity)
+			return;
+		auto pEntity = pClientEntity->As<CTFPlayer>();
+		if (!pEntity->IsPlayer())
 			return;
 
 		int iType = 0;
 		{
 			const char* sItemName = pEvent->GetString("item");
+			if (!sItemName)
+				return;
 			if (std::strstr(sItemName, "medkit"))
 				iType = TargetsEnum::Health;
 			else if (std::strstr(sItemName, "ammopack"))

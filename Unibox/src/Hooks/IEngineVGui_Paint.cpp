@@ -84,9 +84,13 @@ MAKE_HOOK(IEngineVGui_Paint, U::Memory.GetVirtual(I::EngineVGui, 14), void,
 				F::CameraWindow.Draw();
 
 				F::AntiAim.Draw(pLocal);
+#ifndef TEXTMODE
 				if (!Vars::AmmoTracker::Enabled.Value)
+#endif
 					F::Visuals.DrawPickupTimers();
+#ifndef TEXTMODE
 				if (!Vars::OffScreenIndicators::Enabled.Value)
+#endif
 					F::OffscreenArrows.Draw(pLocal);
 
 				F::NavRender.DrawOverlay(pLocal);

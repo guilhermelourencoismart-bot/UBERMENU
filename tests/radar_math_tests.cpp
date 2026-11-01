@@ -44,6 +44,8 @@ int main()
     Require(calls == 3, "tick change invalidates cache");
     cache.Get(0, 2, compute);
     Require(calls == 4, "tick rollback invalidates cache");
+    for (int i = 0; i < 1000; ++i) cache.Get(0, 2, compute);
+    Require(calls == 4, "repeated calls do not repeat velocity computation");
     Require(Near(AimSmoothing::AxisStep(90, 10, true), 8.f), "V2 cubic denominator");
     Require(Near(AimSmoothing::AxisStep(90, 1, false), 60.f), "V2 remapped minimum");
     Require(Near(AimSmoothing::AxisStep(90, 100, false), 3.f), "V2 remapped maximum");
