@@ -263,7 +263,7 @@ bool CFullPlayerTrails::IsVisible(CBaseEntity* pEntity, CBaseEntity* pLocal)
     
     CGameTrace trace = {};
     CTraceFilterHitscan filter = {};
-    filter.pSkip = pLocal;
+    filter.m_pSkip = pLocal;
     
     SDK::Trace(source, target, MASK_VISIBLE, &filter, &trace);
     
@@ -319,7 +319,7 @@ std::string CFullPlayerTrails::GetSteamID(CBaseEntity* pPlayer)
     if (!pPlayer)
         return "";
     
-    PlayerInfo_t playerInfo;
+    player_info_t playerInfo;
     if (I::EngineClient->GetPlayerInfo(pPlayer->entindex(), &playerInfo))
     {
         if (std::string(playerInfo.guid) == "BOT")

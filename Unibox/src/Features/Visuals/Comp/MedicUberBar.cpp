@@ -85,32 +85,32 @@ Color_t CFullMedicUberBar::GetUberBarColor(float uberPercentage, bool isAlive)
     if (!isAlive)
     {
         Color_t result = Vars::Comp::MedicUberBar::DeadColor.Value;
-        result.a = 255; // Always 100% opacity
+        result.a = static_cast<byte>(std::clamp(Vars::Comp::MedicUberBar::Alpha.Value,0,255)); // Always 100% opacity
         return result;
     }
 
     if (uberPercentage >= 100.0f)
     {
         Color_t result = Vars::Comp::MedicUberBar::FullUberColor.Value;
-        result.a = 255; // Always 100% opacity
+        result.a = static_cast<byte>(std::clamp(Vars::Comp::MedicUberBar::Alpha.Value,0,255)); // Always 100% opacity
         return result;
     }
     else if (uberPercentage >= 67.0f)
     {
         Color_t result = Vars::Comp::MedicUberBar::HighUberColor.Value;
-        result.a = 255; // Always 100% opacity
+        result.a = static_cast<byte>(std::clamp(Vars::Comp::MedicUberBar::Alpha.Value,0,255)); // Always 100% opacity
         return result;
     }
     else if (uberPercentage >= 34.0f)
     {
         Color_t result = Vars::Comp::MedicUberBar::MidUberColor.Value;
-        result.a = 255; // Always 100% opacity
+        result.a = static_cast<byte>(std::clamp(Vars::Comp::MedicUberBar::Alpha.Value,0,255)); // Always 100% opacity
         return result;
     }
     else
     {
         Color_t result = Vars::Comp::MedicUberBar::LowUberColor.Value;
-        result.a = 255; // Always 100% opacity
+        result.a = static_cast<byte>(std::clamp(Vars::Comp::MedicUberBar::Alpha.Value,0,255)); // Always 100% opacity
         return result;
     }
 }
@@ -164,7 +164,7 @@ bool CFullMedicUberBar::IsVisible(const Vec3& vPos)
 
     CGameTrace trace = {};
     CTraceFilterHitscan filter = {};
-    filter.pSkip = pLocal;
+    filter.m_pSkip = pLocal;
 
     SDK::Trace(vEyePos, targetPos, MASK_VISIBLE, &filter, &trace);
 

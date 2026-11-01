@@ -49,7 +49,7 @@ bool CFullFocusFire::IsPlayerVisible(CTFPlayer* pPlayer)
     
     CGameTrace trace;
     CTraceFilterHitscan filter;
-    filter.pSkip = pLocal;
+    filter.m_pSkip = pLocal;
     SDK::Trace(localEyePos, targetPos, mask, &filter, &trace);
     
     // Cache result

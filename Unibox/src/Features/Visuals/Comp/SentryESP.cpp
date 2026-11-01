@@ -193,7 +193,7 @@ bool CFullSentryESP::IsVisible(CBaseEntity* pEntity, CTFPlayer* pLocal)
     
     CGameTrace trace;
     CTraceFilterHitscan filter;
-    filter.pSkip = pLocal;
+    filter.m_pSkip = pLocal;
     
     SDK::Trace(vEyePos, vTargetPos, MASK_VISIBLE, &filter, &trace);
     

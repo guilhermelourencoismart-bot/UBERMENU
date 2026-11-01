@@ -322,7 +322,7 @@ void CFullRadar::DrawPoints(CTFPlayer* pLocal)
 				{
 				case Vars::Comp::Radar::Player::IconEnum::Avatars:
 				{
-					PlayerInfo_t pi{};
+					player_info_t pi{};
 					if (I::EngineClient->GetPlayerInfo(pPlayer->entindex(), &pi) && !pi.fakeplayer)
 					{
 						int iType = 0; F::PlayerUtils.GetPlayerName(pPlayer->entindex(), nullptr, &iType);

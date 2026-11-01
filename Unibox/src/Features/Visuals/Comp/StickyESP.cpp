@@ -114,7 +114,7 @@ bool CFullStickyESP::IsVisible(CBaseEntity* pEntity, CBaseEntity* pLocal)
     
     CGameTrace trace = {};
     CTraceFilterHitscan filter = {};
-    filter.pSkip = pLocal;
+    filter.m_pSkip = pLocal;
     
     SDK::Trace(source, target, MASK_SHOT, &filter, &trace);
     

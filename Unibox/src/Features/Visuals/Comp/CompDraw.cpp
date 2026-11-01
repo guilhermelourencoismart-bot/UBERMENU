@@ -88,9 +88,15 @@ void CCompDraw::LineRoundRect(int x,int y,int w,int h,int radius,Color_t color) 
  if(m_pending.size()>count)m_pending.back().type=CompDrawCommand::Type::Outline;
 }
 void CCompDraw::FillRectPercent(int x,int y,int w,int h,float fraction,Color_t color,Color_t background,EAlign align,bool adjust) {
- fraction=std::clamp(fraction,0.f,1.f); FillRect(x,y,w,h,background);
- if(align==ALIGN_BOTTOM) {int fill=int(h*fraction);FillRect(x,y+h-fill,w,fill,color);}
- else {int fill=int(w*fraction);FillRect(x,y,fill,h,color);}
+ fraction=std::clamp(fraction,0.f,1.f);
+ if(!adjust) FillRect(x-1,y-1,w+2,h+2,background);
+ int nw=w,nh=h;
+ if(align==ALIGN_LEFT)nw=int(w*fraction);
+ else if(align==ALIGN_RIGHT){nw=int(w*fraction);x+=w-nw;}
+ else if(align==ALIGN_TOP)nh=int(h*fraction);
+ else if(align==ALIGN_BOTTOM){nh=int(h*fraction);y+=h-nh;}
+ if(adjust)FillRect(x-1,y-1,nw+2,nh+2,background);
+ FillRect(x,y,nw,nh,color);
 }
 
 void CCompDraw::Draw(ImDrawList* list)

@@ -160,7 +160,7 @@ bool CFullHealthBarESP::IsVisible(const Vec3& vPos)
     
     CGameTrace trace = {};
     CTraceFilterHitscan filter = {};
-    filter.pSkip = pLocal;
+    filter.m_pSkip = pLocal;
     
     SDK::Trace(vEyePos, targetPos, MASK_VISIBLE, &filter, &trace);
     

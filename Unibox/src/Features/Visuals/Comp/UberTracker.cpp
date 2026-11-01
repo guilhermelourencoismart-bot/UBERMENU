@@ -159,6 +159,7 @@ void CFullUberTracker::DrawMedicInfo(const std::vector<CompMedicInfo>& vMedics, 
 		
 		// Get appropriate font based on info box font size
 		auto font = (boxFontSize <= 12) ? H::Fonts.GetFont(FONT_INDICATORS) : H::Fonts.GetFont(FONT_ESP);
+        font.m_nTall = boxFontSize;
 		
 		F::CompDraw.String(font, boxX + 15, iYPos, color, ALIGN_TOPLEFT, sNameWeapon.c_str());
 		F::CompDraw.String(font, boxX + boxWidth - 80, iYPos, color, ALIGN_TOPLEFT, sUberText.c_str());
@@ -269,6 +270,7 @@ void CFullUberTracker::DrawAdvantageText(const std::vector<CompMedicInfo>& vRedM
 	
 	// Get appropriate font based on advantage font size
 	auto font = (advantageFontSize <= 12) ? H::Fonts.GetFont(FONT_INDICATORS) : H::Fonts.GetFont(FONT_ESP);
+    font.m_nTall = advantageFontSize;
 	
 	if (Vars::Comp::UberTracker::ShowKritz.Value && enemyMedic.IsAlive && enemyMedic.RealWeaponName == "KRITZ" && !Vars::Comp::UberTracker::IgnoreKritz.Value)
 	{
@@ -374,7 +376,7 @@ void CFullUberTracker::Draw()
 		
 		CompMedicInfo medicInfo;
 		// Get player name properly
-		PlayerInfo_t pi{};
+		player_info_t pi{};
 		try {
 			if (I::EngineClient->GetPlayerInfo(pPlayer->entindex(), &pi))
 				medicInfo.Name = F::PlayerUtils.GetPlayerName(pPlayer->entindex(), pi.name);

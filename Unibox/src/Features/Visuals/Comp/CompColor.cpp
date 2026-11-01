@@ -35,12 +35,12 @@ Color_t CCompColor::GetEntityDrawColor(CTFPlayer* pLocal, CBaseEntity* pEntity, 
 		}
 		else if (H::Entities.IsFriend(pPlayer->entindex()))
 		{
-			out = F::PlayerUtils.m_vTags[F::PlayerUtils.TagToIndex(FRIEND_TAG)].m_tColor;
+			if (auto tag = F::PlayerUtils.GetTag(FRIEND_TAG)) out = tag->m_tColor;
 			if (pType) *pType = 3;
 		}
 		else if (H::Entities.InParty(pPlayer->entindex()))
 		{
-			out = F::PlayerUtils.m_vTags[F::PlayerUtils.TagToIndex(PARTY_TAG)].m_tColor;
+			if (auto tag = F::PlayerUtils.GetTag(PARTY_TAG)) out = tag->m_tColor;
 			if (pType) *pType = 4;
 		}
 		else if (auto pTag = F::PlayerUtils.GetSignificantTag(pPlayer->entindex()))
@@ -66,9 +66,9 @@ Color_t CCompColor::GetScoreboardColor(int iIndex)
 	if (iIndex == I::EngineClient->GetLocalPlayer())
 		out = Vars::Comp::Palette::Local.Value;
 	else if (H::Entities.IsFriend(iIndex))
-		out = F::PlayerUtils.m_vTags[F::PlayerUtils.TagToIndex(FRIEND_TAG)].m_tColor;
+		if (auto tag = F::PlayerUtils.GetTag(FRIEND_TAG)) out = tag->m_tColor;
 	else if (H::Entities.InParty(iIndex))
-		out = F::PlayerUtils.m_vTags[F::PlayerUtils.TagToIndex(PARTY_TAG)].m_tColor;
+		if (auto tag = F::PlayerUtils.GetTag(PARTY_TAG)) out = tag->m_tColor;
 	else if (auto pTag = F::PlayerUtils.GetSignificantTag(iIndex))
 		out = pTag->m_tColor;
 

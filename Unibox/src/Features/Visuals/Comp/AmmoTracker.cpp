@@ -123,7 +123,7 @@ bool CFullAmmoTracker::IsVisible(const Vec3& vPos)
     // Perform trace
     CGameTrace trace = {};
     CTraceFilterHitscan filter = {};
-    filter.pSkip = pLocal;
+    filter.m_pSkip = pLocal;
     
     SDK::Trace(vEyePos, vPos, MASK_VISIBLE, &filter, &trace);
     

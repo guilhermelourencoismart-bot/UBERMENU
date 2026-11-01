@@ -77,7 +77,7 @@ bool CFullPylonESP::IsVisible(const Vec3& fromPos, const Vec3& targetPos)
 {
     CGameTrace trace;
     CTraceFilterHitscan filter;
-    filter.pSkip = H::Entities.GetLocal();
+    filter.m_pSkip = H::Entities.GetLocal();
     SDK::Trace(fromPos, targetPos, MASK_VISIBLE, &filter, &trace);
     
     return trace.fraction >= 0.99f;
