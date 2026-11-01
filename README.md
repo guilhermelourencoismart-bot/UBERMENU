@@ -1,3 +1,15 @@
+# Amalgam Ultimate — integração em desenvolvimento
+
+Baseado em **[Unibox](https://github.com/GatoPotato658/Unibox)**, com adaptações
+selecionadas do [Amalgam-Comp](https://github.com/coffeegrind123/Amalgam-Comp)
+e [Amalgam V2](https://github.com/beyazprens/Amalgam-v2).
+Os créditos do Unibox também estão acessíveis no menu Visuals / View.
+
+**Build Windows ainda não comprovada para esta integração.** Consulte
+[estado](docs/INTEGRATION-STATUS.md), [build](docs/BUILD.md),
+[testes](docs/TEST-RESULTS.md) e [licenças](docs/THIRD-PARTY-NOTICES.md).
+As referências de download abaixo pertencem ao upstream e não são builds desta integração.
+
 <div align="center">
 
   ## <img src=".github/assets/xddd.png" alt="Unibox" width="520">

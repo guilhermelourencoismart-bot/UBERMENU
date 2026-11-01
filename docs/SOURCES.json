@@ -1,0 +1,20 @@
+[
+  {
+    "repository": "https://github.com/GatoPotato658/Unibox",
+    "archive": "Unibox-master.zip",
+    "commit_in_archive_comment": "d71471813e57eb2c6ac6f9609e48b9aa28b74866",
+    "sha256": "cf4c5e686a676d4c402371c82248c49f79b34733db5db0fb9d8ac59ee882cf31"
+  },
+  {
+    "repository": "https://github.com/coffeegrind123/Amalgam-Comp",
+    "archive": "Amalgam-Comp-master.zip",
+    "commit_in_archive_comment": "366fa0dcf5e5caa722ec270e6f87015adf381c50",
+    "sha256": "ac8db794c067201ea9a31375abc568e4e7d7f191051a5df438d491261cdb1cd9"
+  },
+  {
+    "repository": "https://github.com/beyazprens/Amalgam-v2",
+    "archive": "Amalgam-v2-master.zip",
+    "commit_in_archive_comment": "ba07d0a942de2f177a40745f935c2e8c122b0024",
+    "sha256": "69b10c22462d47f033f9fe534d112bf0c52710c51adcc3e9be07bd7612fd3e98"
+  }
+]
