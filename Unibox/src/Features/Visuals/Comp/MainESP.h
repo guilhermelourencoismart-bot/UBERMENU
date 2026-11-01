@@ -60,9 +60,9 @@ private:
 	void DrawBones(CTFPlayer* pPlayer, matrix3x4* aBones, std::vector<int> vecBones, Color_t clr);
 
 	// Per-frame ESP data cache (cleared every frame in Store)
-	std::unordered_map<CBaseEntity*, CompMainPlayerCache> m_mCompMainPlayerCache = {};
-	std::unordered_map<CBaseEntity*, CompMainBuildingCache> m_mCompMainBuildingCache = {};
-	std::unordered_map<CBaseEntity*, CompMainWorldCache> m_mCompMainWorldCache = {};
+	std::unordered_map<CBaseEntity*, CompMainPlayerCache> m_mPlayerCache = {};
+	std::unordered_map<CBaseEntity*, CompMainBuildingCache> m_mBuildingCache = {};
+	std::unordered_map<CBaseEntity*, CompMainWorldCache> m_mWorldCache = {};
 
 public:
     bool HasHealthBar(CBaseEntity* entity) const { auto i=m_mPlayerCache.find(entity); return i!=m_mPlayerCache.end() && i->second.m_bWasDrawn && i->second.m_bHealthBar; }

@@ -15,9 +15,9 @@
 
 void CFullMainESP::Store(CTFPlayer* pLocal)
 {
-	m_mCompMainPlayerCache.clear();
-	m_mCompMainBuildingCache.clear();
-	m_mCompMainWorldCache.clear();
+	m_mPlayerCache.clear();
+	m_mBuildingCache.clear();
+	m_mWorldCache.clear();
 
 	if (!Vars::Comp::ESP::Draw.Value || !pLocal)
 		return;
@@ -85,7 +85,7 @@ void CFullMainESP::StorePlayers(CTFPlayer* pLocal)
 		auto pActiveWeapon = pPlayer->m_hActiveWeapon().Get();
 		auto pWeapon = pActiveWeapon ? pActiveWeapon->As<CTFWeaponBase>() : nullptr;
 
-		CompMainPlayerCache& tCache = m_mCompMainPlayerCache[pEntity];
+		CompMainPlayerCache& tCache = m_mPlayerCache[pEntity];
 		tCache.m_flAlpha = (pPlayer->IsDormant() ? Vars::Comp::ESP::DormantAlpha.Value : Vars::Comp::ESP::ActiveAlpha.Value) / 255.f;
 		tCache.m_tColor = GetColor(pLocal, pPlayer);
 		tCache.m_bBox = Vars::Comp::ESP::Player.Value & Vars::Comp::ESP::PlayerEnum::Box;
@@ -511,7 +511,7 @@ void CFullMainESP::StoreBuildings(CTFPlayer* pLocal)
 
 		bool bIsMini = pBuilding->m_bMiniBuilding();
 
-		CompMainBuildingCache& tCache = m_mCompMainBuildingCache[pEntity];
+		CompMainBuildingCache& tCache = m_mBuildingCache[pEntity];
 		tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 		tCache.m_tColor = GetColor(pLocal, pOwner ? pOwner : pEntity);
 		tCache.m_bBox = (Vars::Comp::ESP::Building.Value & Vars::Comp::ESP::BuildingEnum::Box);
@@ -665,7 +665,7 @@ void CFullMainESP::StoreProjectiles(CTFPlayer* pLocal)
 		else if (!(pEntity->m_iTeamNum() != pLocal->m_iTeamNum() ? Vars::Comp::ESP::Projectile.Value & Vars::Comp::ESP::ProjectileEnum::Enemy : Vars::Comp::ESP::Projectile.Value & Vars::Comp::ESP::ProjectileEnum::Team))
 			continue;
 
-		CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
+		CompMainWorldCache& tCache = m_mWorldCache[pEntity];
 		tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 		tCache.m_tColor = GetColor(pLocal, pOwner ? pOwner : pEntity);
 		tCache.m_bBox = (Vars::Comp::ESP::Projectile.Value & Vars::Comp::ESP::ProjectileEnum::Box);
@@ -793,7 +793,7 @@ void CFullMainESP::StoreObjective(CTFPlayer* pLocal)
 		if (!(pEntity->m_iTeamNum() != pLocal->m_iTeamNum() ? Vars::Comp::ESP::Objective.Value & Vars::Comp::ESP::ObjectiveEnum::Enemy : Vars::Comp::ESP::Objective.Value & Vars::Comp::ESP::ObjectiveEnum::Team))
 			continue;
 
-		CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
+		CompMainWorldCache& tCache = m_mWorldCache[pEntity];
 		tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 		tCache.m_tColor = GetColor(pLocal, pEntity);
 		tCache.m_bBox = Vars::Comp::ESP::Objective.Value & Vars::Comp::ESP::ObjectiveEnum::Box;
@@ -850,7 +850,7 @@ void CFullMainESP::StoreWorld()
 		{
 			if (!pEntity || pEntity->IsDormant())
 				continue;
-			CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
+			CompMainWorldCache& tCache = m_mWorldCache[pEntity];
 			tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 			tCache.m_tColor = Vars::Comp::Palette::NPC.Value;
 
@@ -875,7 +875,7 @@ void CFullMainESP::StoreWorld()
 		{
 			if (!pEntity || pEntity->IsDormant())
 				continue;
-			CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
+			CompMainWorldCache& tCache = m_mWorldCache[pEntity];
 			tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 			tCache.m_tColor = Vars::Comp::Palette::Health.Value;
 			tCache.m_vText.emplace_back(CompESPTextEnum::Top, "Health", Vars::Comp::Palette::Health.Value, Vars::Menu::Theme::Background.Value);
@@ -888,7 +888,7 @@ void CFullMainESP::StoreWorld()
 		{
 			if (!pEntity || pEntity->IsDormant())
 				continue;
-			CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
+			CompMainWorldCache& tCache = m_mWorldCache[pEntity];
 			tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 			tCache.m_tColor = Vars::Comp::Palette::Ammo.Value;
 			tCache.m_vText.emplace_back(CompESPTextEnum::Top, "Ammo", Vars::Comp::Palette::Ammo.Value, Vars::Menu::Theme::Background.Value);
@@ -901,7 +901,7 @@ void CFullMainESP::StoreWorld()
 		{
 			if (!pEntity || pEntity->IsDormant())
 				continue;
-			CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
+			CompMainWorldCache& tCache = m_mWorldCache[pEntity];
 			tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 			tCache.m_tColor = Vars::Comp::Palette::Money.Value;
 			tCache.m_vText.emplace_back(CompESPTextEnum::Top, "Money", Vars::Comp::Palette::Money.Value, Vars::Menu::Theme::Background.Value);
@@ -914,7 +914,7 @@ void CFullMainESP::StoreWorld()
 		{
 			if (!pEntity || pEntity->IsDormant())
 				continue;
-			CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
+			CompMainWorldCache& tCache = m_mWorldCache[pEntity];
 			tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 			tCache.m_tColor = Vars::Comp::Palette::Powerup.Value;
 
@@ -949,7 +949,7 @@ void CFullMainESP::StoreWorld()
 		{
 			if (!pEntity || pEntity->IsDormant())
 				continue;
-			CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
+			CompMainWorldCache& tCache = m_mWorldCache[pEntity];
 			tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 			tCache.m_tColor = Vars::Comp::Palette::Halloween.Value;
 			tCache.m_vText.emplace_back(CompESPTextEnum::Top, pEntity->GetClassID() == ETFClassID::CTFPumpkinBomb ? "Pumpkin Bomb" : "Bomb", Vars::Comp::Palette::Halloween.Value, Vars::Menu::Theme::Background.Value);
@@ -962,7 +962,7 @@ void CFullMainESP::StoreWorld()
 		{
 			if (!pEntity || pEntity->IsDormant())
 				continue;
-			CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
+			CompMainWorldCache& tCache = m_mWorldCache[pEntity];
 			tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 			tCache.m_tColor = Vars::Comp::Palette::Halloween.Value;
 			tCache.m_vText.emplace_back(CompESPTextEnum::Top, "Spellbook", Vars::Comp::Palette::Halloween.Value, Vars::Menu::Theme::Background.Value);
@@ -975,7 +975,7 @@ void CFullMainESP::StoreWorld()
 		{
 			if (!pEntity || pEntity->IsDormant())
 				continue;
-			CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
+			CompMainWorldCache& tCache = m_mWorldCache[pEntity];
 			tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 			tCache.m_tColor = Vars::Comp::Palette::Halloween.Value;
 			tCache.m_vText.emplace_back(CompESPTextEnum::Top, "Gargoyle", Vars::Comp::Palette::Halloween.Value, Vars::Menu::Theme::Background.Value);
@@ -1015,8 +1015,8 @@ void CFullMainESP::DrawPlayers()
 			continue;
 
 		// Skip if this entity isn't in our cache
-		auto it = m_mCompMainPlayerCache.find(pBaseEntity);
-		if (it == m_mCompMainPlayerCache.end())
+		auto it = m_mPlayerCache.find(pBaseEntity);
+		if (it == m_mPlayerCache.end())
 			continue;
 
 		auto& tCache = it->second;
@@ -1188,8 +1188,8 @@ void CFullMainESP::DrawBuildings()
 			continue;
 
 		// Skip if this entity isn't in our cache
-		auto it = m_mCompMainBuildingCache.find(pBaseEntity);
-		if (it == m_mCompMainBuildingCache.end())
+		auto it = m_mBuildingCache.find(pBaseEntity);
+		if (it == m_mBuildingCache.end())
 			continue;
 
 		auto& tCache = it->second;
@@ -1278,8 +1278,8 @@ void CFullMainESP::DrawWorld()
 			continue;
 
 		// Skip if this entity isn't in our cache
-		auto it = m_mCompMainWorldCache.find(pBaseEntity);
-		if (it == m_mCompMainWorldCache.end())
+		auto it = m_mWorldCache.find(pBaseEntity);
+		if (it == m_mWorldCache.end())
 			continue;
 
 		auto& tCache = it->second;
