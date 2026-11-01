@@ -18,6 +18,7 @@
 #pragma comment(lib, "comdlg32.lib")
 
 using namespace ImGui;
+#include "../../Visuals/Comp/CompMenu.inl"
 
 static bool DebugRow(const char* sLabel)
 {
@@ -628,6 +629,7 @@ static void VisualsView()
 		return;
 
 	TableNextColumn();
+	FullCompSettings();
 	if (Section("Radar - Amalgam Ultimate"))
 	{
 		FToggle(Vars::Radar::Enabled);

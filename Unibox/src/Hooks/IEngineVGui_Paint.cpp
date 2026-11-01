@@ -9,6 +9,7 @@
 #include "../Features/Visuals/SentryESP/SentryESP.h"
 #include "../Features/Visuals/StickyESP/StickyESP.h"
 #include "../Features/Visuals/EnemyCam/EnemyCam.h"
+#include "../Features/Visuals/Comp/CompVisuals.h"
 #include "../Features/Visuals/OffscreenArrows/OffscreenArrows.h"
 #include "../Features/Visuals/CameraWindow/CameraWindow.h"
 #include "../Features/Visuals/Visuals.h"
@@ -72,6 +73,7 @@ MAKE_HOOK(IEngineVGui_Paint, U::Memory.GetVirtual(I::EngineVGui, 14), void,
 			F::SentryESP.CacheDrawInfo(pCacheFor);
 			F::StickyESP.CacheDrawInfo(pCacheFor);
 			F::EnemyCam.CacheDrawInfo(pCacheFor);
+			F::CompVisuals.Capture(pCacheFor);
 			F::Aimbot.CacheDrawInfo(pCacheFor);
 			F::Visuals.CacheBestAimPos(pCacheFor);
 		}

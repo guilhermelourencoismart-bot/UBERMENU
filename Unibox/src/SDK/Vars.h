@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../SDK/Definitions/Types.h"
 #include "../Utils/Macros/Macros.h"
 #include <windows.h>
@@ -1491,3 +1491,5 @@ NAMESPACE_BEGIN(Vars)
 		CVar(DrawHitboxes, "Show hitboxes", false, NOSAVE);
 	NAMESPACE_END(Debug)
 NAMESPACE_END(Vars)
+
+#include "CompVars.h"

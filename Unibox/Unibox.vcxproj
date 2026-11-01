@@ -55,6 +55,24 @@
     <ClCompile Include="src\Features\Visuals\EnemyCam\EnemyCam.cpp" />
     <ClInclude Include="src\Features\Visuals\EnemyCam\EnemyCam.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Features\Visuals\Comp\CompDraw.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\CompDraw.h" />
+    <ClInclude Include="src\Features\Visuals\Comp\CompMenu.inl" />
+    <ClCompile Include="src\Features\Visuals\Comp\CompVisuals.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\CompVisuals.h" />
+    <ClCompile Include="src\Features\Visuals\Comp\FocusFire.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\FocusFire.h" />
+    <ClCompile Include="src\Features\Visuals\Comp\HiderESP.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\HiderESP.h" />
+    <ClCompile Include="src\Features\Visuals\Comp\MedicUberBar.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\MedicUberBar.h" />
+    <ClCompile Include="src\Features\Visuals\Comp\PylonESP.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\PylonESP.h" />
+    <ClCompile Include="src\Features\Visuals\Comp\UberTracker.cpp" />
+    <ClInclude Include="src\Features\Visuals\Comp\UberTracker.h" />
+    <ClInclude Include="src\SDK\CompVars.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

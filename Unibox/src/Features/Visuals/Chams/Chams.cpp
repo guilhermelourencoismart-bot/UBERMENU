@@ -5,6 +5,7 @@
 #include "../Materials/Materials.h"
 #include "../FakeAngle/FakeAngle.h"
 #include "../../Backtrack/Backtrack.h"
+#include "../Comp/FocusFire.h"
 
 static inline bool GetDistanceThing(float flDistance, const ChamsMaterial_t& tMaterial, Color_t& tColorOut)
 {
@@ -23,6 +24,7 @@ static inline bool GetDistanceThing(float flDistance, const ChamsMaterial_t& tMa
 void CChams::Reset()
 {
 	m_vEntities.clear();
+	m_compMaterials.clear();
 	m_mEntities.clear();
 	m_tOriginalColor = {};
 	m_flOriginalBlend = 1.f;
@@ -166,7 +168,8 @@ void CChams::DrawModel(CBaseEntity* pEntity, const Chams_t& tChams, IMatRenderCo
 void CChams::Store(CTFPlayer* pLocal)
 {
 	m_vEntities.clear();
-	if (!pLocal || !F::Groups.GroupsActive())
+	m_compMaterials.clear();
+	if (!pLocal || (!F::Groups.GroupsActive() && !Vars::Comp::Features::FocusFire.Value))
 		return;
 
 	Vector vLocalOrigin = pLocal->m_vecOrigin();
@@ -203,6 +206,19 @@ void CChams::Store(CTFPlayer* pLocal)
 		}
 	}
 
+	F::FullFocusFire.UpdateChamsEntities();
+	for (auto entity : H::Entities.GetGroup(EntityEnum::PlayerEnemy))
+	{
+		if (!entity || entity->IsDormant() || !F::FullFocusFire.m_mEntities.contains(entity->entindex()))
+			continue;
+		auto& material = m_compMaterials[entity->entindex()];
+		material.Visible = {{"Flat", ChamsMaterial_t{Vars::Comp::FocusFire::Color.Value}}};
+		material.Occluded.clear();
+		if (!Vars::Comp::FocusFire::VisibleOnly.Value)
+			material.Occluded = material.Visible;
+		std::erase_if(m_vEntities, [entity](const ChamsInfo_t& entry) { return entry.m_pEntity == entity && !entry.m_iFlags; });
+		m_vEntities.emplace_back(entity, &material, pLocal->GetAbsOrigin().DistTo(entity->GetAbsOrigin()));
+	}
 	Group_t* pGroup = nullptr;
 	if (F::FakeAngle.bDrawChams && F::FakeAngle.bBonesSetup
 		&& F::Groups.GetGroup(TargetsEnum::FakeAngle, pGroup) && pGroup->m_tChams(false))
