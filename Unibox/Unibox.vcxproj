@@ -1078,6 +1078,14 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\boost.1.87.0\build\boost.targets" Condition="Exists('..\packages\boost.1.87.0\build\boost.targets')" />
   </ImportGroup>
+  <Target Name="ValidateOptionalProfileStalker" BeforeTargets="PrepareForBuild">
+    <Error Condition="Exists('$(MSBuildProjectDirectory)\src\Features\Misc\ProfileStalker\ProfileStalker.cpp') And !Exists('$(MSBuildProjectDirectory)\src\Features\Misc\ProfileStalker\ProfileStalker.h')"
+           Text="ProfileStalker.cpp requires its original ProfileStalker.h. Restore both files; do not replace the module with a stub." />
+    <Error Condition="Exists('$(MSBuildProjectDirectory)\src\Features\Misc\ProfileStalker\ProfileStalker.h') And !Exists('$(MSBuildProjectDirectory)\src\Features\Misc\ProfileStalker\ProfileStalker.cpp')"
+           Text="ProfileStalker.h requires its original ProfileStalker.cpp. Restore both files; do not replace the module with a stub." />
+    <Warning Condition="!Exists('$(MSBuildProjectDirectory)\src\Features\Misc\ProfileStalker\ProfileStalker.cpp') And !Exists('$(MSBuildProjectDirectory)\src\Features\Misc\ProfileStalker\ProfileStalker.h')"
+             Text="Optional ProfileStalker sources are absent from this distribution. Existing integration is preserved, but this build cannot provide that module." />
+  </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>

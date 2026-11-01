@@ -1,10 +1,14 @@
 name: MSBuild
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
 
 jobs:
   msbuild:
-    runs-on: windows-latest
+    runs-on: windows-2022
+    timeout-minutes: 45
 
     strategy:
       matrix:
@@ -16,21 +20,56 @@ jobs:
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: '[17.0,18.0)'
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Validate project file references
+      run: python scripts/validate_unibox.py
+
+    - name: Add NuGet to PATH
+      uses: NuGet/setup-nuget@v2
+      with:
+        nuget-version: '6.12.1'
 
     - name: Restore NuGet packages
       working-directory: ${{ env.GITHUB_WORKSPACE }}
-      run: nuget restore
+      run: nuget restore Unibox.sln -ConfigFile NuGet.config -NonInteractive
+
+    - name: Validate restored dependencies
+      run: python scripts/validate_unibox.py --require-packages
 
     - name: Build
       working-directory: ${{ env.GITHUB_WORKSPACE }}
-      run: msbuild Unibox.sln /p:Platform=${{ matrix.platform }} /p:Configuration=${{ matrix.configuration }}
+      run: msbuild Unibox.sln /m:2 /p:Platform=${{ matrix.platform }} /p:Configuration=${{ matrix.configuration }} /bl:msbuild-${{ matrix.configuration }}.binlog
+
+    - name: Require the expected DLL
+      shell: pwsh
+      run: |
+        $dll = 'output/${{ matrix.platform }}/${{ matrix.configuration }}/Unibox${{ matrix.platform }}${{ matrix.configuration }}.dll'
+        if (!(Test-Path $dll) -or (Get-Item $dll).Length -eq 0) {
+          throw "Expected build output missing or empty: $dll"
+        }
     
     - uses: actions/upload-artifact@v4
       with:
         name: Unibox${{ matrix.platform }}${{ matrix.configuration }}
         path: output/${{ matrix.platform }}/${{ matrix.configuration }}/*.dll
+        if-no-files-found: error
     
     - uses: actions/upload-artifact@v4
       with:
         name: Unibox${{ matrix.platform }}${{ matrix.configuration }}PDB
         path: output/${{ matrix.platform }}/${{ matrix.configuration }}/*.pdb
+        if-no-files-found: error
+
+    - name: Upload build diagnostics
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-log-${{ matrix.configuration }}
+        path: msbuild-${{ matrix.configuration }}.binlog
+        if-no-files-found: ignore
