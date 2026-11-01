@@ -24,7 +24,8 @@ void CV2Router::Update(CTFPlayer* local,CTFWeaponBase* weapon)
     if(!next.valid) return;
     const int index=G::AimTarget.m_iEntIndex;
     if(index<=0) return;
-    auto entity=I::ClientEntityList->GetClientEntity(index);
+    auto client=I::ClientEntityList->GetClientEntity(index);
+    auto entity=client?client->As<CBaseEntity>():nullptr;
     if(!SolverPolicy::TargetIsUsable(entity!=nullptr,entity && entity->IsDormant(),entity && entity->IsPlayer(),entity && entity->IsPlayer() && entity->As<CTFPlayer>()->IsAlive())) { Reset(); return; }
     const auto token=uint64_t(entity->GetRefEHandle().ToInt());
     if(SolverPolicy::RecycledTarget(m_targetIndex,m_targetToken,index,token)) Reset();

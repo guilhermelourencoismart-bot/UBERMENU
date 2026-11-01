@@ -333,7 +333,9 @@ static void AimbotWeapons()
 		FDropdown(Vars::Aimbot::Projectile::StrafePrediction);
 		FDropdown(Vars::Aimbot::Projectile::SplashPrediction);
 		FDropdown(Vars::Aimbot::Projectile::Hitboxes);
-		FDropdown(Vars::Aimbot::Projectile::SplashMode);
+		if(Vars::Aimbot::General::Solver.Value==Vars::Aimbot::General::SolverEnum::V2)
+            FDropdown(Vars::Aimbot::Projectile::V2SplashMode);
+        else FDropdown(Vars::Aimbot::Projectile::SplashMode);
 		FDropdown(Vars::Aimbot::Projectile::Modifiers);
 		FSlider(Vars::Aimbot::Projectile::MaxSimulationTime);
 		FTooltip("Longer = less accuracy, shorter = less shoot candidates");

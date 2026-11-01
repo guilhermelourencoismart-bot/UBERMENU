@@ -1450,9 +1450,9 @@ bool CV2AimbotProjectile::HandleSplash(std::vector<V2Splash_t>& vSplashHistory)
 		G::BoxStorage.emplace_back(vSplashHistory.front().m_vOrigin + m_tInfo.m_vTargetEye + vPoint, Vec3(-1, -1, -1), Vec3(1, 1, 1), Vec3(), I::GlobalVars->curtime + 60.f, Color_t(0, 0, 0, 0), Vars::Colors::Local.Value);
 #endif
 
-	int iMulti = Vars::Aimbot::Projectile::SplashMode.Value;
+	int iMulti = Vars::Aimbot::Projectile::V2SplashMode.Value;
 	static std::vector<Vec3> vSimplePoints = {};
-	if (iMulti == Vars::Aimbot::Projectile::SplashModeEnum::Single)
+	if (iMulti == Vars::Aimbot::Projectile::V2SplashModeEnum::Single)
 	{
 		SetupSplashPoints(vSplashHistory.front().m_vOrigin, vSpherePoints, vSimplePoints);
 		if (vSimplePoints.empty())
@@ -1466,7 +1466,7 @@ bool CV2AimbotProjectile::HandleSplash(std::vector<V2Splash_t>& vSplashHistory)
 			continue;
 
 		std::vector<V2Point_t> vSplashPoints = {};
-		if (iMulti == Vars::Aimbot::Projectile::SplashModeEnum::Multi)
+		if (iMulti == Vars::Aimbot::Projectile::V2SplashModeEnum::Multi)
 			vSplashPoints = GetSplashPoints(tHistory.m_vOrigin, vSpherePoints, tHistory.m_iSimtime);
 		else
 			vSplashPoints = GetSplashPointsSimple(tHistory.m_vOrigin, vSimplePoints, tHistory.m_iSimtime);

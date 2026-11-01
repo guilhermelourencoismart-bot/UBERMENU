@@ -66,3 +66,7 @@ inline auto& SwingLines=Vars::Visuals::Prediction::SwingLines;
 namespace Vars::Aimbot::General {
 CVarEnum(Solver, "Aimbot solver", 1, NONE, nullptr, VA_LIST("Unibox", "Amalgam V2"), Unibox, V2);
 }
+
+namespace Vars::Aimbot::Projectile {
+CVarEnum(V2SplashMode, "V2 splash sampling", 0, NONE, nullptr, VA_LIST("Multi", "Single"), Multi, Single);
+}
