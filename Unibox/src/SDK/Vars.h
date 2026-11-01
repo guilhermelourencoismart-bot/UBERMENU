@@ -618,6 +618,20 @@ NAMESPACE_BEGIN(Vars)
 		CVarValues(ActiveGroups, "Active groups", int(0b11111111111111111111111111111111), VISUAL | DROPDOWN_MULTI | DROPDOWN_NOSANITIZATION, nullptr);
 	NAMESPACE_END(ESP)
 
+	NAMESPACE_BEGIN(Radar)
+		CVar(Enabled, "Radar enabled", false, VISUAL);
+		CVar(Circular, "Circular radar", true, VISUAL);
+		CVar(ClampToEdge, "Clamp out of range", true, VISUAL);
+		CVar(Players, "Radar players", true, VISUAL);
+		CVar(Teammates, "Radar teammates", true, VISUAL);
+		CVar(Buildings, "Radar buildings", true, VISUAL);
+		CVar(Pickups, "Radar pickups", true, VISUAL);
+		CVar(Range, "Radar range", 1500.f, VISUAL | SLIDER_CLAMP, 50.f, 5000.f, 50.f);
+		CVar(Size, "Radar size", 200.f, VISUAL | SLIDER_CLAMP, 100.f, 500.f, 10.f);
+		CVar(PositionX, "Radar X", 20, VISUAL | SLIDER_MIN, 0, 3840, 10);
+		CVar(PositionY, "Radar Y", 200, VISUAL | SLIDER_MIN, 0, 2160, 10);
+	NAMESPACE_END(Radar)
+
 	NAMESPACE_BEGIN(Visuals)
 		NAMESPACE_BEGIN(UI)
 			CVarEnum(StreamerMode, "Streamer mode", 0, VISUAL, nullptr,

@@ -625,6 +625,21 @@ static void VisualsView()
 		return;
 
 	TableNextColumn();
+	if (Section("Radar — Amalgam Ultimate"))
+	{
+		FToggle(Vars::Radar::Enabled);
+		FToggle(Vars::Radar::Circular);
+		FToggle(Vars::Radar::ClampToEdge);
+		FToggle(Vars::Radar::Players);
+		FToggle(Vars::Radar::Teammates);
+		FToggle(Vars::Radar::Buildings);
+		FToggle(Vars::Radar::Pickups);
+		FSlider(Vars::Radar::Range);
+		FSlider(Vars::Radar::Size);
+		FSlider(Vars::Radar::PositionX);
+		FSlider(Vars::Radar::PositionY);
+		FLabel("Based on Unibox — GatoPotato658/Unibox");
+	} EndSection();
 	if (Section("Interface"))
 	{
 		FDropdown(Vars::Visuals::UI::StreamerMode);

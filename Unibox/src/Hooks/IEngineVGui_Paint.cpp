@@ -1,6 +1,7 @@
 #include "../SDK/SDK.h"
 
 #include "../Features/Visuals/ESP/ESP.h"
+#include "../Features/Visuals/Radar/Radar.h"
 #include "../Features/Visuals/OffscreenArrows/OffscreenArrows.h"
 #include "../Features/Visuals/CameraWindow/CameraWindow.h"
 #include "../Features/Visuals/Visuals.h"
@@ -56,6 +57,7 @@ MAKE_HOOK(IEngineVGui_Paint, U::Memory.GetVirtual(I::EngineVGui, 14), void,
 		{
 			CTFPlayer* pCacheFor = SDK::TakingScreenshot() ? nullptr : pLocal;
 			F::ESP.CacheDrawInfo(pCacheFor);
+			F::Radar.CacheDrawInfo(pCacheFor);
 			F::Aimbot.CacheDrawInfo(pCacheFor);
 			F::Visuals.CacheBestAimPos(pCacheFor);
 		}

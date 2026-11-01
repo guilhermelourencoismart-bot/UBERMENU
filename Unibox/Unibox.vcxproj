@@ -34,6 +34,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Features\Visuals\Radar\Radar.cpp" />
+    <ClInclude Include="src\Features\Visuals\Radar\Radar.h" />
+    <ClInclude Include="src\Features\Visuals\Radar\RadarMath.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
