@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 
 namespace AimSmoothing
 {
@@ -15,15 +16,17 @@ namespace AimSmoothing
     class VelocityCache
     {
         bool m_valid = false;
-        int m_tick = 0, m_target = 0;
+        int m_tick = 0;
+        uint64_t m_target = 0;
         float m_scale = 1.f;
     public:
         template <typename Calculate>
-        float Get(int tick, int target, Calculate calculate)
+        float Get(int tick, uint64_t target, Calculate calculate)
         {
             if (!m_valid || tick != m_tick || target != m_target)
             {
                 m_scale = calculate();
+                if(!std::isfinite(m_scale))m_scale=1.f;
                 m_tick = tick;
                 m_target = target;
                 m_valid = true;

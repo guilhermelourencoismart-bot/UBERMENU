@@ -52,6 +52,10 @@ int main()
     Require(calls == 4, "tick rollback invalidates cache");
     for (int i = 0; i < 1000; ++i) cache.Get(0, 2, compute);
     Require(calls == 4, "repeated calls do not repeat velocity computation");
+    cache.Get(0,(uint64_t(5)<<32)|2,compute);Require(calls==5,"entity serial invalidates velocity cache");
+    Require(Near(cache.Get(1,3,[]{return std::numeric_limits<float>::quiet_NaN();}),1.f),"nonfinite velocity cache calculation becomes neutral");
+    Require(!SolverPolicy::TargetIsUsable(false,false,false,false)&&!SolverPolicy::TargetIsUsable(true,true,true,true)&&!SolverPolicy::TargetIsUsable(true,false,true,false),"missing dormant and dead targets invalidated");
+    Require(SolverPolicy::TargetIsUsable(true,false,false,false),"nonplayer targets retain valid semantics");
     Require(Near(AimSmoothing::AxisStep(90, 10, true), 8.f), "V2 cubic denominator");
     Require(Near(AimSmoothing::AxisStep(90, 1, false), 60.f), "V2 remapped minimum");
     Require(Near(AimSmoothing::AxisStep(90, 100, false), 3.f), "V2 remapped maximum");

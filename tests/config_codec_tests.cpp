@@ -40,5 +40,16 @@ int main()
     std::vector<Bind> valid{{-1},{0},{1}};SanitizeBindParents(valid);Check(valid[2].m_iParent==1&&valid[1].m_iParent==0,"valid bind ancestry preserved");
     bool failed=false;try{std::istringstream malformed("{ broken");boost::property_tree::read_json(malformed,tree);}catch(const boost::property_tree::json_parser_error&){failed=true;}
     Check(failed,"malformed JSON rejected by production parser");
+    struct Color{unsigned char r,g,b,a;};Color color{0,42,255,128};WriteColor(tree,"color",color);Color copy{};ReadColor(tree,"color",copy);
+    Check(copy.r==0&&copy.g==42&&copy.b==255&&copy.a==128,"RGBA numeric byte roundtrip");
+    tree.put("color.r",-1);tree.put("color.g",300);tree.put("color.b","invalid");tree.put("color.a",99);ReadColor(tree,"color",copy);
+    Check(copy.r==0&&copy.g==42&&copy.b==255&&copy.a==99,"invalid channels retained, valid alpha updated");
+    struct Window{int x,y,w,h;};Window window{-200,30,300,250};WriteWindow(tree,"window",window);Window rect{};ReadWindow(tree,"window",rect);
+    Check(rect.x==-200&&rect.y==30&&rect.w==300&&rect.h==250,"camera/radar window roundtrip");
+    tree.put("window.w","invalid");tree.erase("missing-window");ReadWindow(tree,"window",rect);ReadWindow(tree,"missing-window",rect);
+    Check(rect.w==300&&rect.h==250,"invalid or absent window members retain defaults");
+    std::map<int,Color> colorBinds{{-1,{1,2,3,4}},{1,{10,20,30,40}}};
+    auto colors=WriteBindMap(colorBinds,[](auto& t,const auto& k,const auto& c){WriteColor(t,k,c);});Color bound{};ReadColor(colors,"1",bound);
+    Check(bound.r==10&&bound.a==40,"per-bind module colors serialize through production codec");
     std::cout<<checks<<" config/bind codec checks passed\n";
 }

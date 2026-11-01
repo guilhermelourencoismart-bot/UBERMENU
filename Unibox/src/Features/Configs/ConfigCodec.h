@@ -17,6 +17,27 @@ namespace ConfigCodec
         if constexpr(std::is_floating_point_v<T>) if(!std::isfinite(*candidate))return false;
         value=*candidate;return true;
     }
+    template<class Color> void WriteColor(boost::property_tree::ptree& tree,const std::string& key,const Color& value)
+    {
+        boost::property_tree::ptree child;
+        WriteScalar(child,"r",int(value.r));WriteScalar(child,"g",int(value.g));WriteScalar(child,"b",int(value.b));WriteScalar(child,"a",int(value.a));tree.put_child(key,child);
+    }
+    template<class Color> void ReadColor(const boost::property_tree::ptree& tree,const std::string& key,Color& value)
+    {
+        if(auto child=tree.get_child_optional(key))
+        {
+            auto channel=[&](const char* name,auto& destination){int v=destination;if(ReadScalar(*child,name,v) && v>=0 && v<=255)destination=static_cast<std::remove_reference_t<decltype(destination)>>(v);};
+            channel("r",value.r);channel("g",value.g);channel("b",value.b);channel("a",value.a);
+        }
+    }
+    template<class Rect> void WriteWindow(boost::property_tree::ptree& tree,const std::string& key,const Rect& value)
+    {
+        boost::property_tree::ptree child;WriteScalar(child,"x",value.x);WriteScalar(child,"y",value.y);WriteScalar(child,"w",value.w);WriteScalar(child,"h",value.h);tree.put_child(key,child);
+    }
+    template<class Rect> void ReadWindow(const boost::property_tree::ptree& tree,const std::string& key,Rect& value)
+    {
+        if(auto child=tree.get_child_optional(key)){ReadScalar(*child,"x",value.x);ReadScalar(*child,"y",value.y);ReadScalar(*child,"w",value.w);ReadScalar(*child,"h",value.h);}
+    }
     inline std::optional<int> ParseBindKey(const std::string& key,size_t count,bool noBind)
     {
         int index=0;auto result=std::from_chars(key.data(),key.data()+key.size(),index);

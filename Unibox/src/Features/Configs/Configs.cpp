@@ -253,13 +253,7 @@ template <> void CConfigs::SaveJson(boost::property_tree::ptree& t, const std::s
 
 template <> void CConfigs::SaveJson(boost::property_tree::ptree& t, const std::string& s, const Color_t& v)
 {
-	boost::property_tree::ptree tChild;
-	SaveJson(tChild, "r", v.r);
-	SaveJson(tChild, "g", v.g);
-	SaveJson(tChild, "b", v.b);
-	SaveJson(tChild, "a", v.a);
-
-	t.put_child(s, tChild);
+	ConfigCodec::WriteColor(t,s,v);
 }
 
 template <> void CConfigs::SaveJson(boost::property_tree::ptree& t, const std::string& s, const std::vector<std::pair<std::string, ChamsMaterial_t>>& v)
@@ -313,13 +307,7 @@ template <> void CConfigs::SaveJson(boost::property_tree::ptree& t, const std::s
 
 template <> void CConfigs::SaveJson(boost::property_tree::ptree& t, const std::string& s, const WindowBox_t& v)
 {
-	boost::property_tree::ptree tChild;
-	SaveJson(tChild, "x", v.x);
-	SaveJson(tChild, "y", v.y);
-	SaveJson(tChild, "w", v.w);
-	SaveJson(tChild, "h", v.h);
-
-	t.put_child(s, tChild);
+	ConfigCodec::WriteWindow(t,s,v);
 }
 
 template <> void CConfigs::SaveJson(boost::property_tree::ptree& t, const std::string& s, const Chams_t& v)
@@ -383,13 +371,7 @@ template <> void CConfigs::LoadJson(const boost::property_tree::ptree& t, const 
 
 template <> void CConfigs::LoadJson(const boost::property_tree::ptree& t, const std::string& s, Color_t& v)
 {
-	if (auto tChild = t.get_child_optional(s))
-	{
-		LoadJson(*tChild, "r", v.r);
-		LoadJson(*tChild, "g", v.g);
-		LoadJson(*tChild, "b", v.b);
-		LoadJson(*tChild, "a", v.a);
-	}
+	ConfigCodec::ReadColor(t,s,v);
 }
 
 template <> void CConfigs::LoadJson(const boost::property_tree::ptree& t, const std::string& s, std::vector<std::pair<std::string, ChamsMaterial_t>>& v)
@@ -465,13 +447,7 @@ template <> void CConfigs::LoadJson(const boost::property_tree::ptree& t, const 
 
 template <> void CConfigs::LoadJson(const boost::property_tree::ptree& t, const std::string& s, WindowBox_t& v)
 {
-	if (auto tChild = t.get_child_optional(s))
-	{
-		LoadJson(*tChild, "x", v.x);
-		LoadJson(*tChild, "y", v.y);
-		LoadJson(*tChild, "w", v.w);
-		LoadJson(*tChild, "h", v.h);
-	}
+	ConfigCodec::ReadWindow(t,s,v);
 }
 
 template <> void CConfigs::LoadJson(const boost::property_tree::ptree& t, const std::string& s, Chams_t& v)

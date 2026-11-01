@@ -468,7 +468,7 @@ bool CEntities::ManageDormancy(int nIndex, CBaseEntity* pEntity)
 	const auto nClassID = pEntity->GetClassID();
 	switch (nClassID)
 	{
-	case ETFClassID::CTFPlayer: flDuration = 1.f; break;
+	case ETFClassID::CTFPlayer: flDuration = Vars::Comp::ESP::Enabled.Value ? std::clamp(Vars::Comp::ESP::DormantDuration.Value,0.015f,5.f) : 1.f; break;
 	case ETFClassID::CObjectSentrygun:
 	case ETFClassID::CObjectDispenser:
 	case ETFClassID::CObjectTeleporter: flDuration = 5.f; break;

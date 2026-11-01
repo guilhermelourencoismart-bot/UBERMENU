@@ -22,6 +22,7 @@ namespace SolverPolicy
             m_previous=next; return changed;
         }
     };
+    constexpr bool TargetIsUsable(bool exists,bool dormant,bool player,bool alive) { return exists && !dormant && (!player || alive); }
     constexpr bool RecycledTarget(int previousIndex,uint64_t previousToken,int index,uint64_t token)
     { return previousIndex==index && previousToken!=token; }
 }
