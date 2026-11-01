@@ -112,7 +112,7 @@ void CFullPlayerTrails::Draw()
 
                     data.Positions.insert(data.Positions.begin(), newPos);
 
-                    if (data.Positions.size() > static_cast<size_t>(Vars::Comp::PlayerTrails::MaxTrailLength.Value))
+                    if (data.Positions.size() > static_cast<size_t>(std::clamp(Vars::Comp::PlayerTrails::MaxTrailLength.Value,1,256)))
                         data.Positions.pop_back();
                 }
             }
@@ -137,7 +137,7 @@ void CFullPlayerTrails::Draw()
             for (size_t i = 0; i < data.Positions.size() - 1; i += step)
             {
                 float timeDiff = currentTime - data.Positions[i].Time;
-                int alpha = static_cast<int>(std::max(0.0f, 255.0f * (1.0f - timeDiff / Vars::Comp::PlayerTrails::TrailLifetime.Value)));
+                int alpha = static_cast<int>(std::max(0.0f, 255.0f * (1.0f - timeDiff / std::max(Vars::Comp::PlayerTrails::TrailLifetime.Value,.01f))));
 
                 if (alpha <= 0)
                     break;

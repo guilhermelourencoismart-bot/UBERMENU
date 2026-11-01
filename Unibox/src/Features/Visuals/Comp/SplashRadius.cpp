@@ -208,7 +208,7 @@ void CFullSplashRadius::Draw()
         // Draw red team groups
         for (const auto& group : redGroups)
         {
-            int segments = Vars::Comp::SplashRadius::Segments.Value;
+            int segments = std::clamp(Vars::Comp::SplashRadius::Segments.Value,3,256);
             if (Vars::Comp::SplashRadius::UseLOD.Value && !group.Circles.empty())
             {
                 segments = ComputeLODSegments(group.Circles[0].Position, playerPos);
@@ -220,7 +220,7 @@ void CFullSplashRadius::Draw()
         // Draw blue team groups
         for (const auto& group : bluGroups)
         {
-            int segments = Vars::Comp::SplashRadius::Segments.Value;
+            int segments = std::clamp(Vars::Comp::SplashRadius::Segments.Value,3,256);
             if (Vars::Comp::SplashRadius::UseLOD.Value && !group.Circles.empty())
             {
                 segments = ComputeLODSegments(group.Circles[0].Position, playerPos);
@@ -243,7 +243,7 @@ void CFullSplashRadius::Draw()
     // Draw individual circles (rockets always, grenades if merging disabled)
     for (const auto& circle : circlesToDrawIndividually)
     {
-        int segments = Vars::Comp::SplashRadius::Segments.Value;
+        int segments = std::clamp(Vars::Comp::SplashRadius::Segments.Value,3,256);
         if (Vars::Comp::SplashRadius::UseLOD.Value)
         {
             segments = ComputeLODSegments(circle.Position, playerPos);
@@ -342,7 +342,7 @@ std::vector<CompCircleGroup> CFullSplashRadius::CreateMergedGroups(const std::ve
 int CFullSplashRadius::ComputeLODSegments(const Vec3& position, const Vec3& playerPos)
 {
     float distance = Distance2D(position, playerPos);
-    int maxSegments = Vars::Comp::SplashRadius::Segments.Value;
+    int maxSegments = std::clamp(Vars::Comp::SplashRadius::Segments.Value,3,256);
 
     if (distance <= FULL_RES)
         return maxSegments;
@@ -356,6 +356,7 @@ int CFullSplashRadius::ComputeLODSegments(const Vec3& position, const Vec3& play
 
 void CFullSplashRadius::GenerateTrigCache(int segments)
 {
+    segments=std::clamp(segments,3,256);
     if (m_LastSegmentCount == segments)
         return; // Cache still valid
 

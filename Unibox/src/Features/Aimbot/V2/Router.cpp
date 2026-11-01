@@ -35,7 +35,11 @@ bool CV2Router::Use(CTFWeaponBase* weapon) const
 {
     if(!weapon) return false;
     const int id=weapon->GetWeaponID();
-    const bool extension=id==TF_WEAPON_PASSTIME_GUN || id==TF_WEAPON_GRAPPLINGHOOK || id==TF_WEAPON_LASER_POINTER || id==TF_WEAPON_MECHANICAL_ARM;
+    const bool special=id==TF_WEAPON_PASSTIME_GUN || id==TF_WEAPON_GRAPPLINGHOOK || id==TF_WEAPON_LASER_POINTER || id==TF_WEAPON_MECHANICAL_ARM;
+    const auto type=SDK::GetWeaponType(weapon);
+    const int modifiers=Vars::Aimbot::Projectile::Modifiers.Value;
+    const bool extension=SolverPolicy::NeedsNativeExtension(special,type==EWeaponType::HITSCAN,Vars::Aimbot::Hitscan::ForwardTrack.Value,
+        type==EWeaponType::PROJECTILE,modifiers & Vars::Aimbot::Projectile::ModifiersEnum::LobAngles,modifiers & Vars::Aimbot::Projectile::ModifiersEnum::TargetDormant);
     return SolverPolicy::UseV2(Vars::Aimbot::General::Solver.Value==Vars::Aimbot::General::SolverEnum::V2,extension);
 }
 void CV2Router::Run(int type,CTFPlayer* local,CTFWeaponBase* weapon,CUserCmd* command)

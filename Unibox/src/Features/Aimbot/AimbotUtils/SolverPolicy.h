@@ -4,6 +4,8 @@ namespace SolverPolicy
 {
     // Mutually exclusive routing: compatibility extensions always retain Unibox.
     constexpr bool UseV2(bool selected, bool extension) { return selected && !extension; }
+    constexpr bool NeedsNativeExtension(bool specialWeapon,bool hitscan,bool forwardTrack,bool projectile,bool lob,bool dormant)
+    { return specialWeapon || (hitscan && forwardTrack) || (projectile && (lob || dormant)); }
     struct Context
     {
         uint64_t owner=0,weapon=0;

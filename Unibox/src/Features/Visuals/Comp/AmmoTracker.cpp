@@ -218,7 +218,7 @@ int CFullAmmoTracker::GetScreenChartSize(float flDistance)
     if (!Vars::Comp::AmmoTracker::ScaleWithDistance.Value)
         return Vars::Comp::AmmoTracker::PieChartSize.Value;
 
-    float flScale = 1.0f - std::min(flDistance / Vars::Comp::AmmoTracker::MaxScaleDistance.Value, 1.0f);
+    float flScale = 1.0f - std::min(flDistance / std::max(Vars::Comp::AmmoTracker::MaxScaleDistance.Value,1.f), 1.0f);
     int iSize = Vars::Comp::AmmoTracker::MinScreenChartSize.Value +
                 static_cast<int>((Vars::Comp::AmmoTracker::MaxScreenChartSize.Value - Vars::Comp::AmmoTracker::MinScreenChartSize.Value) * flScale);
     return std::max(Vars::Comp::AmmoTracker::MinScreenChartSize.Value,
@@ -230,7 +230,7 @@ int CFullAmmoTracker::GetTextSize(float flDistance)
     if (!Vars::Comp::AmmoTracker::ScaleTextWithDistance.Value)
         return Vars::Comp::AmmoTracker::TextSizeDefault.Value;
 
-    float flScale = 1.0f - std::min(flDistance / Vars::Comp::AmmoTracker::MaxScaleDistance.Value, 1.0f);
+    float flScale = 1.0f - std::min(flDistance / std::max(Vars::Comp::AmmoTracker::MaxScaleDistance.Value,1.f), 1.0f);
     int iResult = Vars::Comp::AmmoTracker::TextSizeMin.Value +
                   static_cast<int>((Vars::Comp::AmmoTracker::TextSizeMax.Value - Vars::Comp::AmmoTracker::TextSizeMin.Value) * flScale);
     return std::max(Vars::Comp::AmmoTracker::TextSizeMin.Value,

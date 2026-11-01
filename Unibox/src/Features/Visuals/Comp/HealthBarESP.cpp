@@ -182,7 +182,7 @@ void CFullHealthBarESP::DrawHealthPolygon(const Vec3& playerPos, int health, int
     float overhealRatio = (health > maxHealth) ? (float)(health - maxHealth) / (float)maxHealth : 0.0f;
 
     // Create polygon points around player position
-    const int segments = Vars::Comp::HealthBarESP::PolygonSegments.Value;
+    const int segments = std::clamp(Vars::Comp::HealthBarESP::PolygonSegments.Value,3,256);
     const float radius = Vars::Comp::HealthBarESP::PolygonRadius.Value;
 
     std::vector<Vertex_t> vertices;

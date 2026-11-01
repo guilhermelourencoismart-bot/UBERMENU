@@ -62,7 +62,7 @@ void CFullCraterCheck::Draw()
 
     // Draw the crater polygon at the aim point
     float radius = Vars::Comp::CraterCheck::Radius.Value;
-    int segments = Vars::Comp::CraterCheck::Segments.Value;
+    int segments = std::clamp(Vars::Comp::CraterCheck::Segments.Value,3,256);
 
     Draw3DPolygon(hitPos, radius, hitNormal, segments, willDie);
 }

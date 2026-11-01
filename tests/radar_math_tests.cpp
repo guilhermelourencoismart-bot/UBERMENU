@@ -127,6 +127,10 @@ int main()
     Require(SolverPolicy::RecycledTarget(5,10,5,11),"reused target slot invalidates identity");
     Require(!SolverPolicy::RecycledTarget(5,10,6,11),"different target handled by solver selection");
     Require(SolverPolicy::UseV2(true,false)&&!SolverPolicy::UseV2(true,true)&&!SolverPolicy::UseV2(false,false),"exclusive routing preserves compatibility extensions");
+    Require(SolverPolicy::NeedsNativeExtension(false,true,true,false,false,false),"native forward tracking preserved");
+    Require(SolverPolicy::NeedsNativeExtension(false,false,false,true,true,false)&&SolverPolicy::NeedsNativeExtension(false,false,false,true,false,true),"native lob and dormant targeting preserved");
+    Require(!SolverPolicy::NeedsNativeExtension(false,true,false,false,true,true),"unrelated projectile flags do not disable hitscan V2");
+    Require(!SolverPolicy::NeedsNativeExtension(false,false,false,true,false,false),"ordinary projectiles dispatch to V2");
     Require(!V2Math::PrioritizedBefore(true,true)&&V2Math::PrioritizedBefore(true,false),"target comparator is irreflexive");
     std::cout << checks << " calculation/cache/policy checks passed\n";
 }

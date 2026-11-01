@@ -1,6 +1,7 @@
 // V2-specific settings alongside the corresponding native weapon categories.
 static void V2SolverSettings() {
 FDropdown(Vars::Aimbot::General::Solver);
+FTooltip("Forward track, lob angles, dormant targets and exclusive weapons retain Unibox compatibility. Disable those extensions to select V2 for normal weapons.");
 FDropdown(Vars::Aimbot::General::BypassIgnore);
 FToggle(Vars::Aimbot::General::PrioritizeFollowbot);
 FToggle(Vars::Aimbot::General::PrioritizeNavbot);
