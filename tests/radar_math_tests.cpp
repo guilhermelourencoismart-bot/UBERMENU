@@ -1,5 +1,6 @@
 #include "../Unibox/src/Features/Visuals/Radar/RadarMath.h"
 #include "../Unibox/src/Features/Aimbot/AimbotUtils/VelocityScale.h"
+#include "../Unibox/src/Features/Aimbot/AimbotUtils/AimSmoothing.h"
 #include <cstdlib>
 #include <iostream>
 #include <limits>
@@ -43,5 +44,14 @@ int main()
     Require(calls == 3, "tick change invalidates cache");
     cache.Get(0, 2, compute);
     Require(calls == 4, "tick rollback invalidates cache");
+    Require(Near(AimSmoothing::AxisStep(90, 10, true), 8.f), "V2 cubic denominator");
+    Require(Near(AimSmoothing::AxisStep(90, 1, false), 60.f), "V2 remapped minimum");
+    Require(Near(AimSmoothing::AxisStep(90, 100, false), 3.f), "V2 remapped maximum");
+    Require(Near(AimSmoothing::AxisStep(-358, 1, false), 2.f / 1.5f), "yaw wraps across boundary");
+    Require(Near(AimSmoothing::AxisStep(0, 100, true), 0.f), "aligned target unchanged");
+    Require(Near(AimSmoothing::AxisStep(std::numeric_limits<float>::infinity(), 10, true), 0.f), "invalid delta rejected");
+    struct Angles { float x, y, z; };
+    const auto angle = AimSmoothing::Apply(Angles{0, 179, 0}, Angles{90, -179, 0}, 1.f, false);
+    Require(Near(angle.x, 60.f) && Near(angle.y, 179.f + 2.f / 1.5f), "independent pitch/yaw application");
     std::cout << checks << " calculation checks passed\n";
 }

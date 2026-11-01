@@ -39,6 +39,7 @@
     <ClInclude Include="src\Features\Visuals\Radar\Radar.h" />
     <ClInclude Include="src\Features\Visuals\Radar\RadarMath.h" />
     <ClInclude Include="src\Features\Aimbot\AimbotUtils\VelocityScale.h" />
+    <ClInclude Include="src\Features\Aimbot\AimbotUtils\AimSmoothing.h" />
     <ClCompile Include="src\Features\Visuals\HealthBarESP\HealthBarESP.cpp" />
     <ClInclude Include="src\Features\Visuals\HealthBarESP\HealthBarESP.h" />
     <ClCompile Include="src\Features\Visuals\PlayerTrails\PlayerTrails.cpp" />

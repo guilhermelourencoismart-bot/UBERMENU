@@ -306,6 +306,9 @@ NAMESPACE_BEGIN(Vars)
 			CVar(MaxTargets, "Max targets", 2, SLIDER_MIN, 1, 6);
 			CVar(IgnoreInvisible, "Ignore invisible", 50.f, SLIDER_CLAMP | SLIDER_PRECISION, 0.f, 100.f, 10.f, "%g%%");
 			CVar(AssistStrength, "Assist strength", 25.f, SLIDER_CLAMP | SLIDER_PRECISION, 0.f, 100.f, 1.f, "%g%%");
+			CVarEnum(SmoothingAlgorithm, "Smooth aim algorithm", 0, NONE, nullptr,
+				VA_LIST("Unibox", "V2 cubic", "V2 remapped"), Unibox, V2Cubic, V2Remapped);
+			CVar(V2SmoothFactor, "V2 smoothing factor", 25.f, SLIDER_CLAMP | SLIDER_PRECISION, 1.f, 100.f, 1.f);
 			CVarEnum(SmoothCurve, "Smooth curve", 0, NONE, nullptr,
 				VA_LIST("Linear", "Fast start", "Fast end", "Slow start", "Slow end"),
 				Linear, FastStart, FastEnd, SlowStart, SlowEnd);

@@ -113,6 +113,9 @@ static void AimbotGeneral()
 		FDropdown(Vars::Aimbot::General::SmoothCurve);
 		FSlider(Vars::Aimbot::General::SmoothCurveAmount);
 		FSlider(Vars::Aimbot::General::AssistStrength);
+		FDropdown(Vars::Aimbot::General::SmoothingAlgorithm);
+		FSlider(Vars::Aimbot::General::V2SmoothFactor);
+		FTooltip("V2 algorithms apply to Smooth aim for hitscan/projectiles. SmoothVelocity retains its velocity-aware Unibox curve.");
 		FToggle(Vars::Aimbot::General::AutoShoot);
 		FToggle(Vars::Aimbot::General::LeadAndRestrict);
 		PushDisabled(F::AntiCheatCompatibility.Active());

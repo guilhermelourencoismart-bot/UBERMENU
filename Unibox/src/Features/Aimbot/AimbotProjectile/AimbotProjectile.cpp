@@ -1,4 +1,5 @@
 #include "AimbotProjectile.h"
+#include "../AimbotUtils/AimSmoothing.h"
 
 #include "../Aimbot.h"
 #include "../../Ticks/Ticks.h"
@@ -2047,7 +2048,11 @@ bool CAimbotProjectile::Aim(const Vec3& vCurAngle, const Vec3& vToAngle, Vec3& v
 		break;
 	case Vars::Aimbot::General::AimTypeEnum::Smooth:
 	case Vars::Aimbot::General::AimTypeEnum::SmoothVelocity:
-		vOut = vCurAngle.LerpAngle(vToAngle, F::Aimbot.GetSmoothStrength(vCurAngle, vToAngle));
+		if (m_iMethod == Vars::Aimbot::General::AimTypeEnum::Smooth && Vars::Aimbot::General::SmoothingAlgorithm.Value != 0)
+			vOut = AimSmoothing::Apply(vCurAngle, vToAngle, Vars::Aimbot::General::V2SmoothFactor.Value,
+				Vars::Aimbot::General::SmoothingAlgorithm.Value == Vars::Aimbot::General::SmoothingAlgorithmEnum::V2Cubic);
+		else
+			vOut = vCurAngle.LerpAngle(vToAngle, F::Aimbot.GetSmoothStrength(vCurAngle, vToAngle));
 		bReturn = true;
 		break;
 	case Vars::Aimbot::General::AimTypeEnum::Assistive:
