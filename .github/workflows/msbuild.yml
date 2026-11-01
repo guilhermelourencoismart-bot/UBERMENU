@@ -81,8 +81,8 @@ jobs:
         msbuild Unibox.sln /m:2 /p:Platform=${{ matrix.platform }} /p:Configuration=${{ matrix.configuration }} /bl:msbuild-${{ matrix.configuration }}.binlog 2>&1 | Tee-Object -FilePath msbuild-${{ matrix.configuration }}.log
         $buildExit = $LASTEXITCODE
         if ($buildExit -ne 0) {
-          $errors = Select-String -Path msbuild-${{ matrix.configuration }}.log -Pattern '\berror\s+[A-Z]+\d+' | Select-Object -First 12
-          foreach ($errorLine in $errors) { Write-Output "::error title=MSBuild::$($errorLine.Line)" }
+          $errors = Select-String -Path msbuild-${{ matrix.configuration }}.log -Pattern '\berror\s+[A-Z]+\d+' | ForEach-Object { $_.Line } | Sort-Object -Unique | Select-Object -First 40
+          foreach ($errorLine in $errors) { Write-Output "::error title=MSBuild::$errorLine" }
           exit $buildExit
         }
 
@@ -97,6 +97,7 @@ jobs:
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     
     - uses: actions/upload-artifact@v4
+      id: dll
       with:
         name: Unibox${{ matrix.platform }}${{ matrix.configuration }}
         path: output/${{ matrix.platform }}/${{ matrix.configuration }}/*.dll
@@ -118,3 +119,38 @@ jobs:
           msbuild-${{ matrix.configuration }}.log
           native-tests-${{ matrix.configuration }}.log
         if-no-files-found: ignore
+
+    - name: Package verified DLL, symbols, notices and local-test instructions
+      run: python scripts/package_delivery.py --dll output/${{ matrix.platform }}/${{ matrix.configuration }}/Unibox${{ matrix.platform }}${{ matrix.configuration }}.dll --output artifacts/Amalgam-Ultimate-${{ matrix.configuration }}.zip
+
+    - uses: actions/upload-artifact@v4
+      id: candidate
+      with:
+        name: Amalgam-Ultimate-${{ matrix.configuration }}
+        path: artifacts/Amalgam-Ultimate-${{ matrix.configuration }}.zip
+        if-no-files-found: error
+
+    - name: Package and validate complete source snapshot
+      if: matrix.configuration == 'Release'
+      run: python scripts/package_delivery.py --source ${{ github.sha }} --output artifacts/Amalgam-Ultimate-source.zip
+
+    - uses: actions/upload-artifact@v4
+      id: source
+      if: matrix.configuration == 'Release'
+      with:
+        name: Amalgam-Ultimate-source
+        path: artifacts/Amalgam-Ultimate-source.zip
+        if-no-files-found: error
+
+    - name: Record verified delivery links
+      shell: pwsh
+      run: |
+        @"
+        ## ${{ matrix.configuration }} x64
+        Commit: ${{ github.sha }}
+        MSVC v143, Windows Server 2022; native/Python tests, linker and PE32+/AMD64 validation passed.
+        - [DLL artifact](${{ steps.dll.outputs.artifact-url }})
+        - [DLL, PDB, manifest and documentation](${{ steps.candidate.outputs.artifact-url }})
+        - Source artifact (Release job): ${{ steps.source.outputs.artifact-url }}
+        TF2 runtime validation has not been performed.
+        "@ | Add-Content $env:GITHUB_STEP_SUMMARY

@@ -5,10 +5,12 @@ selecionadas do [Amalgam-Comp](https://github.com/coffeegrind123/Amalgam-Comp)
 e [Amalgam V2](https://github.com/beyazprens/Amalgam-v2).
 Os créditos do Unibox também estão acessíveis no menu Visuals / View.
 
-**Build Windows ainda não comprovada para esta integração.** Consulte
-[estado](docs/INTEGRATION-STATUS.md), [build](docs/BUILD.md),
-[testes](docs/TEST-RESULTS.md) e [licenças](docs/THIRD-PARTY-NOTICES.md).
-As referências de download abaixo pertencem ao upstream e não são builds desta integração.
+Consulte [recursos](docs/FEATURES.md), [estado](docs/INTEGRATION-STATUS.md),
+[build](docs/BUILD.md), [testes](docs/TEST-RESULTS.md),
+[testes locais](docs/LOCAL-TESTING.md) e [licenças](docs/THIRD-PARTY-NOTICES.md).
+A build histórica aprovada precede os ports completos; o resultado da revisão
+atual é registrado nos documentos. Nenhuma execução no TF2 é afirmada.
+Os downloads da seção upstream abaixo pertencem ao projeto original.
 
 <div align="center">
 

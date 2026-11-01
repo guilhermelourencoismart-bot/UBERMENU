@@ -1,49 +1,37 @@
 # Estado da integração
 
-Entrega de desenvolvimento parcial; não é uma versão Windows validada.
+As implementações reduzidas da entrega anterior não são tratadas como paridade
+completa. Foram comparadas e substituídas no fluxo ativo pelos ports de origem.
+O histórico anterior, inclusive `ce9d5442`, foi preservado.
 
-| Etapa | Estado | Escopo real |
+| Etapa | Classificação atual | Evidência/limite |
 |---|---|---|
-| Inspeção/proveniência | Concluída e testada | Fontes locais, commits dos ZIPs e SHA-256 em SOURCES.json |
-| Preflight e testes portáveis | Concluída e testada | Referências, falhas de build, geometria e suavização |
-| Build da referência Release x64 | Concluída e testada | Execução 41291735398: Success, quatro jobs, artefato Release; sem execução TF2 |
-| Build da integração `cdbfb518` | Concluída e testada | Execução 41293599980: Success, quatro jobs, verificação PE e artefato Release |
-| Build da revisão final `ce9d5442` | Concluída e testada | Execução 41294520208: Success, quatro jobs, 12 artefatos, PE AMD64/PE32+ validado |
-| Radar | Implementada, mas não testada em execução | Jogadores/construções/pickups, círculo/retângulo, alcance e bordas; sem ícones/avatars do Comp |
-| HealthBarESP | Implementada, mas não testada em execução | Barras, overheal, seleção médico e contorno de solo; sem preenchimento do polígono nem todos os ajustes do Comp |
-| PlayerTrails | Implementada, mas não testada em execução | Trilhas de inimigos, expiração, serial e limpeza; sem a máquina de estados de visibilidade completa do Comp |
-| OffScreenIndicators | Implementada, mas não testada em execução | Setas ImGui usando grupos existentes; sem avatars/textos do Comp |
-| AmmoTracker | Implementada, mas não testada em execução | Associação a pickups conhecidos, estimativa de respawn e arco/texto; sem HUD completo, pie chart no solo ou suporte a todos os itens sazonais |
-| SentryESP | Implementada, mas não testada em execução | Caixas sem duplicação e linha para alvo networked; sem extração de muzzle por bones nem sistema adicional de Chams |
-| StickyESP | Implementada, mas não testada em execução | Filtros de stickybombs, caixas 2D/3D e visibilidade; Chams nativo preservado |
-| EnemyCam | Implementada, mas não testada em execução | Inimigo mais próximo, viewpoint em CameraWindow; sem todos os modos/offsets/tracking do Comp, sem textura ImGui independente |
-| ESP principal Comp | Pendente por bloqueio identificado | Base Unibox preservada; não há substituição integral do ESP principal |
-| SmoothVelocity V2 | Implementada, mas não testada em execução | Cache tick/alvo, null guard; fórmula portável testada |
-| Aim Smoothing V2 | Implementada, mas não testada em execução | Fórmulas conectadas aos modos Smooth de Hitscan/Projectile; cálculos portáveis testados |
-| Solvers Hitscan/Projectile V2 completos | Pendente por bloqueio identificado | Comparados; Unibox mantém solver, extensões de armas, Passtime e navegação; falta validação Windows para adaptação ampla |
-| Outros visuais exclusivos | Pendente por bloqueio identificado | Não importados automaticamente; exigem análise e validação dos módulos acima |
-| Regressão TF2 e configurações/binds | Pendente por bloqueio identificado | Sem TF2/Windows nesta máquina |
+| Proveniência/licenças/estrutura | Concluída e testada | SOURCES.json, avisos, solução e preflight |
+| Testes portáveis de cálculo/cache/política | Concluída e testada | 82 verificações GCC C++20 |
+| Codec de configurações/binds | Concluída e testada isoladamente | 28 verificações, funções de produção |
+| Validação Python | Concluída e testada | 10 testes |
+| ESP Comp obrigatório | Implementado, mas não testado em execução | MainESP + 13 auxiliares/câmera, controles, eventos e desenho conectados |
+| Visuais adicionais selecionados | Implementados, mas não testados em execução | CritHeals, SplashRadius, CraterCheck |
+| V2 Global/Hitscan/Projectile/Melee | Implementados, mas não testados em execução | Ports completos e router exclusivo; adaptadores nativos |
+| SmoothVelocity/Aim Smoothing | Implementados, cálculos testados | Backend V2 conectado; cache tick/serial |
+| Menu/configuração unificados | Implementados, codec testado | ConfigVar/binds/menu existentes; teste no processo ainda não executado |
+| Windows Release/AVX2 atual | Pendente de resultado CI | Não atribuir à revisão atual o sucesso antigo `ce9d5442` |
+| TF2 | Não executado; não bloqueia build | Testes locais pelo proprietário após entrega |
 
-Cada módulo foi registrado em um commit próprio na branch
-`integration/phase1-unibox`. Consulte `git log --oneline d7147181..HEAD`.
-Este quadro distingue uma adaptação funcional com escopo reduzido de uma
-migração completa: não se afirma paridade integral com os projetos de origem.
+Recursos originais permanecem disponíveis. “Use Comp main ESP” seleciona um
+único renderer principal e deixa o nativo como padrão compatível com configs
+antigas. O solver V2 é selecionável; armas especiais e extensões sem equivalente
+continuam no Unibox. Não há dois solvers ativos para a mesma execução.
+Veja FEATURES.md para capacidades e exclusões justificadas.
 
-## Commits funcionais
+## Checkpoints desta continuação
 
-| Área | Commits |
-|---|---|
-| Radar | `7be28dc0` |
-| HealthBarESP | `16cf317a` |
-| PlayerTrails | `e003b49f` |
-| OffScreenIndicators e preservação de setas não jogadoras | `081057a0`, `ce9d5442` |
-| AmmoTracker e correção de interface | `ec4fd350`, `849dc2f0` |
-| SentryESP | `b5aace44` |
-| StickyESP | `c128bc5e` |
-| EnemyCam e sincronização | `a4bc7788`, `fa6099bc` |
-| Cache SmoothVelocity V2 | `6e8deb17` |
-| Fórmulas V2 conectadas a Hitscan/Projectile | `8b6b6147` |
-| Testes/CI/estabilidade | `ca7633c0`, `cdbfb518`, `311df519`, `874de499` |
-
-Documentação/proveniência/licenças: `59c37e66` e `11817216`, além do registro
-final de resultados. As alterações da Fase 1 permanecem em `56a46a57`.
+`c3a364c9`: UberTracker/MedicUberBar/PylonESP/FocusFire/HiderESP e recorder.
+`39806b50`: HealthBar/Trails/Ammo/Sentry/Sticky completos.
+`2f0bcc77`: Radar completo. `02ad70e3`: Offscreen completo.
+`9c602c0a`: quatro solvers V2 e router. `9996e848`: EnemyCam completo.
+`dd2aea1a`: matemática/política e codec. `ce04a442`: backtrack nativo.
+`cef5de68`: ESP principal e Smooth nos solvers V2.
+`68a6ff64`: CritHeals/SplashRadius/CraterCheck e correções de origem.
+`9ed251c7`: persistência RGBA/janelas, invalidação por serial/estado.
+`git log --oneline d7147181..HEAD` contém todos os checkpoints anteriores.
