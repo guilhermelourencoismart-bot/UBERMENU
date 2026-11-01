@@ -631,6 +631,14 @@ NAMESPACE_BEGIN(Vars)
 		CVar(PositionX, "Radar X", 20, VISUAL | SLIDER_MIN, 0, 3840, 10);
 		CVar(PositionY, "Radar Y", 200, VISUAL | SLIDER_MIN, 0, 2160, 10);
 	NAMESPACE_END(Radar)
+	NAMESPACE_BEGIN(HealthOverlay)
+		CVar(Enabled, "Health overlay", false, VISUAL);
+		CVar(MedicMode, "Medic teammate health", true, VISUAL);
+		CVar(Bars, "Health overlay bars", true, VISUAL);
+		CVar(Polygons, "Health ground outline", false, VISUAL);
+		CVar(ThroughWalls, "Health through walls", false, VISUAL);
+		CVar(MaxDistance, "Health overlay distance", 3500.f, VISUAL | SLIDER_CLAMP, 50.f, 10000.f, 50.f);
+	NAMESPACE_END(HealthOverlay)
 
 	NAMESPACE_BEGIN(Visuals)
 		NAMESPACE_BEGIN(UI)

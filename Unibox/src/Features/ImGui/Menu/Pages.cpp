@@ -642,6 +642,12 @@ static void VisualsView()
 	} EndSection();
 	if (Section("Interface"))
 	{
+		FToggle(Vars::HealthOverlay::Enabled);
+		FToggle(Vars::HealthOverlay::MedicMode);
+		FToggle(Vars::HealthOverlay::Bars);
+		FToggle(Vars::HealthOverlay::Polygons);
+		FToggle(Vars::HealthOverlay::ThroughWalls);
+		FSlider(Vars::HealthOverlay::MaxDistance);
 		FDropdown(Vars::Visuals::UI::StreamerMode);
 		FDropdown(Vars::Visuals::UI::ChatTags, FDropdownEnum::None, -28);
 		FColorPicker(Vars::Colors::Local);
