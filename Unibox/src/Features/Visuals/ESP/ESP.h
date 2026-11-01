@@ -4,6 +4,7 @@
 
 struct ImDrawList;
 void InvalidateESPIconTextures();
+void ReleaseESPGlyphTexture();
 void PrepareESPIconTexture(const std::string& texture);
 void* GetESPIconTexture(const std::string& texture);
 

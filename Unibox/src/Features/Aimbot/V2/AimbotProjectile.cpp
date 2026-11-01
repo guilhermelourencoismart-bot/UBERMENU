@@ -2,6 +2,8 @@
 #include "../AimbotUtils/V2Math.h"
 // Complete V2 port, source ba07d0a9 SHA256 39d95c5c1a7fca16dd56c3b48c82a5e8fa25a431cf0e7bc3831150c4c4a3da55
 #include "AimbotProjectile.h"
+// Source engine trace flag used by V2 splash traces starting inside solid.
+static constexpr unsigned int kV2ContentsNoSkip=0x80000000u;
 #include "../AimbotUtils/AimSmoothing.h"
 
 #include "../Aimbot.h"
@@ -460,6 +462,7 @@ std::unordered_map<int, Vec3> CV2AimbotProjectile::GetDirectPoints()
 static inline std::vector<std::pair<Vec3, int>> ComputeSphere(float flRadius, int iSamples)
 {
 	std::vector<std::pair<Vec3, int>> vPoints;
+	iSamples=std::clamp(iSamples,2,4096);
 	vPoints.reserve(iSamples);
 
 	float flRotateX = Vars::Aimbot::Projectile::SplashRotateX.Value < 0.f ? SDK::StdRandomFloat(0.f, 360.f) : Vars::Aimbot::Projectile::SplashRotateX.Value;
@@ -469,7 +472,7 @@ static inline std::vector<std::pair<Vec3, int>> ComputeSphere(float flRadius, in
 	if (Vars::Aimbot::Projectile::RocketSplashMode.Value == Vars::Aimbot::Projectile::RocketSplashModeEnum::SpecialHeavy)
 		iPointType |= V2PointTypeEnum::Out2 | V2PointTypeEnum::In2;
 
-	float a = PI * (3.f - sqrtf(5.f));
+	float a = std::numbers::pi_v<float> * (3.f - sqrtf(5.f));
 	for (int n = 0; n < iSamples; n++)
 	{
 		float t = a * n;
@@ -566,7 +569,7 @@ static inline void TracePoint(Vec3& vPoint, int& iType, Vec3& vTargetEye, V2Info
 			default:
 				filter.m_pSkip = trace.m_pEnt;
 			}
-			SDK::Trace(trace.endpos - (vTargetEye - vPoint).Normalized(), vPoint, MASK_SOLID | CONTENTS_NOSKIP, &filter, &trace);
+			SDK::Trace(trace.endpos - (vTargetEye - vPoint).Normalized(), vPoint, MASK_SOLID | kV2ContentsNoSkip, &filter, &trace);
 			filter.m_pSkip = nullptr, filter.m_iTeam = -1;
 #ifdef SPLASH_DEBUG5
 			s_mTraceCount["Splash out 2"]++;
@@ -631,7 +634,7 @@ static inline void TracePoint(Vec3& vPoint, int& iType, Vec3& vTargetEye, V2Info
 		}
 		else // currently experimental, there may be a more efficient way to do this?
 		{
-			SDK::Trace(vPoint, vTargetEye, MASK_SOLID | CONTENTS_NOSKIP, &filter, &trace);
+			SDK::Trace(vPoint, vTargetEye, MASK_SOLID | kV2ContentsNoSkip, &filter, &trace);
 #ifdef SPLASH_DEBUG5
 			s_mTraceCount["Splash in 1"]++;
 #endif
@@ -645,7 +648,7 @@ static inline void TracePoint(Vec3& vPoint, int& iType, Vec3& vTargetEye, V2Info
 					goto breakOut;
 
 				CGameTrace trace2 = {};
-				SDK::Trace(trace.endpos - (vPoint - vTargetEye).Normalized(), vTargetEye, MASK_SOLID | CONTENTS_NOSKIP, &filter, &trace2);
+				SDK::Trace(trace.endpos - (vPoint - vTargetEye).Normalized(), vTargetEye, MASK_SOLID | kV2ContentsNoSkip, &filter, &trace2);
 #ifdef SPLASH_DEBUG5
 				s_mTraceCount["Splash in 2"]++;
 #endif
@@ -917,10 +920,117 @@ static inline Vec3 PullPoint(Vec3 vPoint, Vec3 vLocalPos, V2Info_t& tInfo, Vec3 
 	auto HeightenLocalPos = [&]()
 		{	// basic trajectory pass
 			const float flGrav = tInfo.m_flGravity * 800.f;
-	        float flight=0.f;
+			if (!flGrav)
+				return vPoint;
+
+			const Vec3 vDelta = vTargetPos - vLocalPos;
+			const float flDist = vDelta.Length2D();
+
+			const float flRoot = pow(tInfo.m_flVelocity, 4) - flGrav * (flGrav * pow(flDist, 2) + 2.f * vDelta.z * pow(tInfo.m_flVelocity, 2));
+			if (flRoot < 0.f)
+				return vPoint;
+			float flPitch = atan((pow(tInfo.m_flVelocity, 2) - sqrt(flRoot)) / (flGrav * flDist));
+
+			float flTime = flDist / (cos(flPitch) * tInfo.m_flVelocity) - tInfo.m_flOffsetTime;
+			return vLocalPos + Vec3(0, 0, (flGrav * pow(flTime, 2)) / 2);
+		};
+
+	vLocalPos = HeightenLocalPos();
+	Vec3 vForward, vRight, vUp; Math::AngleVectors(Math::CalcAngle(vLocalPos, vPoint), &vForward, &vRight, &vUp);
+	vLocalPos += (vForward * tInfo.m_vOffset.x) + (vRight * tInfo.m_vOffset.y) + (vUp * tInfo.m_vOffset.z);
+	return vLocalPos + (vPoint - vLocalPos) * fabsf(AABBLine(vMins + vTargetPos, vMaxs + vTargetPos, vLocalPos, vPoint - vLocalPos));
+}
+
+
+
+static inline void SolveProjectileSpeed(CTFWeaponBase* pWeapon, const Vec3& vLocalPos, const Vec3& vTargetPos, float& flVelocity, float& flDragTime, const float flGravity)
+{
+	if (!F::ProjSim.m_pObj || !F::ProjSim.m_pObj->IsDragEnabled() || F::ProjSim.m_pObj->m_dragBasis.IsZero())
+		return;
+
+	const float flGrav = flGravity * 800.0f;
+	if (!flGrav)
+		return;
+
+	const Vec3 vDelta = vTargetPos - vLocalPos;
+	const float flDist = vDelta.Length2D();
+	if (!flDist)
+		return;
+
+	const float flRoot = pow(flVelocity, 4) - flGrav * (flGrav * pow(flDist, 2) + 2.f * vDelta.z * pow(flVelocity, 2));
+	if (flRoot < 0.f)
+		return;
+
+	const float flPitch = atan((pow(flVelocity, 2) - sqrt(flRoot)) / (flGrav * flDist));
+	const float flTime = flDist / (cos(flPitch) * flVelocity);
+
+	float flDrag = 0.f;
+	if (Vars::Aimbot::Projectile::DragOverride.Value)
+		flDrag = Vars::Aimbot::Projectile::DragOverride.Value;
+	else
+	{
+		switch (pWeapon->m_iItemDefinitionIndex()) // the remaps are dumb but they work so /shrug
+		{
+		case Demoman_m_GrenadeLauncher:
+		case Demoman_m_GrenadeLauncherR:
+		case Demoman_m_FestiveGrenadeLauncher:
+		case Demoman_m_Autumn:
+		case Demoman_m_MacabreWeb:
+		case Demoman_m_Rainbow:
+		case Demoman_m_SweetDreams:
+		case Demoman_m_CoffinNail:
+		case Demoman_m_TopShelf:
+		case Demoman_m_Warhawk:
+		case Demoman_m_ButcherBird:
+		case Demoman_m_TheIronBomber: flDrag = Math::RemapVal(flVelocity, 1217.f, k_flMaxVelocity, 0.120f, 0.200f); break; // 0.120 normal, 0.200 capped, 0.300 v3000
+		case Demoman_m_TheLochnLoad: flDrag = Math::RemapVal(flVelocity, 1504.f, k_flMaxVelocity, 0.070f, 0.085f); break; // 0.070 normal, 0.085 capped, 0.120 v3000
+		case Demoman_m_TheLooseCannon: flDrag = Math::RemapVal(flVelocity, 1454.f, k_flMaxVelocity, 0.385f, 0.530f); break; // 0.385 normal, 0.530 capped, 0.790 v3000
+		case Demoman_s_StickybombLauncher:
+		case Demoman_s_StickybombLauncherR:
+		case Demoman_s_FestiveStickybombLauncher:
+		case Demoman_s_TheQuickiebombLauncher:
+		case Demoman_s_TheScottishResistance: flDrag = Math::RemapVal(flVelocity, 922.f, k_flMaxVelocity, 0.085f, 0.190f); break; // 0.085 low, 0.190 capped, 0.230 v2400
+		case Scout_s_TheFlyingGuillotine:
+		case Scout_s_TheFlyingGuillotineG: flDrag = 0.310f; break;
+		case Scout_t_TheSandman: flDrag = 0.180f; break;
+		case Scout_t_TheWrapAssassin: flDrag = 0.285f; break;
+		case Scout_s_MadMilk:
+		case Scout_s_MutatedMilk:
+		case Sniper_s_Jarate:
+		case Sniper_s_FestiveJarate:
+		case Sniper_s_TheSelfAwareBeautyMark: flDrag = 0.057f; break;
+		}
+	}
+
+	float flOverride = Vars::Aimbot::Projectile::TimeOverride.Value;
+	flDragTime = powf(flTime, 2) * flDrag / (flOverride ? flOverride : 1.5f); // rough estimate to prevent m_flTime being too low
+	flVelocity = flVelocity - flVelocity * flTime * flDrag;
+}
+void CV2AimbotProjectile::CalculateAngle(const Vec3& vLocalPos, const Vec3& vTargetPos, int iSimTime, V2Solution_t& tOut, bool bAccuracy, int iTolerance)
+{
+	if (tOut.m_iCalculated != V2CalculatedEnum::Pending)
+		return;
+
+	const float flGrav = m_tInfo.m_flGravity * 800.f;
+
+	float flPitch, flYaw;
+	{	// basic trajectory pass
+		float flVelocity = m_tInfo.m_flVelocity, flDragTime = 0.f;
+		if (F::ProjSim.m_pObj->IsDragEnabled() && !F::ProjSim.m_pObj->m_dragBasis.IsZero() && m_tInfo.m_pWeapon)
+		{
+			Vec3 vForward, vRight, vUp; Math::AngleVectors(Math::CalcAngle(vLocalPos, vTargetPos), &vForward, &vRight, &vUp);
+			Vec3 vShootPos = vLocalPos + (vForward * m_tInfo.m_vOffset.x) + (vRight * m_tInfo.m_vOffset.y) + (vUp * m_tInfo.m_vOffset.z);
+			SolveProjectileSpeed(m_tInfo.m_pWeapon, vShootPos, vTargetPos, flVelocity, flDragTime, m_tInfo.m_flGravity);
+		}
+
+		Vec3 vDelta = vTargetPos - vLocalPos;
+		float flDist = vDelta.Length2D();
+
+		Vec3 vAngleTo = Math::CalcAngle(vLocalPos, vTargetPos);
+        float flight=0.f;
         if(!V2Math::LowerArc(flVelocity,flGrav,flDist,vDelta.z,flPitch,flight)) { tOut.m_iCalculated=V2CalculatedEnum::Bad; return; }
         tOut.m_flTime=flight-m_tInfo.m_flOffsetTime+flDragTime;
-		tOut.m_flPitch = flPitch = -RAD2DEG(flPitch) - m_tInfo.m_vAngFix.x;
+		tOut.m_flPitch = flPitch = -Math::Rad2Deg(flPitch) - m_tInfo.m_vAngFix.x;
 		tOut.m_flYaw = flYaw = vAngleTo.y - m_tInfo.m_vAngFix.y;
 	}
 
@@ -979,16 +1089,9 @@ static inline Vec3 PullPoint(Vec3 vPoint, Vec3 vLocalPos, V2Info_t& tInfo, Vec3 
 		float flDist = vDelta.Length2D();
 
 		Vec3 vAngleTo = Math::CalcAngle(m_tProjInfo.m_vPos, vTargetPos);
-		if (!flGrav)
-			tOut.m_flPitch = -DEG2RAD(vAngleTo.x);
-		else
-		{	// arch
-			float flRoot = pow(flVelocity, 4) - flGrav * (flGrav * pow(flDist, 2) + 2.f * vDelta.z * pow(flVelocity, 2));
-			if (tOut.m_iCalculated = flRoot < 0.f ? V2CalculatedEnum::Bad : V2CalculatedEnum::Pending)
-				return;
-			tOut.m_flPitch = atan((pow(flVelocity, 2) - sqrt(flRoot)) / (flGrav * flDist));
-		}
-		tOut.m_flTime = flDist / (cos(tOut.m_flPitch) * flVelocity) + flDragTime;
+        float flight=0.f;
+        if(!V2Math::LowerArc(flVelocity,flGrav,flDist,vDelta.z,tOut.m_flPitch,flight)) { tOut.m_iCalculated=V2CalculatedEnum::Bad; return; }
+        tOut.m_flTime=flight+flDragTime;
 	}
 
 	{	// correct yaw
@@ -1001,8 +1104,8 @@ static inline Vec3 PullPoint(Vec3 vPoint, Vec3 vLocalPos, V2Info_t& tInfo, Vec3 
 		if (!vSolutions.empty())
 		{
 			vShootPos += vForward * vSolutions.front();
-			tOut.m_flYaw = flYaw - (RAD2DEG(atan2(vShootPos.y, vShootPos.x)) - flYaw);
-			flYaw = RAD2DEG(atan2(vShootPos.y, vShootPos.x));
+			tOut.m_flYaw = flYaw - (Math::Rad2Deg(atan2(vShootPos.y, vShootPos.x)) - flYaw);
+			flYaw = Math::Rad2Deg(atan2(vShootPos.y, vShootPos.x));
 		}
 	}
 
@@ -1010,7 +1113,7 @@ static inline Vec3 PullPoint(Vec3 vPoint, Vec3 vLocalPos, V2Info_t& tInfo, Vec3 
 		if (flGrav)
 		{
 			flPitch -= m_tProjInfo.m_vAng.x;
-			tOut.m_flPitch = -RAD2DEG(tOut.m_flPitch) + flPitch - m_tInfo.m_vAngFix.x;
+			tOut.m_flPitch = -Math::Rad2Deg(tOut.m_flPitch) + flPitch - m_tInfo.m_vAngFix.x;
 		}
 		else
 		{
@@ -1023,7 +1126,7 @@ static inline Vec3 PullPoint(Vec3 vPoint, Vec3 vLocalPos, V2Info_t& tInfo, Vec3 
 			if (!vSolutions.empty())
 			{
 				vShootPos += vForward * vSolutions.front();
-				tOut.m_flPitch = flPitch - (RAD2DEG(atan2(-vShootPos.z, vShootPos.x)) - flPitch);
+				tOut.m_flPitch = flPitch - (Math::Rad2Deg(atan2(-vShootPos.z, vShootPos.x)) - flPitch);
 			}
 		}
 	}

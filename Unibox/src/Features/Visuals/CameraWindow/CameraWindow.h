@@ -7,8 +7,8 @@ class CCameraWindow
 private:
 	void RenderCustomView(void* rcx, const CViewSetup& pViewSetup, ITexture* pTexture);
 
-	IMaterial* m_pCameraMaterial;
-	ITexture* m_pCameraTexture;
+	IMaterial* m_pCameraMaterial = nullptr;
+	ITexture* m_pCameraTexture = nullptr;
 	std::atomic<bool> m_bEnemyView = false;
 
 public:

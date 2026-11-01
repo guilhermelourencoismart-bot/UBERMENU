@@ -23,7 +23,7 @@ void CCameraWindow::Draw()
 	pRenderContext->DrawScreenSpaceRectangle(
 		m_pCameraMaterial,
 		tWindowBox.x - tWindowBox.w / 2, tWindowBox.y, tWindowBox.w, tWindowBox.h,
-		0, 0, tWindowBox.w, tWindowBox.h,
+		0, 0, std::clamp(tWindowBox.w,1,m_pCameraTexture->GetActualWidth())-1, std::clamp(tWindowBox.h,1,m_pCameraTexture->GetActualHeight())-1,
 		m_pCameraTexture->GetActualWidth(), m_pCameraTexture->GetActualHeight(),
 		nullptr, 1, 1
 	);

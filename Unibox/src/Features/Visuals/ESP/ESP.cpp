@@ -889,7 +889,7 @@ static const char* GetClassIconTexture(int iClassNum)
 }
 
 #ifndef TEXTMODE
-static bool s_bCaptureIcons = false;
+static thread_local bool s_bCaptureIcons = false;
 static IDirect3DTexture9* GetIconTexture(const std::string& sTexture);
 #endif
 
@@ -1352,11 +1352,14 @@ struct ESPIcon_t
 	Microsoft::WRL::ComPtr<IDirect3DTexture9> m_pTexture = {};
 };
 
+static std::recursive_mutex s_iconMutex;
+static ITexture* s_pGlyphRT=nullptr;
 static IDirect3DDevice9* s_pIconDevice = nullptr;
 static std::unordered_map<std::string, ESPIcon_t> s_mIcons = {};
 
 void InvalidateESPIconTextures()
 {
+    std::lock_guard lock(s_iconMutex);
 	s_mIcons.clear();
 	s_pIconDevice = nullptr;
 }
@@ -1818,21 +1821,20 @@ static bool CaptureGlyph(HFont hFont, unsigned char ucChar, std::vector<byte>& o
 	oW = std::clamp(tInfo.abcB > 0 ? tInfo.abcB : 32, 1, 256);
 	oH = std::clamp(tInfo.fontTall > 0 ? tInfo.fontTall : oW, 1, 256);
 
-	static ITexture* s_pRT = nullptr;
-	if (!s_pRT)
+	if (!s_pGlyphRT)
 	{
-		s_pRT = I::MaterialSystem->CreateNamedRenderTargetTextureEx("unibox_esp_icon_rt", 256, 256, RT_SIZE_LITERAL, IMAGE_FORMAT_RGBA8888,
+		s_pGlyphRT = I::MaterialSystem->CreateNamedRenderTargetTextureEx("unibox_esp_icon_rt", 256, 256, RT_SIZE_LITERAL, IMAGE_FORMAT_RGBA8888,
 			MATERIAL_RT_DEPTH_NONE, TEXTUREFLAGS_CLAMPS | TEXTUREFLAGS_CLAMPT | TEXTUREFLAGS_NOMIP | TEXTUREFLAGS_NODEPTHBUFFER, 0);
-		if (s_pRT)
-			s_pRT->IncrementReferenceCount();
+		if (s_pGlyphRT)
+			s_pGlyphRT->IncrementReferenceCount();
 	}
-	if (!s_pRT || s_pRT->IsError())
+	if (!s_pGlyphRT || s_pGlyphRT->IsError())
 		return false;
 
 	IMatRenderContext* pCtx = I::MaterialSystem->GetRenderContext();
 	if (!pCtx)
 		return false;
-	pCtx->PushRenderTargetAndViewport(s_pRT, 0, 0, oW, oH);
+	pCtx->PushRenderTargetAndViewport(s_pGlyphRT, 0, 0, oW, oH);
 	pCtx->ClearColor4ub(0, 0, 0, 0);
 	pCtx->ClearBuffers(true, false, false);
 	pCtx->DrawScreenSpaceRectangle(pMat, 0, 0, oW, oH, u0 * iSrcW, v0 * iSrcH, std::max(u1 * iSrcW - 1.f, u0 * iSrcW), std::max(v1 * iSrcH - 1.f, v0 * iSrcH), iSrcW, iSrcH);
@@ -1947,6 +1949,7 @@ static bool UploadIcon(IDirect3DDevice9* pDevice, ESPIcon_t& tIcon)
 
 static IDirect3DTexture9* GetIconTexture(const std::string& sTexture)
 {
+    std::lock_guard lock(s_iconMutex);
 	if (sTexture.empty())
 		return nullptr;
 
@@ -1996,6 +1999,15 @@ void CESP::Draw(ImDrawList* pDrawList)
 	DrawEntities(pDrawList, tCache.m_vPlayers, true);
 
 	CleanupAnims();
+}
+
+void ReleaseESPGlyphTexture()
+{
+#ifndef TEXTMODE
+    std::lock_guard lock(s_iconMutex);
+    if(s_pGlyphRT) { s_pGlyphRT->DecrementReferenceCount();s_pGlyphRT->DeleteIfUnreferenced();s_pGlyphRT=nullptr; }
+    s_mIcons.clear();s_pIconDevice=nullptr;
+#endif
 }
 
 void PrepareESPIconTexture(const std::string& texture)

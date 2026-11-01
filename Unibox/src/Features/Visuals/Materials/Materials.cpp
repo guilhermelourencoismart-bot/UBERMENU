@@ -1,6 +1,7 @@
 #include "Materials.h"
 
 #include "../Glow/Glow.h"
+#include "../ESP/ESP.h"
 #include "../CameraWindow/CameraWindow.h"
 #include "../../Configs/Configs.h"
 #include "../../Binds/Binds.h"
@@ -453,6 +454,7 @@ void CMaterials::UnloadMaterials()
 
 	F::Glow.Unload();
 	F::CameraWindow.Unload();
+    ReleaseESPGlyphTexture();
 
 	for (auto& tMaterial : m_mMaterials | std::views::values)
 		Remove(tMaterial.m_pMaterial);
