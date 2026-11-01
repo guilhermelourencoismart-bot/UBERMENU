@@ -1,4 +1,5 @@
 #include "CompDraw.h"
+#include "PolygonMath.h"
 #include <cmath>
 #include "../ESP/ESP.h"
 #include "../../Players/SteamProfileCache.h"
@@ -139,7 +140,10 @@ void CCompDraw::Draw(ImDrawList* list)
         {
             std::vector<ImVec2> points; points.reserve(command.points.size());
             for (auto& point:command.points) points.emplace_back(point.x,point.y);
-            if (command.type==CompDrawCommand::Type::Polygon) list->AddConvexPolyFilled(points.data(),int(points.size()),color);
+            if (command.type==CompDrawCommand::Type::Polygon) {
+                if(PolygonMath::IsConvex(points))list->AddConvexPolyFilled(points.data(),int(points.size()),color);
+                else list->AddConcavePolyFilled(points.data(),int(points.size()),color);
+            }
             else list->AddPolyline(points.data(),int(points.size()),color,ImDrawFlags_Closed,1.f);
         }
         else if (command.type==CompDrawCommand::Type::Text)

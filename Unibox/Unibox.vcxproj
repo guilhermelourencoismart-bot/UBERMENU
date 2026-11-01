@@ -65,6 +65,7 @@
     <ClInclude Include="src\Features\Visuals\Comp\SplashRadius.h" />
     <ClInclude Include="src\Features\Visuals\Comp\CritHeals.h" />
     <ClInclude Include="src\Features\Visuals\Comp\CraterCheck.h" />
+    <ClInclude Include="src\Features\Visuals\Comp\PolygonMath.h" />
     <ClInclude Include="src\Features\Visuals\Comp\CompDraw.h" />
     <ClInclude Include="src\Features\Visuals\Comp\CompMenu.inl" />
     <ClCompile Include="src\Features\Visuals\Comp\CompVisuals.cpp" />
