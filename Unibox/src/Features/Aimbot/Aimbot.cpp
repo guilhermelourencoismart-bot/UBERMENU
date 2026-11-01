@@ -1,4 +1,6 @@
 #include "Aimbot.h"
+#include "V2/Router.h"
+#include "V2/AimbotProjectile.h"
 #include "AimbotUtils/VelocityScale.h"
 
 #include "AimbotHitscan/AimbotHitscan.h"
@@ -80,7 +82,9 @@ void CAimbot::RunAimbot(CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CUserCmd* pCm
 	if (m_bRunningSecondary)
 		bOriginal = G::CanPrimaryAttack, G::CanPrimaryAttack = G::CanSecondaryAttack;
 
-	switch (eWeaponType)
+	if (F::V2Router.Use(pWeapon))
+		F::V2Router.Run(int(eWeaponType),pLocal,pWeapon,pCmd);
+	else switch (eWeaponType)
 	{
 	case EWeaponType::HITSCAN: F::AimbotHitscan.Run(pLocal, pWeapon, pCmd); break;
 	case EWeaponType::PROJECTILE: F::AimbotProjectile.Run(pLocal, pWeapon, pCmd); break;
@@ -93,6 +97,12 @@ void CAimbot::RunAimbot(CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CUserCmd* pCm
 
 void CAimbot::RunMain(CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CUserCmd* pCmd)
 {
+	F::V2Router.Update(pLocal,pWeapon);
+	if (F::V2Router.Use(pWeapon) && F::V2Projectile.m_iLastTickCancel)
+	{
+		pCmd->weaponselect=F::V2Projectile.m_iLastTickCancel;
+		F::V2Projectile.m_iLastTickCancel=0;
+	}
 	F::AimbotProjectile.ResetMainSearch();
 
 	if (F::AimbotProjectile.m_iLastTickCancel)

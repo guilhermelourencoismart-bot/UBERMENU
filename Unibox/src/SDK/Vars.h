@@ -1493,3 +1493,5 @@ NAMESPACE_BEGIN(Vars)
 NAMESPACE_END(Vars)
 
 #include "CompVars.h"
+
+#include "V2Vars.h"

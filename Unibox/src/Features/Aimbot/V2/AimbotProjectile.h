@@ -1,0 +1,147 @@
+// Complete V2 port, source ba07d0a9 SHA256 5aae8130bc392248860c495869052f0e3b437d03c8e2e8110990d5a7c380facc
+#pragma once
+#include "../../../SDK/SDK.h"
+
+#include "AimbotGlobal.h"
+#include "../../Simulation/MovementSimulation/MovementSimulation.h"
+#include "../../Simulation/ProjectileSimulation/ProjectileSimulation.h"
+
+Enum(V2PointType, None = 0, Out = 1 << 0, In = 1 << 1, Out2 = 1 << 2, In2 = 1 << 3)
+Enum(V2Calculated, Pending, Good, Time, Bad)
+
+struct V2Info_t
+{
+	CTFPlayer* m_pLocal = nullptr;
+	CTFWeaponBase* m_pWeapon = nullptr;
+	Target_t* m_pTarget = nullptr;
+	CBaseEntity* m_pProjectile = nullptr;
+
+	Vec3 m_vLocalEye = {};
+	Vec3 m_vTargetEye = {};
+
+	float m_flLatency = 0.f;
+
+	Vec3 m_vHull = {};
+	Vec3 m_vOffset = {};
+	Vec3 m_vAngFix = {};
+	float m_flVelocity = 0.f;
+	float m_flGravity = 0.f;
+	float m_flRadius = 0.f;
+	float m_flRadiusTime = 0.f;
+	float m_flBoundingTime = 0.f;
+	float m_flOffsetTime = 0.f;
+	int m_iSplashCount = 0;
+	int m_iSplashMode = 0;
+	int m_iArmTime = 0;
+};
+
+struct V2Solution_t
+{
+	float m_flPitch = 0.f;
+	float m_flYaw = 0.f;
+	float m_flTime = 0.f;
+	int m_iCalculated = V2CalculatedEnum::Pending;
+};
+struct Point_t
+{
+	Vec3 m_vPoint = {};
+	V2Solution_t m_tSolution = {};
+};
+
+struct V2History_t
+{
+	Vec3 m_vOrigin;
+	int m_iSimtime;
+};
+struct Direct_t : V2History_t
+{
+	float m_flPitch;
+	float m_flYaw;
+	float m_flTime;
+	Vec3 m_vPoint;
+	int m_iPriority;
+};
+struct V2Splash_t : V2History_t
+{
+	float m_flTimeTo;
+};
+
+class CV2AimbotProjectile
+{
+private:
+	std::unordered_map<int, Vec3> GetDirectPoints();
+	std::vector<Point_t> GetSplashPoints(Vec3 vOrigin, std::vector<std::pair<Vec3, int>>& vSpherePoints, int iSimTime);
+	void SetupSplashPoints(Vec3& vPos, std::vector<std::pair<Vec3, int>>& vSpherePoints, std::vector<Vec3>& vSimplePoints);
+	std::vector<Point_t> GetSplashPointsSimple(Vec3 vOrigin, std::vector<Vec3>& vSpherePoints, int iSimTime);
+
+	void CalculateAngle(const Vec3& vLocalPos, const Vec3& vTargetPos, int iSimTime, V2Solution_t& tOut, bool bAccuracy = true, int iTolerance = -1);
+	bool TestAngle(const Vec3& vPoint, const Vec3& vAngles, int iSimTime, bool bSplash, bool bSecondTest = false);
+
+	bool HandlePoint(const Vec3& vOrigin, int iSimTime, float flPitch, float flYaw, float flTime, const Vec3& vPoint, bool bSplash = false);
+	bool HandleDirect(std::vector<Direct_t>& vDirectHistory);
+	bool HandleSplash(std::vector<V2Splash_t>& vSplashHistory);
+
+	int CanHit(Target_t& tTarget, CTFPlayer* pLocal, CTFWeaponBase* pWeapon, bool bVisuals = true);
+	bool RunMain(CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CUserCmd* pCmd);
+
+	bool CanHit(Target_t& tTarget, CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CBaseEntity* pProjectile);
+	bool TestAngle(CBaseEntity* pProjectile, const Vec3& vPoint, Vec3& vAngles, int iSimTime, bool bSplash);
+
+	bool Aim(const Vec3& vCurAngle, const Vec3& vToAngle, Vec3& vOut);
+	void Aim(CUserCmd* pCmd, Vec3& vAngle);
+
+	V2Info_t m_tInfo = {};
+	MoveStorage m_tMoveStorage = {};
+	ProjectileInfo m_tProjInfo = {};
+
+	bool m_bLastTickHeld = false;
+
+	float m_flTimeTo = std::numeric_limits<float>::max();
+	std::vector<Vec3> m_vPlayerPath = {};
+	std::vector<Vec3> m_vProjectilePath = {};
+	std::vector<DrawBox_t> m_vBoxes = {};
+	Vec3 m_vAngleTo = {};
+	Vec3 m_vPredicted = {};
+	Vec3 m_vTarget = {};
+
+	int m_iWeaponID = -1;
+	int m_iMethod = -1;
+	int m_iResult = false;
+	bool m_bVisuals = true;
+	
+	struct GrappleInfo_t
+	{
+		float m_flRanTime = 0.f;
+		float m_flLastTimeTo = std::numeric_limits<float>::max();
+		bool m_bGrapplingHookShot = false;
+		bool m_bWallOnMiss = false;
+		bool m_bFail = false;
+		Vec3 m_vLastGrapplePoint = {};
+		Vec3 m_vLastAngleTo = {};
+
+		inline void Fail()
+		{
+			m_flRanTime = 0.f;
+			m_flLastTimeTo = std::numeric_limits<float>::max();
+			m_bGrapplingHookShot = false;
+			m_bWallOnMiss = false;
+			m_bFail = true;
+			m_vLastGrapplePoint = {};
+			m_vLastAngleTo = {};
+		}
+	} m_tGrappleInfo;
+	CTFGrapplingHook* m_pGrapplingHook = nullptr;
+
+public:
+	void Run(CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CUserCmd* pCmd);
+	void RunGrapplingHook(CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CUserCmd* pCmd);
+
+	float GetSplashRadius(CTFWeaponBase* pWeapon, CTFPlayer* pPlayer);
+
+	bool AutoAirblast(CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CUserCmd* pCmd, CBaseEntity* pProjectile);
+	float GetSplashRadius(CBaseEntity* pProjectile, CTFWeaponBase* pWeapon = nullptr, CTFPlayer* pPlayer = nullptr, float flScale = 1.f, CTFWeaponBase* pAirblast = nullptr);
+
+	int m_iLastTickCancel = 0;
+};
+
+ADD_FEATURE(CV2AimbotProjectile, V2Projectile);

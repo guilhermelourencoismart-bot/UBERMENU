@@ -1,0 +1,23 @@
+static void V2SolverSettings() {
+FDropdown(Vars::Aimbot::General::BypassIgnore);
+FToggle(Vars::Aimbot::General::PrioritizeFollowbot);
+FToggle(Vars::Aimbot::General::PrioritizeNavbot);
+FSlider(Vars::Aimbot::General::ShootDelayMax);
+FSlider(Vars::Aimbot::General::ShootDelayMin);
+FToggle(Vars::Aimbot::Melee::BackstabAccountPing);
+FToggle(Vars::Aimbot::Melee::BackstabDoubleTest);
+FSlider(Vars::Aimbot::Melee::SwingOffset);
+FSlider(Vars::Aimbot::Projectile::Out2NormalMax);
+FSlider(Vars::Aimbot::Projectile::Out2NormalMin);
+FDropdown(Vars::Aimbot::Projectile::RocketSplashMode);
+FSlider(Vars::Aimbot::Projectile::SplashCountArc);
+FSlider(Vars::Aimbot::Projectile::SplashCountDirect);
+FToggle(Vars::Aimbot::Projectile::SplashGrates);
+FSlider(Vars::Aimbot::Projectile::SplashNormalSkip);
+FSlider(Vars::Visuals::Simulation::DrawDuration);
+FDropdown(Vars::Visuals::Simulation::PlayerPath);
+FDropdown(Vars::Visuals::Simulation::ProjectilePath);
+FDropdown(Vars::Visuals::Simulation::RealPath);
+FToggle(Vars::Visuals::Simulation::SwingLines);
+FDropdown(Vars::Aimbot::General::Solver);
+}

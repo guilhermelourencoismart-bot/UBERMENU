@@ -97,6 +97,23 @@
     <ClCompile Include="src\Features\Visuals\Comp\OffScreenIndicators.cpp" />
     <ClInclude Include="src\Features\Visuals\Comp\OffScreenIndicators.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Features\Aimbot\V2\AimbotGlobal.cpp" />
+    <ClInclude Include="src\Features\Aimbot\V2\AimbotGlobal.h" />
+    <ClCompile Include="src\Features\Aimbot\V2\AimbotHitscan.cpp" />
+    <ClInclude Include="src\Features\Aimbot\V2\AimbotHitscan.h" />
+    <ClCompile Include="src\Features\Aimbot\V2\AimbotMelee.cpp" />
+    <ClInclude Include="src\Features\Aimbot\V2\AimbotMelee.h" />
+    <ClCompile Include="src\Features\Aimbot\V2\AimbotProjectile.cpp" />
+    <ClInclude Include="src\Features\Aimbot\V2\AimbotProjectile.h" />
+    <ClInclude Include="src\Features\Aimbot\V2\V2Menu.inl" />
+    <ClInclude Include="src\SDK\V2Vars.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Features\Aimbot\V2\Router.cpp" />
+    <ClInclude Include="src\Features\Aimbot\V2\Router.h" />
+    <ClInclude Include="src\Features\Aimbot\AimbotUtils\SolverPolicy.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

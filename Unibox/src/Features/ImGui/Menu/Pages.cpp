@@ -19,6 +19,7 @@
 
 using namespace ImGui;
 #include "../../Visuals/Comp/CompMenu.inl"
+#include "../../Aimbot/V2/V2Menu.inl"
 
 static bool DebugRow(const char* sLabel)
 {
@@ -115,6 +116,7 @@ static void AimbotGeneral()
 		FSlider(Vars::Aimbot::General::SmoothCurveAmount);
 		FSlider(Vars::Aimbot::General::AssistStrength);
 		FDropdown(Vars::Aimbot::General::SmoothingAlgorithm);
+		V2SolverSettings();
 		FSlider(Vars::Aimbot::General::V2SmoothFactor);
 		FTooltip("V2 algorithms apply to Smooth aim for hitscan/projectiles. SmoothVelocity retains its velocity-aware Unibox curve.");
 		FToggle(Vars::Aimbot::General::AutoShoot);
