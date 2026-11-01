@@ -1,4 +1,5 @@
 #include "HealthBarESP.h"
+#include <cmath>
 #include "../Groups/Groups.h"
 #ifndef TEXTMODE
 #include <ImGui/imgui.h>

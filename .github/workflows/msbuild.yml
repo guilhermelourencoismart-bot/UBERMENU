@@ -30,6 +30,9 @@ jobs:
     - name: Validate project file references
       run: python scripts/validate_unibox.py
 
+    - name: Test validation failure paths
+      run: python -m unittest discover -s tests -p "test_*.py" -v
+
     - name: Add NuGet to PATH
       uses: NuGet/setup-nuget@v2
       with:
@@ -62,6 +65,8 @@ jobs:
         if (!(Test-Path $dll) -or (Get-Item $dll).Length -eq 0) {
           throw "Expected build output missing or empty: $dll"
         }
+        python scripts/verify_pe.py $dll
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     
     - uses: actions/upload-artifact@v4
       with:

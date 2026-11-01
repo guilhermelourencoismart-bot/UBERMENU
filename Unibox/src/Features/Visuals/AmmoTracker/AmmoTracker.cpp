@@ -1,5 +1,6 @@
 #include "AmmoTracker.h"
 #include <cstring>
+#include <format>
 #ifndef TEXTMODE
 #include <ImGui/imgui.h>
 #endif

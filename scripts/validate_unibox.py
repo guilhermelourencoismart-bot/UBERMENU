@@ -19,12 +19,17 @@ def validate(root, require_packages=False):
 
     count = 0
     for filename in (project, project.with_suffix('.vcxproj.filters')):
+        seen = set()
         for item in ET.parse(filename).getroot().iter():
             kind = item.tag.rsplit('}', 1)[-1]
             name = item.get('Include', '').replace('\\', '/')
             if kind not in {'ClCompile', 'ClInclude', 'None', 'ResourceCompile', 'Image'} or not name:
                 continue
             count += 1
+            key = (kind, name.casefold())
+            if key in seen:
+                errors.append(f'{filename.name}: duplicate {kind} reference {name}')
+            seen.add(key)
             if '$(' in name or '*' in name:
                 errors.append(f'{filename.name}: cannot statically resolve {name}')
             elif not (filename.parent / name).is_file():

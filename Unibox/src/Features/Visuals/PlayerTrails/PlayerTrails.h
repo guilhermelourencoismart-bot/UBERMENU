@@ -2,6 +2,7 @@
 #include "../../../SDK/SDK.h"
 #include "../../ImGui/IndicatorCache.h"
 #include <deque>
+#include <unordered_map>
 struct ImDrawList;
 struct TrailSample_t { Vec3 position; float time; };
 struct TrailHistory_t { int serial = -1; std::deque<TrailSample_t> samples; };
