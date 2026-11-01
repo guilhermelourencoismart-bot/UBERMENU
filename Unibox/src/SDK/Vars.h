@@ -645,6 +645,10 @@ NAMESPACE_BEGIN(Vars)
 		CVar(Duration, "Trail duration", 2.f, VISUAL | SLIDER_CLAMP, .1f, 10.f, .1f);
 		CVar(MaxDistance, "Trail distance", 3500.f, VISUAL | SLIDER_CLAMP, 50.f, 10000.f, 50.f);
 	NAMESPACE_END(PlayerTrails)
+	NAMESPACE_BEGIN(OffScreenIndicators)
+		CVar(Enabled, "ImGui offscreen indicators", false, VISUAL);
+		CVar(Radius, "Offscreen radius", 250.f, VISUAL | SLIDER_CLAMP, 50.f, 600.f, 10.f);
+	NAMESPACE_END(OffScreenIndicators)
 
 	NAMESPACE_BEGIN(Visuals)
 		NAMESPACE_BEGIN(UI)

@@ -4,6 +4,7 @@
 #include "../Features/Visuals/Radar/Radar.h"
 #include "../Features/Visuals/HealthBarESP/HealthBarESP.h"
 #include "../Features/Visuals/PlayerTrails/PlayerTrails.h"
+#include "../Features/Visuals/OffScreenIndicators/OffScreenIndicators.h"
 #include "../Features/Visuals/OffscreenArrows/OffscreenArrows.h"
 #include "../Features/Visuals/CameraWindow/CameraWindow.h"
 #include "../Features/Visuals/Visuals.h"
@@ -62,6 +63,7 @@ MAKE_HOOK(IEngineVGui_Paint, U::Memory.GetVirtual(I::EngineVGui, 14), void,
 			F::Radar.CacheDrawInfo(pCacheFor);
 			F::HealthBarESP.CacheDrawInfo(pCacheFor);
 			F::PlayerTrails.CacheDrawInfo(pCacheFor);
+			F::OffScreenIndicators.CacheDrawInfo(pCacheFor);
 			F::Aimbot.CacheDrawInfo(pCacheFor);
 			F::Visuals.CacheBestAimPos(pCacheFor);
 		}
@@ -75,7 +77,8 @@ MAKE_HOOK(IEngineVGui_Paint, U::Memory.GetVirtual(I::EngineVGui, 14), void,
 
 				F::AntiAim.Draw(pLocal);
 				F::Visuals.DrawPickupTimers();
-				F::OffscreenArrows.Draw(pLocal);
+				if (!Vars::OffScreenIndicators::Enabled.Value)
+					F::OffscreenArrows.Draw(pLocal);
 
 				F::NavRender.DrawOverlay(pLocal);
 

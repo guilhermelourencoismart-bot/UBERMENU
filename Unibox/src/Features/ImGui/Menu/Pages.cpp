@@ -652,6 +652,9 @@ static void VisualsView()
 		FToggle(Vars::PlayerTrails::ThroughWalls);
 		FSlider(Vars::PlayerTrails::Duration);
 		FSlider(Vars::PlayerTrails::MaxDistance);
+		FToggle(Vars::OffScreenIndicators::Enabled);
+		FSlider(Vars::OffScreenIndicators::Radius);
+		FTooltip("Uses the existing ESP groups with offscreen arrows enabled. Replaces base arrows while active.");
 		FDropdown(Vars::Visuals::UI::StreamerMode);
 		FDropdown(Vars::Visuals::UI::ChatTags, FDropdownEnum::None, -28);
 		FColorPicker(Vars::Colors::Local);
