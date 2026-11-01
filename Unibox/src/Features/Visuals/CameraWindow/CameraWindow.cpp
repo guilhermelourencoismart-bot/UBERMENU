@@ -11,7 +11,10 @@ void CCameraWindow::Draw()
 	if (!m_pCameraMaterial || !m_pCameraTexture || !(m_bShouldDraw || m_bEnemyView) || !I::EngineClient->IsInGame())
 		return;
 
-	auto& tWindowBox = Vars::Visuals::Simulation::ProjectileWindow.Value;
+	const auto enemy = F::EnemyCam.GetView();
+	if (m_bEnemyView && !enemy.active && !m_bShouldDraw)
+		return;
+	const auto tWindowBox = m_bEnemyView ? enemy.window : Vars::Visuals::Simulation::ProjectileWindow.Value;
 
 	// Draw to screen
 	auto pRenderContext = I::MaterialSystem->GetRenderContext();
@@ -37,7 +40,7 @@ void CCameraWindow::RenderView(void* rcx, const CViewSetup& pViewSetup)
 
 	m_bDrawing = true;
 
-	auto& tWindowBox = Vars::Visuals::Simulation::ProjectileWindow.Value;
+	const auto tWindowBox = m_bEnemyView ? enemy.window : Vars::Visuals::Simulation::ProjectileWindow.Value;
 
 	CViewSetup tViewSetup = pViewSetup;
 	tViewSetup.x = 0;

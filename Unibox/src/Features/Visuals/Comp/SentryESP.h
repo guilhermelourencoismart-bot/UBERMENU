@@ -18,7 +18,7 @@ class CFullSentryESP
 private:
     // State tracking
     std::unordered_set<int> m_SentriesTargetingLocal;
-    
+
     // Helper functions
     bool IsVisible(CBaseEntity* pEntity, CTFPlayer* pLocal);
     SentryAimData GetSentryAimData(CBaseEntity* pSentry);
@@ -31,7 +31,7 @@ private:
 public:
     // Chams tracking for sentries (following StickyESP pattern)
     std::unordered_map<int, bool> m_mEntities;
-    
+
     void Draw();
     void UpdateChamsEntities(); // Separate function to populate chams entities
 };

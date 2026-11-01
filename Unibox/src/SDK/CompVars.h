@@ -237,5 +237,21 @@ inline auto& OffScreenIndicatorsRange=Vars::OffScreenIndicators::Radius;
 			CVar(OffScreenIndicatorsAlpha, "Text transparency", 255, VISUAL | SLIDER_CLAMP, 100, 255, 5);
 			CVar(OffScreenIndicatorsAvatars, "Use Steam avatars", true, VISUAL);
 }
+NAMESPACE_BEGIN(EnemyCam)
+			CVarEnum(Mode, "Camera mode", 0, VISUAL, nullptr,
+				VA_LIST("Closest", "Healed", "Medic", "Top Score", "Random"),
+				Closest, Healed, Medic, TopScore, Random);
+			CVarEnum(ViewMode, "View mode", 1, VISUAL, nullptr,
+				VA_LIST("Raw", "Offset"),
+				Raw, Offset);
+			CVar(TrackTime, "Track time", 3.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 0.0f, 10.0f, 0.5f);
+			CVar(OffsetX, "Offset X (forward/back)", 50.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, -200.0f, 200.0f, 5.0f);
+			CVar(OffsetY, "Offset Y (up/down)", 37.5f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, -200.0f, 200.0f, 5.0f);
+			CVar(WindowX, "Window X position", -1, VISUAL | SLIDER_CLAMP, -1, 1920, 5);
+			CVar(WindowY, "Window Y position", -1, VISUAL | SLIDER_CLAMP, -1, 1080, 5);
+			CVar(WindowWidth, "Window width", 320, VISUAL | SLIDER_CLAMP, 160, 640, 10);
+			CVar(WindowHeight, "Window height", 240, VISUAL | SLIDER_CLAMP, 120, 480, 10);
+
+NAMESPACE_END(EnemyCam)
 NAMESPACE_END(Comp)
 }

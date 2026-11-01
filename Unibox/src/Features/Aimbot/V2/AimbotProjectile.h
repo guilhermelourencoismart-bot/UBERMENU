@@ -42,7 +42,7 @@ struct V2Solution_t
 	float m_flTime = 0.f;
 	int m_iCalculated = V2CalculatedEnum::Pending;
 };
-struct Point_t
+struct V2Point_t
 {
 	Vec3 m_vPoint = {};
 	V2Solution_t m_tSolution = {};
@@ -53,7 +53,7 @@ struct V2History_t
 	Vec3 m_vOrigin;
 	int m_iSimtime;
 };
-struct Direct_t : V2History_t
+struct V2Direct_t : V2History_t
 {
 	float m_flPitch;
 	float m_flYaw;
@@ -70,15 +70,15 @@ class CV2AimbotProjectile
 {
 private:
 	std::unordered_map<int, Vec3> GetDirectPoints();
-	std::vector<Point_t> GetSplashPoints(Vec3 vOrigin, std::vector<std::pair<Vec3, int>>& vSpherePoints, int iSimTime);
+	std::vector<V2Point_t> GetSplashPoints(Vec3 vOrigin, std::vector<std::pair<Vec3, int>>& vSpherePoints, int iSimTime);
 	void SetupSplashPoints(Vec3& vPos, std::vector<std::pair<Vec3, int>>& vSpherePoints, std::vector<Vec3>& vSimplePoints);
-	std::vector<Point_t> GetSplashPointsSimple(Vec3 vOrigin, std::vector<Vec3>& vSpherePoints, int iSimTime);
+	std::vector<V2Point_t> GetSplashPointsSimple(Vec3 vOrigin, std::vector<Vec3>& vSpherePoints, int iSimTime);
 
 	void CalculateAngle(const Vec3& vLocalPos, const Vec3& vTargetPos, int iSimTime, V2Solution_t& tOut, bool bAccuracy = true, int iTolerance = -1);
 	bool TestAngle(const Vec3& vPoint, const Vec3& vAngles, int iSimTime, bool bSplash, bool bSecondTest = false);
 
 	bool HandlePoint(const Vec3& vOrigin, int iSimTime, float flPitch, float flYaw, float flTime, const Vec3& vPoint, bool bSplash = false);
-	bool HandleDirect(std::vector<Direct_t>& vDirectHistory);
+	bool HandleDirect(std::vector<V2Direct_t>& vDirectHistory);
 	bool HandleSplash(std::vector<V2Splash_t>& vSplashHistory);
 
 	int CanHit(Target_t& tTarget, CTFPlayer* pLocal, CTFWeaponBase* pWeapon, bool bVisuals = true);
@@ -108,7 +108,7 @@ private:
 	int m_iMethod = -1;
 	int m_iResult = false;
 	bool m_bVisuals = true;
-	
+
 	struct GrappleInfo_t
 	{
 		float m_flRanTime = 0.f;

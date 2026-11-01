@@ -632,13 +632,6 @@ static void VisualsView()
 
 	TableNextColumn();
 	FullCompSettings();
-	if (Section("Enemy camera"))
-	{
-		FToggle(Vars::EnemyCam::Enabled);
-		FToggle(Vars::EnemyCam::VisibleOnly);
-		FSlider(Vars::EnemyCam::MaxDistance);
-		FTooltip("Nearest enemy viewpoint in the existing Camera window. Projectile camera has priority. Drag the window with the menu open.");
-	} EndSection();
 	if (Section("Interface"))
 	{
 		FDropdown(Vars::Visuals::UI::StreamerMode);

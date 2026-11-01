@@ -23,6 +23,7 @@
 #include "../Visuals/SentryESP/SentryESP.h"
 #include "../Visuals/StickyESP/StickyESP.h"
 #include "../Visuals/Comp/CompDraw.h"
+#include "../Visuals/EnemyCam/EnemyCam.h"
 #include "../Visuals/Visuals.h"
 #include "../Aimbot/Aimbot.h"
 #include "Overlay/CaptureOverlay.h"
@@ -93,6 +94,7 @@ void CRender::Render(IDirect3DDevice9* pDevice)
 
 		F::ESP.Draw(pBackground);
 		F::CompDraw.Draw(pBackground);
+		F::EnemyCam.DrawOverlay(pBackground);
 		F::Aimbot.Draw(pBackground);
 		F::Visuals.DrawBestAimPos(pBackground);
 

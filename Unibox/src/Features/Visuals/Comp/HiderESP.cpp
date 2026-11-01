@@ -20,27 +20,27 @@ void CFullHiderESP::CleanInvalidTargets()
     float currentTime = I::GlobalVars->curtime;
     if (currentTime < m_flNextCleanupTime)
         return;
-    
+
     m_flNextCleanupTime = currentTime + CLEANUP_INTERVAL;
-    
+
     // Only clean up if we have data to clean
     if (m_PlayerData.empty())
         return;
-    
+
     auto pLocal = H::Entities.GetLocal();
     if (!pLocal)
         return;
-    
+
     auto it = m_PlayerData.begin();
     while (it != m_PlayerData.end())
     {
         int playerIndex = it->first;
         auto pEntity = I::ClientEntityList->GetClientEntity(playerIndex);
         auto pPlayer = pEntity ? pEntity->As<CTFPlayer>() : nullptr;
-        
+
         // Remove data if entity is invalid or not in play
-        if (!pPlayer || 
-            !pPlayer->IsAlive() || 
+        if (!pPlayer ||
+            !pPlayer->IsAlive() ||
             pPlayer->m_iTeamNum() == pLocal->m_iTeamNum())
         {
             it = m_PlayerData.erase(it);
@@ -56,10 +56,10 @@ bool CFullHiderESP::IsPlayerInRange(CTFPlayer* pPlayer, CTFPlayer* pLocal)
 {
     if (!pPlayer || !pLocal)
         return false;
-    
+
     Vec3 playerPos = pPlayer->m_vecOrigin();
     Vec3 localPos = pLocal->m_vecOrigin();
-    
+
     return DistanceBetweenVectors(playerPos, localPos) <= Vars::Comp::HiderESP::MaxDistance.Value;
 }
 
@@ -67,11 +67,11 @@ void CFullHiderESP::UpdatePlayerData(CTFPlayer* pPlayer)
 {
     if (!pPlayer || !pPlayer->IsAlive())
         return;
-    
+
     float currentTime = I::GlobalVars->curtime;
     Vec3 currentPos = pPlayer->m_vecOrigin();
     int playerIndex = pPlayer->entindex();
-    
+
     // Initialize new player data
     if (m_PlayerData.find(playerIndex) == m_PlayerData.end())
     {
@@ -83,12 +83,12 @@ void CFullHiderESP::UpdatePlayerData(CTFPlayer* pPlayer)
         m_PlayerData[playerIndex] = data;
         return;
     }
-    
+
     CompHiderData& data = m_PlayerData[playerIndex];
     data.LastUpdateTime = currentTime;
-    
+
     float distance = DistanceBetweenVectors(currentPos, data.LastPosition);
-    
+
     if (distance > Vars::Comp::HiderESP::MovementThreshold.Value)
     {
         data.LastPosition = currentPos;
@@ -108,31 +108,31 @@ void CFullHiderESP::DrawPlayerESP(CTFPlayer* pPlayer, const CompHiderData& data)
     I::MatSystemSurface->GetScreenSize(screenW, screenH);
     int centerX = screenW / 2;
     int centerY = screenH / 2;
-    
+
     // Draw box
     if (Vars::Comp::HiderESP::ShowBoxes.Value)
     {
         Vec3 mins = pPlayer->m_vecMins();
         Vec3 maxs = pPlayer->m_vecMaxs();
-        
+
         Vec3 bottomPos = Vec3(playerPos.x, playerPos.y, playerPos.z + mins.z);
         Vec3 topPos = Vec3(playerPos.x, playerPos.y, playerPos.z + maxs.z);
-        
+
         Vec3 screenBottom, screenTop;
         if (SDK::W2S(bottomPos, screenBottom) && SDK::W2S(topPos, screenTop))
         {
             int height = static_cast<int>(screenBottom.y - screenTop.y);
             int width = static_cast<int>(height * 0.75f);
-            
+
             int x1 = static_cast<int>(screenBottom.x - width / 2);
             int y1 = static_cast<int>(screenTop.y);
             int x2 = static_cast<int>(screenBottom.x + width / 2);
             int y2 = static_cast<int>(screenBottom.y);
-            
+
             F::CompDraw.LineRect(x1, y1, x2 - x1, y2 - y1, Vars::Comp::HiderESP::BoxColor.Value);
         }
     }
-    
+
     // Draw tracer
     if (Vars::Comp::HiderESP::ShowTracers.Value)
     {
@@ -149,11 +149,11 @@ void CFullHiderESP::Draw()
     // Early exits
     if (!Vars::Comp::Features::HiderESP.Value || I::EngineVGui->IsGameUIVisible())
         return;
-    
+
     auto pLocal = H::Entities.GetLocal();
     if (!pLocal || !pLocal->IsAlive())
         return;
-    
+
     // Check for respawn
     int currentLifeState = pLocal->m_lifeState();
     if (m_iLastLifeState == 2 && currentLifeState == 0) // If we went from dead to alive
@@ -161,23 +161,23 @@ void CFullHiderESP::Draw()
         ResetPlayerData();
     }
     m_iLastLifeState = currentLifeState;
-    
+
     // Clean up invalid targets periodically
     CleanInvalidTargets();
-    
+
     // Process players
     for (auto pEntity : H::Entities.GetGroup(EntityEnum::PlayerAll))
     {
         auto pPlayer = pEntity->As<CTFPlayer>();
-        if (!pPlayer || 
-            !pPlayer->IsAlive() || 
+        if (!pPlayer ||
+            !pPlayer->IsAlive() ||
             pPlayer->m_iTeamNum() == pLocal->m_iTeamNum() ||
             pPlayer->IsDormant() ||
             !IsPlayerInRange(pPlayer, pLocal))
             continue;
-        
+
         UpdatePlayerData(pPlayer);
-        
+
         auto it = m_PlayerData.find(pPlayer->entindex());
         if (it != m_PlayerData.end() && it->second.IsHider)
         {

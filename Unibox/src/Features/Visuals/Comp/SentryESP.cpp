@@ -7,44 +7,44 @@ void CFullSentryESP::Draw()
 {
     if (!Vars::Comp::Features::SentryESP.Value)
         return;
-    
+
     if (I::EngineVGui->IsGameUIVisible())
         return;
-    
+
     auto pLocal = H::Entities.GetLocal();
     if (!pLocal)
         return;
-    
+
     // Clear targeting data each frame
     m_SentriesTargetingLocal.clear();
-    
+
     // Find all sentry guns
     for (auto pEntity : H::Entities.GetGroup(EntityEnum::BuildingAll))
     {
         if (!pEntity || pEntity->IsDormant())
             continue;
-            
+
         // Check if it's a sentry gun
         if (pEntity->GetClassID() != ETFClassID::CObjectSentrygun)
             continue;
-            
+
         auto pSentry = pEntity->As<CObjectSentrygun>();
         if (!pSentry)
             continue;
-            
+
         // Skip if building
         if (pSentry->m_bBuilding())
             continue;
-            
+
         // Skip friendly sentries if not showing them
         if (!Vars::Comp::SentryESP::ShowFriendly.Value && pEntity->m_iTeamNum() == pLocal->m_iTeamNum())
             continue;
-            
+
         SentryAimData aimData = GetSentryAimData(pEntity);
-        
+
         if (!aimData.IsValid)
             continue;
-            
+
         // Check if targeting local player
         bool isTargetingLocal = false;
         if (aimData.Target && aimData.Target->IsPlayer())
@@ -56,7 +56,7 @@ void CFullSentryESP::Draw()
                 m_SentriesTargetingLocal.insert(pEntity->entindex());
             }
         }
-        
+
         // Draw ESP box
         Group_t* nativeGroup=nullptr;
         const bool nativeBox=F::Groups.GetGroup(pEntity,nativeGroup,false) && nativeGroup && (nativeGroup->m_tESP.Draw & ESPEnum::Box);
@@ -65,49 +65,49 @@ void CFullSentryESP::Draw()
             Vec3 vPos = pEntity->GetAbsOrigin();
             Vec3 vMins = pEntity->m_vecMins();
             Vec3 vMaxs = pEntity->m_vecMaxs();
-            
+
             Vec3 vBottomPos = {vPos.x, vPos.y, vPos.z + vMins.z};
             Vec3 vTopPos = {vPos.x, vPos.y, vPos.z + vMaxs.z};
-            
+
             Vec3 vScreenBottom, vScreenTop;
             if (SDK::W2S(vBottomPos, vScreenBottom) && SDK::W2S(vTopPos, vScreenTop))
             {
                 int height = static_cast<int>(vScreenBottom.y - vScreenTop.y);
                 int width = static_cast<int>(height * 0.75f);
-                
+
                 int x1 = static_cast<int>(vScreenBottom.x - width / 2);
                 int y1 = static_cast<int>(vScreenTop.y);
                 int x2 = static_cast<int>(vScreenBottom.x + width / 2);
                 int y2 = static_cast<int>(vScreenBottom.y);
-                
+
                 bool isActuallyVisible = IsVisible(pEntity, pLocal);
-                
+
                 // Skip if not showing through walls and not visible
                 if (!Vars::Comp::SentryESP::ShowThroughWalls.Value && !isActuallyVisible)
                     continue;
-                
+
                 // Determine color
                 Color_t color;
                 if (!isActuallyVisible)
                     color = Vars::Comp::SentryESP::HiddenColor.Value;
                 else
                     color = isTargetingLocal ? Vars::Comp::SentryESP::DangerColor.Value : Vars::Comp::SentryESP::SafeColor.Value;
-                
+
                 DrawESPBox(x1, y1, x2, y2, color);
-                
+
                 // Draw level indicator
                 bool isMini = pSentry->m_bMiniBuilding();
                 int level = pSentry->m_iUpgradeLevel();
                 std::string levelText = isMini ? "M" : std::to_string(level);
-                
+
                 int textX = x1 + (x2 - x1) / 2;
                 int textY = y1 - 20;
-                
-                F::CompDraw.String(H::Fonts.GetFont(FONT_ESP), textX, textY, 
+
+                F::CompDraw.String(H::Fonts.GetFont(FONT_ESP), textX, textY,
                     Vars::Comp::SentryESP::TextColor.Value, ALIGN_CENTER, levelText.c_str());
             }
         }
-        
+
         // Draw aim line
         if (Vars::Comp::SentryESP::ShowLine.Value && aimData.IsValid)
         {
@@ -129,41 +129,41 @@ void CFullSentryESP::UpdateChamsEntities()
 {
     // Clear previous chams entries
     m_mEntities.clear();
-    
+
     if (!Vars::Comp::Features::SentryESP.Value || !Vars::Comp::SentryESP::ShowChams.Value)
         return;
-    
+
     auto pLocal = H::Entities.GetLocal();
     if (!pLocal)
         return;
-    
+
     // Find all sentry guns targeting the local player
     for (auto pEntity : H::Entities.GetGroup(EntityEnum::BuildingAll))
     {
         if (!pEntity || pEntity->IsDormant())
             continue;
-            
+
         // Check if it's a sentry gun
         if (pEntity->GetClassID() != ETFClassID::CObjectSentrygun)
             continue;
-            
+
         auto pSentry = pEntity->As<CObjectSentrygun>();
         if (!pSentry)
             continue;
-            
+
         // Skip if building
         if (pSentry->m_bBuilding())
             continue;
-            
+
         // Skip friendly sentries if not showing them
         if (!Vars::Comp::SentryESP::ShowFriendly.Value && pEntity->m_iTeamNum() == pLocal->m_iTeamNum())
             continue;
-            
+
         SentryAimData aimData = GetSentryAimData(pEntity);
-        
+
         if (!aimData.IsValid)
             continue;
-            
+
         // Check if targeting local player
         bool isTargetingLocal = false;
         if (aimData.Target && aimData.Target->IsPlayer())
@@ -174,7 +174,7 @@ void CFullSentryESP::UpdateChamsEntities()
                 isTargetingLocal = true;
             }
         }
-        
+
         // Add targeting sentries to chams tracking
         if (isTargetingLocal)
         {
@@ -187,61 +187,61 @@ bool CFullSentryESP::IsVisible(CBaseEntity* pEntity, CTFPlayer* pLocal)
 {
     if (!pEntity || !pLocal)
         return false;
-        
+
     Vec3 vEyePos = pLocal->GetAbsOrigin() + pLocal->m_vecViewOffset();
     Vec3 vTargetPos = pEntity->GetAbsOrigin();
-    
+
     CGameTrace trace;
     CTraceFilterHitscan filter;
     filter.m_pSkip = pLocal;
-    
+
     SDK::Trace(vEyePos, vTargetPos, MASK_VISIBLE, &filter, &trace);
-    
+
     return trace.m_pEnt == pEntity;
 }
 
 SentryAimData CFullSentryESP::GetSentryAimData(CBaseEntity* pSentry)
 {
     SentryAimData data;
-    
+
     if (!pSentry)
         return data;
-        
+
     auto pSentryObj = pSentry->As<CObjectSentrygun>();
     if (!pSentryObj)
         return data;
-        
+
     // Get bone matrices
     matrix3x4 aBones[MAXSTUDIOBONES] = {};
     if (!pSentry->SetupBones(aBones, MAXSTUDIOBONES, BONE_USED_BY_ANYTHING, I::GlobalVars->curtime))
         return data;
-        
+
     // Determine turret bone index based on level
     int level = pSentryObj->m_iUpgradeLevel();
     int turretBoneIndex = 1; // Default
-    
+
     if (level == 1)
         turretBoneIndex = 2;
     else if (level == 2)
         turretBoneIndex = 3;
-        
+
     // Get muzzle position and angles from bone matrix
     data.MuzzlePos = GetPositionFromMatrix(aBones[turretBoneIndex]);
     data.AimAngles = GetAnglesFromMatrix(aBones[turretBoneIndex]);
-    
+
     // Get target entity
     data.Target = pSentryObj->m_hEnemy().Get();
-    
+
     // If we have a target, aim at it
     if (data.Target && data.Target->IsPlayer())
     {
         Vec3 vTargetPos = data.Target->GetAbsOrigin();
         vTargetPos.z += 40; // Aim at chest height
-        
+
         Vec3 vDirection = vTargetPos - data.MuzzlePos;
         data.AimAngles = Math::VectorAngles(vDirection);
     }
-    
+
     data.IsValid = true;
     return data;
 }
@@ -268,23 +268,23 @@ void CFullSentryESP::DrawESPBox(int x1, int y1, int x2, int y2, Color_t color)
 
 void CFullSentryESP::DrawCornerBox(int x1, int y1, int x2, int y2, Color_t color)
 {
-    int length = std::min({Vars::Comp::SentryESP::CornerLength.Value, 
+    int length = std::min({Vars::Comp::SentryESP::CornerLength.Value,
                           std::abs(x2 - x1) / 3, std::abs(y2 - y1) / 3});
-    
+
     for (int i = 0; i < Vars::Comp::SentryESP::BoxThickness.Value; i++)
     {
         // Top Left
         F::CompDraw.Line(x1, y1 + i, x1 + length, y1 + i, color);
         F::CompDraw.Line(x1 + i, y1, x1 + i, y1 + length, color);
-        
+
         // Top Right
         F::CompDraw.Line(x2 - length, y1 + i, x2, y1 + i, color);
         F::CompDraw.Line(x2 - i, y1, x2 - i, y1 + length, color);
-        
+
         // Bottom Left
         F::CompDraw.Line(x1, y2 - i, x1 + length, y2 - i, color);
         F::CompDraw.Line(x1 + i, y2 - length, x1 + i, y2, color);
-        
+
         // Bottom Right
         F::CompDraw.Line(x2 - length, y2 - i, x2, y2 - i, color);
         F::CompDraw.Line(x2 - i, y2 - length, x2 - i, y2, color);

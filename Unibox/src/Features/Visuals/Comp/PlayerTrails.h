@@ -44,22 +44,22 @@ private:
     static constexpr float TRAIL_HEIGHT = 1.5f;
     static constexpr float CLEANUP_INTERVAL = 0.5f;
     static constexpr float MIN_MOVEMENT_DISTANCE_SQR = 100.0f;
-    
+
     // State tracking
     std::unordered_map<std::string, PlayerTrailData> m_PlayerData;
     std::unordered_map<std::string, Color_t> m_ColorCache;
     std::unordered_map<int, float> m_NextVisCheck;
     std::unordered_map<int, bool> m_VisibilityCache;
-    
+
     int m_LastUpdateTick;
     float m_NextCleanupTime;
     std::string m_CurrentMap;
     bool m_LastLifeState;
-    
+
     // Pre-calculated values
     float m_TrailHeightUnits;
     float m_MaxDistanceSqr;
-    
+
     // Helper functions
     Color_t GenerateColor(const std::string& steamID);
     void ClearData();
@@ -69,7 +69,7 @@ private:
     bool ShouldShowTrail(const PlayerTrailData& data, float currentTime);
     std::string GetSteamID(CBaseEntity* pPlayer);
     bool IsValidTrailTarget(CBaseEntity* pPlayer, CBaseEntity* pLocal);
-    
+
 public:
     CFullPlayerTrails();
     void Draw();

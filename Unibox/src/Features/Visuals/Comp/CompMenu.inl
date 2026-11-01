@@ -216,4 +216,18 @@ FSlider(Vars::Comp::Features::OffScreenIndicatorsSize);
 FSlider(Vars::Comp::Features::OffScreenIndicatorsAlpha);
 FToggle(Vars::Comp::Features::OffScreenIndicatorsAvatars);
 } EndSection();
+if(Section("Enemy camera - Comp")) {
+FToggle(Vars::EnemyCam::Enabled);
+FToggle(Vars::EnemyCam::VisibleOnly);
+FSlider(Vars::EnemyCam::MaxDistance);
+FDropdown(Vars::Comp::EnemyCam::Mode);
+FDropdown(Vars::Comp::EnemyCam::ViewMode);
+FSlider(Vars::Comp::EnemyCam::TrackTime);
+FSlider(Vars::Comp::EnemyCam::OffsetX);
+FSlider(Vars::Comp::EnemyCam::OffsetY);
+FSlider(Vars::Comp::EnemyCam::WindowX);
+FSlider(Vars::Comp::EnemyCam::WindowY);
+FSlider(Vars::Comp::EnemyCam::WindowWidth);
+FSlider(Vars::Comp::EnemyCam::WindowHeight);
+} EndSection();
 }

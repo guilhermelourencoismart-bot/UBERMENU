@@ -11,6 +11,7 @@ void CV2Router::Reset()
 }
 void CV2Router::Update(CTFPlayer* local,CTFWeaponBase* weapon)
 {
+    if (m_backend!=Vars::Aimbot::General::Solver.Value) { Reset(); m_backend=Vars::Aimbot::General::Solver.Value; }
     SolverPolicy::Context next;
     next.valid=local && weapon && I::EngineClient->IsInGame();
     if(next.valid)

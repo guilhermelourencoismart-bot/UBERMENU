@@ -16,13 +16,13 @@ class CFullFocusFire
 private:
     // Configuration values are now read from Vars::Comp::FocusFire::* variables
     static constexpr float CLEANUP_INTERVAL = 0.5f;
-    
+
     // State tracking
     std::unordered_map<int, CompTargetInfo> m_TargetData;
     float m_NextCleanupTime = 0.0f;
     std::unordered_map<int, float> m_NextVisCheck;
     std::unordered_map<int, bool> m_VisibilityCache;
-    
+
     // Helper functions
     bool IsPlayerVisible(CTFPlayer* pPlayer);
     void DrawCorners(int x1, int y1, int x2, int y2);
@@ -30,11 +30,11 @@ private:
     void CleanInvalidTargets();
     bool ShouldVisualizePlayer(CTFPlayer* pPlayer);
     void DrawBox();
-    
+
 public:
     // Chams tracking for focused players
     std::unordered_map<int, bool> m_mEntities;
-    
+
     void Draw();
     void OnPlayerHurt(int victimIndex, int attackerIndex);
     void Reset();

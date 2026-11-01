@@ -26,13 +26,13 @@ class CFullUberTracker
 {
 private:
 	// Configuration values are now read from Vars::Comp::UberTracker::* variables
-	
+
 	std::map<int, float> m_PrevUber;
 	std::map<int, std::string> m_Status;
 	std::map<int, bool> m_UberDecreasing;
 	std::map<int, float> m_MedDeathTime;
 	std::map<std::string, CompKritzTracker> m_KritzTrackers;
-	
+
 	std::string GetMedicID(CBaseEntity* pEntity);
 	std::string GetWeaponType(int iItemDefinitionIndex, bool* bIsKritzOverride = nullptr);
 	Color_t GetColorForUber(float flPercentage, bool bIsAlive);
@@ -40,7 +40,7 @@ private:
 	float TranslateKritzToUber(CBaseEntity* pEntity, const std::string& sMedicID, float flActualKritzPercentage, float flCurrentTime);
 	void DrawMedicInfo(const std::vector<CompMedicInfo>& vMedics, int iStartY);
 	void DrawAdvantageText(const std::vector<CompMedicInfo>& vRedMedics, const std::vector<CompMedicInfo>& vBluMedics, int iLocalTeam);
-	
+
 public:
 	void Draw();
 };

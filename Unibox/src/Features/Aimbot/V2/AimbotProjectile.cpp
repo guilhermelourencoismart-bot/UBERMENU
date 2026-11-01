@@ -680,9 +680,9 @@ static inline void TracePoint(Vec3& vPoint, int& iType, Vec3& vTargetEye, V2Info
 }
 
 // possibly add air splash for autodet weapons
-std::vector<Point_t> CV2AimbotProjectile::GetSplashPoints(Vec3 vOrigin, std::vector<std::pair<Vec3, int>>& vSpherePoints, int iSimTime)
+std::vector<V2Point_t> CV2AimbotProjectile::GetSplashPoints(Vec3 vOrigin, std::vector<std::pair<Vec3, int>>& vSpherePoints, int iSimTime)
 {
-	std::vector<std::pair<Point_t, float>> vPointDistances = {};
+	std::vector<std::pair<V2Point_t, float>> vPointDistances = {};
 
 	Vec3 vTargetEye = vOrigin + m_tInfo.m_vTargetEye;
 
@@ -692,7 +692,7 @@ std::vector<Point_t> CV2AimbotProjectile::GetSplashPoints(Vec3 vOrigin, std::vec
 			if (bErase)
 				return false;
 
-			Point_t tPoint = { trace.endpos, {} };
+			V2Point_t tPoint = { trace.endpos, {} };
 			if (!m_tInfo.m_flGravity)
 			{
 				Vec3 vForward = (m_tInfo.m_vLocalEye - trace.endpos).Normalized();
@@ -743,7 +743,7 @@ std::vector<Point_t> CV2AimbotProjectile::GetSplashPoints(Vec3 vOrigin, std::vec
 			return a.second < b.second;
 		});
 
-	std::vector<Point_t> vPoints = {};
+	std::vector<V2Point_t> vPoints = {};
 	int iSplashCount = std::min(
 		m_tInfo.m_iArmTime && iSimTime == m_tInfo.m_iArmTime ? Vars::Aimbot::Projectile::SplashCountDirect.Value : m_tInfo.m_iSplashCount,
 		int(vPointDistances.size())
@@ -784,7 +784,7 @@ void CV2AimbotProjectile::SetupSplashPoints(Vec3& vPos, std::vector<std::pair<Ve
 			if (bErase)
 				return false;
 
-			Point_t tPoint = { trace.endpos, {} };
+			V2Point_t tPoint = { trace.endpos, {} };
 			if (!m_tInfo.m_flGravity)
 			{
 				Vec3 vForward = (m_tInfo.m_vLocalEye - trace.endpos).Normalized();
@@ -824,15 +824,15 @@ void CV2AimbotProjectile::SetupSplashPoints(Vec3& vPos, std::vector<std::pair<Ve
 	}
 }
 
-std::vector<Point_t> CV2AimbotProjectile::GetSplashPointsSimple(Vec3 vOrigin, std::vector<Vec3>& vSpherePoints, int iSimTime)
+std::vector<V2Point_t> CV2AimbotProjectile::GetSplashPointsSimple(Vec3 vOrigin, std::vector<Vec3>& vSpherePoints, int iSimTime)
 {
-	std::vector<std::pair<Point_t, float>> vPointDistances = {};
+	std::vector<std::pair<V2Point_t, float>> vPointDistances = {};
 
 	Vec3 vTargetEye = vOrigin + m_tInfo.m_vTargetEye;
 
 	auto checkPoint = [&](Vec3& vPoint, bool& bErase)
 		{
-			Point_t tPoint = { vPoint, {} };
+			V2Point_t tPoint = { vPoint, {} };
 			CalculateAngle(m_tInfo.m_vLocalEye, tPoint.m_vPoint, iSimTime, tPoint.m_tSolution, true, !m_tInfo.m_iArmTime ? 0 : -1);
 
 			bErase = tPoint.m_tSolution.m_iCalculated == V2CalculatedEnum::Good;
@@ -859,7 +859,7 @@ std::vector<Point_t> CV2AimbotProjectile::GetSplashPointsSimple(Vec3 vOrigin, st
 			return a.second < b.second;
 		});
 
-	std::vector<Point_t> vPoints = {};
+	std::vector<V2Point_t> vPoints = {};
 	int iSplashCount = std::min(
 		m_tInfo.m_iArmTime && iSimTime == m_tInfo.m_iArmTime ? Vars::Aimbot::Projectile::SplashCountDirect.Value : m_tInfo.m_iSplashCount,
 		int(vPointDistances.size())
@@ -1435,12 +1435,12 @@ bool CV2AimbotProjectile::HandlePoint(const Vec3& vOrigin, int iSimTime, float f
 	return bReturn;
 }
 
-bool CV2AimbotProjectile::HandleDirect(std::vector<Direct_t>& vDirectHistory)
+bool CV2AimbotProjectile::HandleDirect(std::vector<V2Direct_t>& vDirectHistory)
 {
 	if (vDirectHistory.empty())
 		return false;
 
-	std::sort(vDirectHistory.begin(), vDirectHistory.end(), [&](const Direct_t& a, const Direct_t& b) -> bool
+	std::sort(vDirectHistory.begin(), vDirectHistory.end(), [&](const V2Direct_t& a, const V2Direct_t& b) -> bool
 		{
 			return a.m_iPriority < b.m_iPriority;
 		});
@@ -1488,7 +1488,7 @@ bool CV2AimbotProjectile::HandleSplash(std::vector<V2Splash_t>& vSplashHistory)
 		if (m_tInfo.m_iArmTime && tHistory.m_iSimtime < m_tInfo.m_iArmTime)
 			continue;
 
-		std::vector<Point_t> vSplashPoints = {};
+		std::vector<V2Point_t> vSplashPoints = {};
 		if (iMulti == Vars::Aimbot::Projectile::SplashModeEnum::Multi)
 			vSplashPoints = GetSplashPoints(tHistory.m_vOrigin, vSpherePoints, tHistory.m_iSimtime);
 		else
@@ -1552,7 +1552,7 @@ int CV2AimbotProjectile::CanHit(Target_t& tTarget, CTFPlayer* pLocal, CTFWeaponB
 
 	auto mDirectPoints = iSplash == Vars::Aimbot::Projectile::SplashPredictionEnum::Only ? std::unordered_map<int, Vec3>() : GetDirectPoints();
 
-	std::vector<Direct_t> vDirectHistory = {};
+	std::vector<V2Direct_t> vDirectHistory = {};
 	std::vector<V2Splash_t> vSplashHistory = {};
 
 	for (int i = 1 - TIME_TO_TICKS(m_tInfo.m_flLatency); i <= iMaxTime; i++)
@@ -2383,7 +2383,7 @@ bool CV2AimbotProjectile::CanHit(Target_t& tTarget, CTFPlayer* pLocal, CTFWeapon
 
 	auto mDirectPoints = iSplash == Vars::Aimbot::Projectile::SplashPredictionEnum::Only ? std::unordered_map<int, Vec3>() : GetDirectPoints();
 
-	std::vector<Direct_t> vDirectHistory = {};
+	std::vector<V2Direct_t> vDirectHistory = {};
 	std::vector<V2Splash_t> vSplashHistory = {};
 
 	for (int i = 1 - TIME_TO_TICKS(m_tInfo.m_flLatency); i <= iMaxTime; i++)
