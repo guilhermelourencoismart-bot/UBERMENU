@@ -1,3 +1,4 @@
+#include "../AimbotUtils/V2Math.h"
 // Complete V2 port, source ba07d0a9 SHA256 97f76ec300fd743b4f085aaaf514936df2d4ecc4074a75739c2e53fefaf573e4
 #include "AimbotHitscan.h"
 
@@ -85,7 +86,7 @@ static inline std::vector<Target_t> GetTargets(CTFPlayer* pLocal, CTFWeaponBase*
 
 			Vec3 vPos = pEntity->GetCenter();
 			Vec3 vAngleTo = Math::CalcAngle(vLocalPos, vPos);
-			float flFOVTo = Math::CalcFov(vLocalAngles, vAngleTo);
+			float flFOVTo = V2Math::CalcFov(vLocalAngles, vAngleTo);
 			if (flFOVTo > Vars::Aimbot::General::AimFOV.Value)
 				continue;
 
@@ -103,7 +104,7 @@ static inline std::vector<Target_t> GetTargets(CTFPlayer* pLocal, CTFWeaponBase*
 
 			Vec3 vPos = pEntity->m_vecOrigin();
 			Vec3 vAngleTo = Math::CalcAngle(vLocalPos, vPos);
-			float flFOVTo = Math::CalcFov(vLocalAngles, vAngleTo);
+			float flFOVTo = V2Math::CalcFov(vLocalAngles, vAngleTo);
 			if (flFOVTo > Vars::Aimbot::General::AimFOV.Value)
 				continue;
 
@@ -121,7 +122,7 @@ static inline std::vector<Target_t> GetTargets(CTFPlayer* pLocal, CTFWeaponBase*
 
 			Vec3 vPos = pEntity->GetCenter();
 			Vec3 vAngleTo = Math::CalcAngle(vLocalPos, vPos);
-			float flFOVTo = Math::CalcFov(vLocalAngles, vAngleTo);
+			float flFOVTo = V2Math::CalcFov(vLocalAngles, vAngleTo);
 			if (flFOVTo > Vars::Aimbot::General::AimFOV.Value)
 				continue;
 
@@ -139,7 +140,7 @@ static inline std::vector<Target_t> GetTargets(CTFPlayer* pLocal, CTFWeaponBase*
 
 			Vec3 vPos = pEntity->GetCenter();
 			Vec3 vAngleTo = Math::CalcAngle(vLocalPos, vPos);
-			float flFOVTo = Math::CalcFov(vLocalAngles, vAngleTo);
+			float flFOVTo = V2Math::CalcFov(vLocalAngles, vAngleTo);
 			if (flFOVTo > Vars::Aimbot::General::AimFOV.Value)
 				continue;
 
@@ -456,7 +457,7 @@ int CV2AimbotHitscan::CanHit(Target_t& tTarget, CTFPlayer* pLocal, CTFWeaponBase
 
 					Vec3 vAngleTo = Math::CalcAngle(m_vEyePos, vOrigin);
 					Vec3 vAngles; bool bChanged = Aim(G::CurrentUserCmd->viewangles, vAngleTo, vAngles);
-					if (!bChanged && Math::CalcFov(G::CurrentUserCmd->viewangles, vAngleTo) > Vars::Aimbot::General::AimFOV.Value)
+					if (!bChanged && V2Math::CalcFov(G::CurrentUserCmd->viewangles, vAngleTo) > Vars::Aimbot::General::AimFOV.Value)
 						continue;
 					Vec3 vForward; Math::AngleVectors(vAngles, &vForward);
 					float flDist = m_vEyePos.DistTo(vOrigin);

@@ -2,6 +2,8 @@
 #include "../Unibox/src/Features/Aimbot/AimbotUtils/VelocityScale.h"
 #include "../Unibox/src/Features/Aimbot/AimbotUtils/AimSmoothing.h"
 #include "../Unibox/src/Features/ImGui/IndicatorCache.h"
+#include "../Unibox/src/Features/Aimbot/AimbotUtils/SolverPolicy.h"
+#include "../Unibox/src/Features/Aimbot/AimbotUtils/V2Math.h"
 #include <atomic>
 #include <thread>
 #include <vector>
@@ -75,5 +77,43 @@ int main()
     });
     producer.join(); consumer.join();
     Require(!torn && snapshot.Get()[0] == 999, "snapshot publication does not expose partial frames");
-    std::cout << checks << " calculation/cache checks passed\n";
+    float normalized;
+    Require(V2Math::Normalize(721,normalized)&&Near(normalized,1),"normalize repeated revolutions");
+    Require(V2Math::Normalize(-540,normalized)&&Near(normalized,-180),"normalize negative boundary");
+    Require(!V2Math::Normalize(std::numeric_limits<float>::infinity(),normalized),"normalize nonfinite rejected");
+    Require(Near(V2Math::CalcFov(Angles{0,0,0},Angles{0,90,0}),90),"FOV right angle");
+    Require(Near(V2Math::CalcFov(Angles{0,0,0},Angles{0,180,0}),180),"FOV antiparallel");
+    Require(Near(V2Math::CalcFov(Angles{0,179,0},Angles{0,-179,0}),2),"FOV angular wrap");
+    Require(!std::isfinite(V2Math::CalcFov(Angles{0,0,0},Angles{0,std::numeric_limits<float>::quiet_NaN(),0})),"invalid FOV cannot become perfect aim");
+    // Differential oracle: the V2 source uses acos(dot(AngleVectors(a),AngleVectors(b))).
+    for(int yaw=-170;yaw<=170;yaw+=17)
+    {
+        const double rad=.017453292519943295;
+        const double dot=std::cos(20*rad)*std::cos(-30*rad)*std::cos((yaw-40)*rad)+std::sin(20*rad)*std::sin(-30*rad);
+        const float reference=float(std::acos(std::clamp(dot,-1.0,1.0))/rad);
+        Require(Near(V2Math::CalcFov(Angles{20,float(yaw),0},Angles{-30,40,0}),reference),"V2 FOV differential oracle");
+    }
+    float pitch,flight;
+    Require(V2Math::LowerArc(1000,0,1000,0,pitch,flight)&&Near(flight,1)&&Near(pitch,0),"straight projectile time");
+    Require(V2Math::LowerArc(1000,800,500,0,pitch,flight),"ballistic lower arc reachable");
+    Require(std::abs(1000*std::sin(pitch)*flight-400*flight*flight)<.01f,"ballistic vertical equation");
+    Require(std::abs(1000*std::cos(pitch)*flight-500)<.01f,"ballistic horizontal equation");
+    Require(!V2Math::LowerArc(100,800,1000,0,pitch,flight),"unreachable projectile rejected");
+    Require(!V2Math::LowerArc(0,800,1,0,pitch,flight),"zero speed rejected");
+    Require(!V2Math::LowerArc(1000,800,0,100,pitch,flight),"singular vertical ballistic case rejected");
+    SolverPolicy::ContextGuard guard;
+    SolverPolicy::Context context{1,10,100,50,true};
+    Require(guard.Update(context),"initial solver context invalidates");
+    context.tick++;Require(!guard.Update(context),"normal tick retains solver state");
+    context.weapon++;Require(guard.Update(context),"weapon swap invalidates solver");
+    context.owner++;Require(guard.Update(context),"owner identity invalidates solver");
+    context.map++;Require(guard.Update(context),"map swap invalidates solver");
+    context.tick=0;Require(guard.Update(context),"tick rollback invalidates solver");
+    context.valid=false;Require(guard.Update(context),"invalid owner or weapon clears solver");
+    Require(!guard.Update(context),"repeated invalid context remains empty");
+    Require(SolverPolicy::RecycledTarget(5,10,5,11),"reused target slot invalidates identity");
+    Require(!SolverPolicy::RecycledTarget(5,10,6,11),"different target handled by solver selection");
+    Require(SolverPolicy::UseV2(true,false)&&!SolverPolicy::UseV2(true,true)&&!SolverPolicy::UseV2(false,false),"exclusive routing preserves compatibility extensions");
+    Require(!V2Math::PrioritizedBefore(true,true)&&V2Math::PrioritizedBefore(true,false),"target comparator is irreflexive");
+    std::cout << checks << " calculation/cache/policy checks passed\n";
 }

@@ -1,3 +1,4 @@
+#include "../AimbotUtils/V2Math.h"
 // Complete V2 port, source ba07d0a9 SHA256 df6c27f88c4473cc9640b121eeb5c4c068d7c9447db526833efc9e174564eaf3
 #include "AimbotGlobal.h"
 
@@ -14,6 +15,7 @@ std::vector<Target_t> CV2AimbotGlobal::ManageTargets(std::vector<Target_t>(*GetT
 	int iMethod, int iMaxTargets)
 {
 	auto vTargets = GetTargets(pLocal, pWeapon);
+    std::erase_if(vTargets,[](const Target_t& t){return !t.m_pEntity || !std::isfinite(t.m_flFOVTo) || !std::isfinite(t.m_flDistTo) || !std::isfinite(t.m_vPos.x) || !std::isfinite(t.m_vPos.y) || !std::isfinite(t.m_vPos.z);});
 	SortTargetsPre(vTargets, iMethod);
 
 	// Prioritize navbot/followbot target
@@ -25,7 +27,7 @@ std::vector<Target_t> CV2AimbotGlobal::ManageTargets(std::vector<Target_t>(*GetT
 	{
 		std::sort((vTargets).begin(), (vTargets).end(), [&](const Target_t& a, const Target_t& b) -> bool
 			{
-				return (a.m_pEntity->entindex() == iPriorityIdx) > (b.m_pEntity->entindex() == iPriorityIdx);
+				return V2Math::PrioritizedBefore(a.m_pEntity->entindex() == iPriorityIdx,b.m_pEntity->entindex() == iPriorityIdx);
 			});
 	}
 	vTargets.resize(std::min(size_t(std::max(0,iMaxTargets)), vTargets.size()));
@@ -104,7 +106,7 @@ bool CV2AimbotGlobal::PlayerBoneInFOV(CTFPlayer* pTarget, Vec3 vLocalPos, Vec3 v
 			continue;
 
 		Vec3 vCurAngleTo = Math::CalcAngle(vLocalPos, tHitboxInfo.m_vCenter);
-		float flCurFOVTo = Math::CalcFov(vLocalAngles, vCurAngleTo);
+		float flCurFOVTo = V2Math::CalcFov(vLocalAngles, vCurAngleTo);
 
 		if (flCurFOVTo < flMinFOV)
 		{

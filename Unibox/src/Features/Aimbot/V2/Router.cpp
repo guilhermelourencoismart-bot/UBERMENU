@@ -13,11 +13,11 @@ void CV2Router::Update(CTFPlayer* local,CTFWeaponBase* weapon)
 {
     if (m_backend!=Vars::Aimbot::General::Solver.Value) { Reset(); m_backend=Vars::Aimbot::General::Solver.Value; }
     SolverPolicy::Context next;
-    next.valid=local && weapon && I::EngineClient->IsInGame();
+    next.valid=local && weapon && local->IsAlive() && I::EngineClient->IsInGame();
     if(next.valid)
     {
         next.owner=uint64_t(local->GetRefEHandle().ToInt());
-        next.weapon=uint64_t(weapon->GetRefEHandle().ToInt());
+        next.weapon=uint64_t(uint32_t(weapon->GetRefEHandle().ToInt())) | (uint64_t(uint32_t(weapon->GetWeaponID()))<<32);
         next.map=FNV1A::Hash32(I::EngineClient->GetLevelName()); next.tick=I::GlobalVars->tickcount;
     }
     if(m_context.Update(next)) Reset();

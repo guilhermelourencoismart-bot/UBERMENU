@@ -1,4 +1,5 @@
 #include "Configs.h"
+#include "ConfigCodec.h"
 
 #include "../Binds/Binds.h"
 #include "../Players/PlayerUtils.h"
@@ -229,7 +230,7 @@ static void LoadSkinChanger(const boost::property_tree::ptree& tRead)
 
 template <class T> void CConfigs::SaveJson(boost::property_tree::ptree& t, const std::string& s, const T& v)
 {
-	t.put(s, v);
+	ConfigCodec::WriteScalar(t,s,v);
 }
 
 template <> void CConfigs::SaveJson(boost::property_tree::ptree& t, const std::string& s, const IntRange_t& v)
@@ -359,8 +360,7 @@ template <> void CConfigs::SaveJson(boost::property_tree::ptree& t, const std::s
 
 template <class T> void CConfigs::LoadJson(const boost::property_tree::ptree& t, const std::string& s, T& v)
 {
-	if (auto o = t.get_optional<T>(s))
-		v = *o;
+	ConfigCodec::ReadScalar(t,s,v);
 }
 
 template <> void CConfigs::LoadJson(const boost::property_tree::ptree& t, const std::string& s, IntRange_t& v)
@@ -696,9 +696,7 @@ static inline void SaveMain(BaseVar*& pBase, boost::property_tree::ptree& tTree)
 {
 	auto pVar = pBase->As<T>();
 
-	boost::property_tree::ptree tMap;
-	for (auto& [iBind, tValue] : pVar->Map)
-		F::Configs.SaveJson(tMap, std::to_string(iBind), tValue);
+	auto tMap=ConfigCodec::WriteBindMap(pVar->Map,[](auto& tree,const auto& key,const auto& value){F::Configs.SaveJson(tree,key,value);});
 	tTree.put_child(pVar->Name(), tMap);
 }
 #define Save(t, j) if (IsType(t)) SaveMain<t>(pBase, j);
@@ -713,7 +711,14 @@ static inline void LoadMain(BaseVar*& pBase, boost::property_tree::ptree& tTree)
 	{
 		for (auto& sKey : *tMap | std::views::keys)
 		{
-			int iBind = std::stoi(sKey);
+			auto parsed=ConfigCodec::ParseBindKey(sKey,F::Binds.m_vBinds.size(),pVar->m_iFlags & NOBIND);
+			if(!parsed)continue;
+			int iBind=*parsed;
+			if constexpr(std::is_arithmetic_v<T> || std::is_same_v<T,std::string>)
+			{
+				T value=pVar->Default;
+				if(!ConfigCodec::ReadScalar(*tMap,sKey,value))continue;
+			}
 			if (iBind == DEFAULT_BIND || iBind >= 0 && F::Binds.m_vBinds.size() > iBind && !(pVar->m_iFlags & NOBIND))
 			{
 				F::Configs.LoadJson(*tMap, sKey, pVar, iBind);
@@ -862,6 +867,7 @@ bool CConfigs::LoadConfig(const std::string& sConfigName, bool bNotify)
 
 		boost::property_tree::ptree tRead;
 		read_json(tPath.string(), tRead);
+        ConfigCodec::MigrateLegacyRadar(tRead);
 		vOldBinds = F::Binds.m_vBinds;
 		vOldGroups = F::Groups.m_vGroups;
 		vRestore = CaptureConfigMaps();
@@ -893,28 +899,9 @@ bool CConfigs::LoadConfig(const std::string& sConfigName, bool bNotify)
 		else
 			SDK::Output("unibox", "Config binds not found", ERROR_COLOR, OUTPUT_CONSOLE | OUTPUT_TOAST | OUTPUT_MENU | OUTPUT_DEBUG, ICON_MD_CANCEL);
 
-		// Reject self-references and cycles from hand-edited/old configs before
-		// bind evaluation can recurse through the graph.
-		for (auto& tBind : F::Binds.m_vBinds)
-		{
-			if (tBind.m_iParent >= F::Binds.m_vBinds.size())
-				tBind.m_iParent = DEFAULT_BIND;
-		}
-		for (int i = 0; i < F::Binds.m_vBinds.size(); i++)
-		{
-			std::vector<bool> vSeen(F::Binds.m_vBinds.size());
-			for (int iBind = i; iBind != DEFAULT_BIND; iBind = F::Binds.m_vBinds[iBind].m_iParent)
-			{
-				if (iBind < 0 || iBind >= F::Binds.m_vBinds.size() || vSeen[iBind])
-				{
-					F::Binds.m_vBinds[i].m_iParent = DEFAULT_BIND;
-					break;
-				}
-				vSeen[iBind] = true;
-			}
-		}
-		if (auto tSub = tRead.get_child_optional("Vars");
-			tSub || (tSub = tRead.get_child_optional("ConVars")))
+		ConfigCodec::SanitizeBindParents(F::Binds.m_vBinds);
+
+		if (auto tSub = ConfigCodec::Variables(tRead))
 		{
 			bool bNoSave = !(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 			for (auto& pBase : G::Vars)
@@ -1124,6 +1111,7 @@ bool CConfigs::LoadVisual(const std::string& sConfigName, bool bNotify)
 
 		boost::property_tree::ptree tRead;
 		read_json(tPath.string(), tRead);
+        ConfigCodec::MigrateLegacyRadar(tRead);
 		vOldGroups = F::Groups.m_vGroups;
 		vRestore = CaptureConfigMaps();
 		bTransaction = true;
@@ -1397,6 +1385,7 @@ bool CConfigs::LoadSkins(const std::string& sConfigName, bool bNotify)
 
 		boost::property_tree::ptree tRead;
 		read_json(tPath.string(), tRead);
+        ConfigCodec::MigrateLegacyRadar(tRead);
 		bTransaction = true;
 
 		LoadSkinChanger(tRead);

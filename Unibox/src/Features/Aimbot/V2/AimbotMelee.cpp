@@ -1,3 +1,4 @@
+#include "../AimbotUtils/V2Math.h"
 // Complete V2 port, source ba07d0a9 SHA256 4a908cae194e1114b86df7ce23d8a46bd7bc700747ac6413bbfa37af58a3c290
 #include "AimbotMelee.h"
 
@@ -124,7 +125,7 @@ static inline std::vector<Target_t> GetTargets(CTFPlayer* pLocal, CTFWeaponBase*
 
 			Vec3 vPos = pEntity->GetCenter();
 			Vec3 vAngleTo = Math::CalcAngle(vLocalPos, vPos);
-			float flFOVTo = Math::CalcFov(vLocalAngles, vAngleTo);
+			float flFOVTo = V2Math::CalcFov(vLocalAngles, vAngleTo);
 			if (flFOVTo > Vars::Aimbot::General::AimFOV.Value)
 				continue;
 
@@ -157,7 +158,7 @@ static inline std::vector<Target_t> GetTargets(CTFPlayer* pLocal, CTFWeaponBase*
 
 			Vec3 vPos = pEntity->GetCenter();
 			Vec3 vAngleTo = Math::CalcAngle(vLocalPos, vPos);
-			float flFOVTo = Math::CalcFov(vLocalAngles, vAngleTo);
+			float flFOVTo = V2Math::CalcFov(vLocalAngles, vAngleTo);
 			if (flFOVTo > Vars::Aimbot::General::AimFOV.Value)
 				continue;
 
@@ -749,7 +750,7 @@ bool CV2AimbotMelee::RunSapper(CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CUserC
 			continue;
 
 		Vec3 vAngleTo = Math::CalcAngle(vLocalPos, vPoint);
-		const float flFOVTo = Math::CalcFov(vLocalAngles, vAngleTo);
+		const float flFOVTo = V2Math::CalcFov(vLocalAngles, vAngleTo);
 		const float flDistTo = vLocalPos.DistTo(vPoint);
 
 		if (flFOVTo > Vars::Aimbot::General::AimFOV.Value)
