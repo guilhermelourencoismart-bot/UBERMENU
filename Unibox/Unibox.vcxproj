@@ -47,6 +47,8 @@
     <ClInclude Include="src\Features\Visuals\OffScreenIndicators\OffScreenIndicators.h" />
     <ClCompile Include="src\Features\Visuals\AmmoTracker\AmmoTracker.cpp" />
     <ClInclude Include="src\Features\Visuals\AmmoTracker\AmmoTracker.h" />
+    <ClCompile Include="src\Features\Visuals\SentryESP\SentryESP.cpp" />
+    <ClInclude Include="src\Features\Visuals\SentryESP\SentryESP.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

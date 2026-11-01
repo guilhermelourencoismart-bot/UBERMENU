@@ -654,6 +654,11 @@ NAMESPACE_BEGIN(Vars)
 		CVar(RespawnSeconds, "Pickup respawn seconds", 10.f, VISUAL | SLIDER_CLAMP, 1.f, 60.f, 1.f);
 		CVar(MaxDistance, "Pickup tracker distance", 3500.f, VISUAL | SLIDER_CLAMP, 50.f, 10000.f, 50.f);
 	NAMESPACE_END(AmmoTracker)
+	NAMESPACE_BEGIN(SentryESP)
+		CVar(Enabled, "Sentry target overlay", false, VISUAL);
+		CVar(ThroughWalls, "Sentries through walls", false, VISUAL);
+		CVar(MaxDistance, "Sentry overlay distance", 3500.f, VISUAL | SLIDER_CLAMP, 50.f, 10000.f, 50.f);
+	NAMESPACE_END(SentryESP)
 
 	NAMESPACE_BEGIN(Visuals)
 		NAMESPACE_BEGIN(UI)

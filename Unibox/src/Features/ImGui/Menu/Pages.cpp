@@ -657,6 +657,9 @@ static void VisualsView()
 		FToggle(Vars::AmmoTracker::Enabled);
 		FSlider(Vars::AmmoTracker::RespawnSeconds);
 		FSlider(Vars::AmmoTracker::MaxDistance);
+		FToggle(Vars::SentryESP::Enabled);
+		FToggle(Vars::SentryESP::ThroughWalls);
+		FSlider(Vars::SentryESP::MaxDistance);
 		FTooltip("Estimated pickup respawns at known map supply positions; adjust interval for the server. Replaces base pickup timers while enabled.");
 		FTooltip("Uses the existing ESP groups with offscreen arrows enabled. Replaces base arrows while active.");
 		FDropdown(Vars::Visuals::UI::StreamerMode);
