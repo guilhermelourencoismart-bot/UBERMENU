@@ -49,6 +49,8 @@
     <ClInclude Include="src\Features\Visuals\AmmoTracker\AmmoTracker.h" />
     <ClCompile Include="src\Features\Visuals\SentryESP\SentryESP.cpp" />
     <ClInclude Include="src\Features\Visuals\SentryESP\SentryESP.h" />
+    <ClCompile Include="src\Features\Visuals\StickyESP\StickyESP.cpp" />
+    <ClInclude Include="src\Features\Visuals\StickyESP\StickyESP.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

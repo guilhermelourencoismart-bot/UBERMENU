@@ -21,6 +21,7 @@
 #include "../Visuals/OffScreenIndicators/OffScreenIndicators.h"
 #include "../Visuals/AmmoTracker/AmmoTracker.h"
 #include "../Visuals/SentryESP/SentryESP.h"
+#include "../Visuals/StickyESP/StickyESP.h"
 #include "../Visuals/Visuals.h"
 #include "../Aimbot/Aimbot.h"
 #include "Overlay/CaptureOverlay.h"
@@ -96,6 +97,7 @@ void CRender::Render(IDirect3DDevice9* pDevice)
 		F::OffScreenIndicators.Draw(pBackground);
 		F::AmmoTracker.Draw(pBackground);
 		F::SentryESP.Draw(pBackground);
+		F::StickyESP.Draw(pBackground);
 		F::Aimbot.Draw(pBackground);
 		F::Visuals.DrawBestAimPos(pBackground);
 

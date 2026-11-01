@@ -659,6 +659,13 @@ NAMESPACE_BEGIN(Vars)
 		CVar(ThroughWalls, "Sentries through walls", false, VISUAL);
 		CVar(MaxDistance, "Sentry overlay distance", 3500.f, VISUAL | SLIDER_CLAMP, 50.f, 10000.f, 50.f);
 	NAMESPACE_END(SentryESP)
+	NAMESPACE_BEGIN(StickyESP)
+		CVar(Enabled, "Sticky overlay", false, VISUAL);
+		CVar(EnemyOnly, "Enemy stickies only", true, VISUAL);
+		CVar(ThroughWalls, "Stickies through walls", false, VISUAL);
+		CVar(Box3D, "Sticky 3D bounds", false, VISUAL);
+		CVar(MaxDistance, "Sticky overlay distance", 3500.f, VISUAL | SLIDER_CLAMP, 50.f, 10000.f, 50.f);
+	NAMESPACE_END(StickyESP)
 
 	NAMESPACE_BEGIN(Visuals)
 		NAMESPACE_BEGIN(UI)
