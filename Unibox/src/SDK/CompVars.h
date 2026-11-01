@@ -28,7 +28,55 @@ NAMESPACE_BEGIN(Comp)
 
 NAMESPACE_END(ESP)
 
+		NAMESPACE_BEGIN(CraterCheck)
+			CVar(Radius, "Crater radius", 100.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 50.0f, 500.0f, 25.0f);
+			CVar(Segments, "Circle segments", 24, VISUAL | SLIDER_CLAMP, 8, 64, 4);
+			CVar(ShowFill, "Show filled polygon", true, VISUAL);
+			CVar(ShowEdge, "Show edge lines", true, VISUAL);
+			CVar(EdgeWidth, "Edge width", 2, VISUAL | SLIDER_CLAMP, 1, 10, 1);
+			CVar(OnlyShowLethal, "Only show lethal landings", true, VISUAL);
+			CVar(LethalFillColor, "Lethal fill color", Color_t(255, 0, 0, 60), VISUAL);
+			CVar(LethalEdgeColor, "Lethal edge color", Color_t(255, 0, 0, 150), VISUAL);
+			CVar(SafeFillColor, "Safe fill color", Color_t(0, 255, 0, 60), VISUAL);
+			CVar(SafeEdgeColor, "Safe edge color", Color_t(0, 255, 0, 150), VISUAL);
+		NAMESPACE_END(CraterCheck);
+		NAMESPACE_BEGIN(CritHeals)
+			CVar(Range, "Detection range", 800.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 200.0f, 1500.0f, 50.0f);
+			CVar(CritHealTime, "Crit heal time", 10.0f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 5.0f, 30.0f, 1.0f);
+			CVar(MaxOverhealMultiplier, "Max overheal multiplier", 1.5f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 1.0f, 2.0f, 0.1f);
+			CVar(UberPenaltyThreshold, "Uber penalty threshold", 1.425f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 1.0f, 2.0f, 0.025f);
+			CVar(BuffThreshold, "Buff threshold", 0.9f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 0.5f, 1.0f, 0.05f);
+			CVar(BuffFadeThreshold, "Buff fade threshold", 0.33f, VISUAL | SLIDER_MIN | SLIDER_PRECISION, 0.1f, 1.0f, 0.05f);
+			CVar(TriangleSize, "Triangle size", 12, VISUAL | SLIDER_CLAMP, 5, 30, 1);
+			CVar(TriangleVerticalOffset, "Triangle vertical offset", 100, VISUAL | SLIDER_CLAMP, 50, 200, 5);
+			CVar(OutlineThickness, "Outline thickness", 2, VISUAL | SLIDER_CLAMP, 1, 5, 1);
+			CVar(FriendColor, "Friend color", Color_t(50, 255, 50, 255), VISUAL);
+			CVar(EnemyColor, "Enemy color", Color_t(255, 50, 50, 255), VISUAL);
+			CVar(OutlineColor, "Outline color", Color_t(0, 0, 0, 255), VISUAL);
+			CVar(WarningColor, "Warning color", Color_t(255, 200, 0, 255), VISUAL);
+			CVar(UberBuildWarning, "Uber build warning", true, VISUAL);
+			CVar(ShowOnEnemies, "Show on enemies", false, VISUAL);
+		NAMESPACE_END(CritHeals);
+		NAMESPACE_BEGIN(SplashRadius)
+			CVar(FillColor, "Fill color", Color_t(255, 255, 255, 25), VISUAL);
+			CVar(EdgeColor, "Edge color", Color_t(255, 255, 255, 45), VISUAL);
+			CVar(Segments, "Circle segments", 32, VISUAL | SLIDER_CLAMP, 8, 64, 4);
+			CVar(ShowFill, "Show filled polygon", true, VISUAL);
+			CVar(ShowEdge, "Show edge lines", true, VISUAL);
+			CVar(EdgeWidth, "Edge width", 2, VISUAL | SLIDER_CLAMP, 1, 10, 1);
+			CVar(EnemyOnly, "Enemy stickies only", true, VISUAL);
+			CVar(ShowRockets, "Show rocket radius", true, VISUAL);
+			CVar(ShowPipebombs, "Show pipebomb radius", true, VISUAL);
+			CVar(ShowStickybombs, "Show stickybomb radius", true, VISUAL);
+			CVar(MergeOverlapping, "Merge overlapping circles", true, VISUAL);
+			CVar(UseLOD, "Use distance-based LOD", true, VISUAL);
+			CVar(TeamColors, "Use team colors", true, VISUAL);
+			CVar(ShowOnlyVisible, "Show only visible projectiles", true, VISUAL);
+		NAMESPACE_END(SplashRadius);
 NAMESPACE_BEGIN(Features)
+CVar(SplashRadius, "SplashRadius", false, VISUAL);
+CVar(CritHeals, "CritHeals", false, VISUAL);
+CVar(CraterCheck, "CraterCheck", false, VISUAL);
 CVar(UberTracker, "UberTracker", false, VISUAL);
 CVar(MedicUberBar, "MedicUberBar", false, VISUAL);
 CVar(PylonESP, "PylonESP", false, VISUAL);

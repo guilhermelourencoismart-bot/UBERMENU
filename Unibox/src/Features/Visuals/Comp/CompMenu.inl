@@ -1,6 +1,55 @@
 // Full Comp module controls, using the original menu components.
 static void FullCompSettings()
 {
+if(Section("CraterCheck - Comp")) {
+FToggle(Vars::Comp::Features::CraterCheck);
+FSlider(Vars::Comp::CraterCheck::Radius);
+FSlider(Vars::Comp::CraterCheck::Segments);
+FToggle(Vars::Comp::CraterCheck::ShowFill);
+FToggle(Vars::Comp::CraterCheck::ShowEdge);
+FSlider(Vars::Comp::CraterCheck::EdgeWidth);
+FToggle(Vars::Comp::CraterCheck::OnlyShowLethal);
+FColorPicker(Vars::Comp::CraterCheck::LethalFillColor);
+FColorPicker(Vars::Comp::CraterCheck::LethalEdgeColor);
+FColorPicker(Vars::Comp::CraterCheck::SafeFillColor);
+FColorPicker(Vars::Comp::CraterCheck::SafeEdgeColor);
+} EndSection();
+if(Section("CritHeals - Comp")) {
+FToggle(Vars::Comp::Features::CritHeals);
+FSlider(Vars::Comp::CritHeals::Range);
+FSlider(Vars::Comp::CritHeals::CritHealTime);
+FSlider(Vars::Comp::CritHeals::MaxOverhealMultiplier);
+FSlider(Vars::Comp::CritHeals::UberPenaltyThreshold);
+FSlider(Vars::Comp::CritHeals::BuffThreshold);
+FSlider(Vars::Comp::CritHeals::BuffFadeThreshold);
+FSlider(Vars::Comp::CritHeals::TriangleSize);
+FSlider(Vars::Comp::CritHeals::TriangleVerticalOffset);
+FSlider(Vars::Comp::CritHeals::OutlineThickness);
+FColorPicker(Vars::Comp::CritHeals::FriendColor);
+FColorPicker(Vars::Comp::CritHeals::EnemyColor);
+FColorPicker(Vars::Comp::CritHeals::OutlineColor);
+FColorPicker(Vars::Comp::CritHeals::WarningColor);
+FToggle(Vars::Comp::CritHeals::UberBuildWarning);
+FToggle(Vars::Comp::CritHeals::ShowOnEnemies);
+} EndSection();
+if(Section("SplashRadius - Comp")) {
+FToggle(Vars::Comp::Features::SplashRadius);
+FColorPicker(Vars::Comp::SplashRadius::FillColor);
+FColorPicker(Vars::Comp::SplashRadius::EdgeColor);
+FSlider(Vars::Comp::SplashRadius::Segments);
+FToggle(Vars::Comp::SplashRadius::ShowFill);
+FToggle(Vars::Comp::SplashRadius::ShowEdge);
+FSlider(Vars::Comp::SplashRadius::EdgeWidth);
+FToggle(Vars::Comp::SplashRadius::EnemyOnly);
+FToggle(Vars::Comp::SplashRadius::ShowRockets);
+FToggle(Vars::Comp::SplashRadius::ShowPipebombs);
+FToggle(Vars::Comp::SplashRadius::ShowStickybombs);
+FToggle(Vars::Comp::SplashRadius::MergeOverlapping);
+FToggle(Vars::Comp::SplashRadius::UseLOD);
+FToggle(Vars::Comp::SplashRadius::TeamColors);
+FToggle(Vars::Comp::SplashRadius::ShowOnlyVisible);
+} EndSection();
+
 if(Section("Main ESP - Comp")) {
  FToggle(Vars::Comp::ESP::Enabled);
  FDropdown(Vars::Comp::ESP::Draw);

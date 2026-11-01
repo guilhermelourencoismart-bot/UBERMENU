@@ -1,5 +1,9 @@
 #include "CompVisuals.h"
 #include "MainESP.h"
+#include "CraterCheck.h"
+#include "CritHeals.h"
+#include "SplashRadius.h"
+
 #include "Radar.h"
 #include "OffScreenIndicators.h"
 #include "CompEntities.h"
@@ -24,6 +28,7 @@ void CCompVisuals::Reset()
     F::FullSentryESP=CFullSentryESP{};
     F::FullStickyESP=CFullStickyESP{};
     F::FullMainESP=CFullMainESP{};
+    F::FullCraterCheck=CFullCraterCheck{}; F::FullCritHeals=CFullCritHeals{}; F::FullSplashRadius=CFullSplashRadius{};
     m_serials.clear(); m_time=-1.f;
     F::CompDraw.Begin(); F::CompDraw.Publish();
 }
@@ -48,6 +53,7 @@ void CCompVisuals::Capture(CTFPlayer* local)
     if (!SDK::TakingScreenshot())
     {
         if(Vars::Comp::ESP::Enabled.Value) { F::FullMainESP.Store(local); F::FullMainESP.Draw(); }
+        F::FullCraterCheck.Draw(); F::FullCritHeals.Draw(); F::FullSplashRadius.Draw();
         F::FullRadar.Run(local);
         F::FullOffScreenIndicators.Draw();
         F::FullUberTracker.Draw(); F::FullMedicUberBar.Draw(); F::FullPylonESP.Draw();
@@ -67,6 +73,9 @@ void CCompVisuals::Event(IGameEvent* event,uint32_t hash)
     if (!event) return;
     F::FullAmmoTracker.Event(event,hash);
     if (hash==FNV1A::Hash32Const("player_hurt"))
+        {
+        F::FullCritHeals.OnPlayerHurt(I::EngineClient->GetPlayerForUserID(event->GetInt("userid")));
         F::FullFocusFire.OnPlayerHurt(I::EngineClient->GetPlayerForUserID(event->GetInt("userid")),I::EngineClient->GetPlayerForUserID(event->GetInt("attacker")));
+    }
     else if (hash==FNV1A::Hash32Const("game_newmap") || hash==FNV1A::Hash32Const("client_disconnect") || hash==FNV1A::Hash32Const("teamplay_round_start")) Reset();
 }

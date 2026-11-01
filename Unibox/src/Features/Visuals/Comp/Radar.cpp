@@ -3,46 +3,20 @@
 #include "CompEntities.h"
 #include "CompColor.h"
 #include "Radar.h"
+#include "../Radar/RadarMath.h"
 
 #include "../../Players/PlayerUtils.h"
 #include "../../ImGui/Menu/Menu.h"
 
 bool CFullRadar::GetDrawPosition(CTFPlayer* pLocal, CBaseEntity* pEntity, int& x, int& y, int& z)
 {
-	const float flRange = std::max(1.f,Vars::Comp::Radar::Main::Range.Value);
-	const float flYaw = -Math::Deg2Rad(I::EngineClient->GetViewAngles().y);
-	const float flSin = sinf(flYaw), flCos = cosf(flYaw);
-
-	Vec3 vDelta = pLocal->GetAbsOrigin() - pEntity->GetAbsOrigin();
-	Vec2 vPos = { vDelta.x * flSin + vDelta.y * flCos, vDelta.x * flCos - vDelta.y * flSin };
-
-	switch (Vars::Comp::Radar::Main::Style.Value)
-	{
-	case Vars::Comp::Radar::Main::StyleEnum::Circle:
-	{
-		const float flDist = vDelta.Length2D();
-		if (flDist > flRange)
-		{
-			if (!Vars::Comp::Radar::Main::DrawOutOfRange.Value)
-				return false;
-
-			vPos *= flRange / flDist;
-		}
-		break;
-	}
-	case Vars::Comp::Radar::Main::StyleEnum::Rectangle:
-		if (fabs(vPos.x) > flRange || fabs(vPos.y) > flRange)
-		{
-			if (!Vars::Comp::Radar::Main::DrawOutOfRange.Value)
-				return false;
-
-			Vec2 a = { -flRange / vPos.x, -flRange / vPos.y };
-			Vec2 b = { flRange / vPos.x, flRange / vPos.y };
-			Vec2 c = { std::min(a.x, b.x), std::min(a.y, b.y) };
-			vPos *= fabsf(std::max(c.x, c.y));
-		}
-	}
-
+    const Vec3 vDelta=pLocal->GetAbsOrigin()-pEntity->GetAbsOrigin();
+    RadarMath::Point position;
+    if(!RadarMath::Project(vDelta.x,vDelta.y,I::EngineClient->GetViewAngles().y,
+        Vars::Comp::Radar::Main::Range.Value,Vars::Comp::Radar::Main::Style.Value==Vars::Comp::Radar::Main::StyleEnum::Circle,
+        Vars::Comp::Radar::Main::DrawOutOfRange.Value,position))return false;
+    const Vec2 vPos={position.x,position.y};
+    const float flRange=1.f;
 	auto& tWindowBox = Vars::Comp::Radar::Main::Window.Value;
 	x = tWindowBox.x + vPos.x / flRange * tWindowBox.w / 2;
 	y = tWindowBox.y + vPos.y / flRange * tWindowBox.w / 2 + tWindowBox.h / 2.f;

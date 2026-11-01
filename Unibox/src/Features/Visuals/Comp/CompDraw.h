@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 #include "../../../SDK/SDK.h"
 #include "../../ImGui/IndicatorCache.h"
 struct ImDrawList;

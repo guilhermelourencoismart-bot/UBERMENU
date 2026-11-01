@@ -45,7 +45,7 @@ void CFullMainESP::StorePlayers(CTFPlayer* pLocal)
 	auto pResource = H::Entities.GetResource();
 	for (auto pEntity : F::CompEntities.GetGroup(CompGroup::PLAYERS_ALL))
 	{
-		if (!pEntity || pEntity->IsDormant())
+		if (!pEntity)
 			continue;
 		auto pPlayer = pEntity->As<CTFPlayer>();
 		if (!pPlayer)
@@ -68,7 +68,8 @@ void CFullMainESP::StorePlayers(CTFPlayer* pLocal)
 		{
 			if (pPlayer->IsDormant())
 			{
-				if (!H::Entities.GetDormancy(iIndex) || !Vars::Comp::ESP::DormantAlpha.Value
+				auto dormancy=H::Entities.GetDormancy(iIndex);
+                if (!dormancy || I::GlobalVars->curtime-dormancy->m_flLastUpdate>Vars::Comp::ESP::DormantDuration.Value || !Vars::Comp::ESP::DormantAlpha.Value
 					|| Vars::Comp::ESP::DormantPriority.Value && !F::PlayerUtils.IsPrioritized(iIndex))
 					continue;
 			}
@@ -513,7 +514,7 @@ void CFullMainESP::StoreBuildings(CTFPlayer* pLocal)
 		CompMainBuildingCache& tCache = m_mCompMainBuildingCache[pEntity];
 		tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 		tCache.m_tColor = GetColor(pLocal, pOwner ? pOwner : pEntity);
-		tCache.m_bBox = Vars::Comp::ESP::Building.Value & Vars::Comp::ESP::BuildingEnum::Box;
+		tCache.m_bBox = (Vars::Comp::ESP::Building.Value & Vars::Comp::ESP::BuildingEnum::Box) && !(pEntity->GetClassID()==ETFClassID::CObjectSentrygun && Vars::Comp::Features::SentryESP.Value && Vars::Comp::SentryESP::ShowBoxes.Value);
 
 		if (Vars::Comp::ESP::Building.Value & Vars::Comp::ESP::BuildingEnum::Distance)
 		{
@@ -533,7 +534,7 @@ void CFullMainESP::StoreBuildings(CTFPlayer* pLocal)
 			tCache.m_vText.emplace_back(CompESPTextEnum::Top, szName, Vars::Menu::Theme::Active.Value, Vars::Menu::Theme::Background.Value);
 		}
 
-		float flHealth = pBuilding->m_iHealth(), flMaxHealth = pBuilding->m_iMaxHealth();
+		float flHealth = pBuilding->m_iHealth(), flMaxHealth = std::max(pBuilding->m_iMaxHealth(),1);
 		if (tCache.m_bHealthBar = Vars::Comp::ESP::Building.Value & Vars::Comp::ESP::BuildingEnum::HealthBar)
 			tCache.m_flHealth = std::clamp(flHealth / flMaxHealth, 0.f, 1.f);
 		if (Vars::Comp::ESP::Building.Value & Vars::Comp::ESP::BuildingEnum::HealthText)
@@ -667,7 +668,7 @@ void CFullMainESP::StoreProjectiles(CTFPlayer* pLocal)
 		CompMainWorldCache& tCache = m_mCompMainWorldCache[pEntity];
 		tCache.m_flAlpha = Vars::Comp::ESP::ActiveAlpha.Value / 255.f;
 		tCache.m_tColor = GetColor(pLocal, pOwner ? pOwner : pEntity);
-		tCache.m_bBox = Vars::Comp::ESP::Projectile.Value & Vars::Comp::ESP::ProjectileEnum::Box;
+		tCache.m_bBox = (Vars::Comp::ESP::Projectile.Value & Vars::Comp::ESP::ProjectileEnum::Box) && !(pEntity->GetClassID()==ETFClassID::CTFGrenadePipebombProjectile && pEntity->As<CTFGrenadePipebombProjectile>()->m_iType()==1 && Vars::Comp::Features::StickyESP.Value && (Vars::Comp::StickyESP::Box2D.Value || Vars::Comp::StickyESP::Box3D.Value));
 
 		if (Vars::Comp::ESP::Projectile.Value & Vars::Comp::ESP::ProjectileEnum::Distance)
 		{
@@ -1021,8 +1022,7 @@ void CFullMainESP::DrawPlayers()
 		auto& tCache = it->second;
 
 		// Double-check entity is still valid after cache lookup
-		if (pEntity->IsDormant())
-			continue;
+
 
 		auto pPlayer = pEntity->As<CTFPlayer>();
 		if (!pPlayer || !pPlayer->IsAlive())
@@ -1256,7 +1256,7 @@ void CFullMainESP::DrawBuildings()
 void CFullMainESP::DrawWorld()
 {
 	// Early return if no world ESP options are enabled
-	if (!(Vars::Comp::ESP::Draw.Value & (Vars::Comp::ESP::DrawEnum::NPCs | Vars::Comp::ESP::DrawEnum::Health | Vars::Comp::ESP::DrawEnum::Ammo | Vars::Comp::ESP::DrawEnum::Money | Vars::Comp::ESP::DrawEnum::Powerups | Vars::Comp::ESP::DrawEnum::Bombs | Vars::Comp::ESP::DrawEnum::Spellbook | Vars::Comp::ESP::DrawEnum::Gargoyle)))
+	if (!(Vars::Comp::ESP::Draw.Value & (Vars::Comp::ESP::DrawEnum::Projectiles | Vars::Comp::ESP::DrawEnum::Objective | Vars::Comp::ESP::DrawEnum::NPCs | Vars::Comp::ESP::DrawEnum::Health | Vars::Comp::ESP::DrawEnum::Ammo | Vars::Comp::ESP::DrawEnum::Money | Vars::Comp::ESP::DrawEnum::Powerups | Vars::Comp::ESP::DrawEnum::Bombs | Vars::Comp::ESP::DrawEnum::Spellbook | Vars::Comp::ESP::DrawEnum::Gargoyle)))
 		return;
 
 	const auto& fFont = H::Fonts.GetFont(FONT_ESP);
@@ -1354,13 +1354,14 @@ bool CFullMainESP::GetDrawBounds(CBaseEntity* pEntity, float& x, float& y, float
 		return false;
 
 	// Ensure entity has a valid model and is not being destroyed
-	if (!pEntity->GetModel() || pEntity->IsDormant())
+	if (!pEntity->GetModel() || (pEntity->IsDormant() && !pEntity->IsPlayer()))
 		return false;
 
 	Vec3 vOrigin = pEntity->GetAbsOrigin();
+    if(pEntity->IsDormant()) { auto dormant=H::Entities.GetDormancy(pEntity->entindex()); if(!dormant)return false;vOrigin=dormant->m_vLocation; }
 
 	// Check for valid origin
-	if (vOrigin.IsZero())
+	if (!std::isfinite(vOrigin.x)||!std::isfinite(vOrigin.y)||!std::isfinite(vOrigin.z))
 		return false;
 
 	matrix3x4 mTransform = { { 1, 0, 0, vOrigin.x }, { 0, 1, 0, vOrigin.y }, { 0, 0, 1, vOrigin.z } };
@@ -1377,7 +1378,7 @@ bool CFullMainESP::GetDrawBounds(CBaseEntity* pEntity, float& x, float& y, float
 	h = flTop - flBottom;
 
 	// Validate computed bounds
-	if (w <= 0 || h <= 0 || w > 4096.f || h > 4096.f)
+	if (!std::isfinite(x)||!std::isfinite(y)||!std::isfinite(w)||!std::isfinite(h)||w <= 0 || h <= 0 || w > 4096.f || h > 4096.f)
 		return false;
 
 	switch (pEntity->GetClassID())
