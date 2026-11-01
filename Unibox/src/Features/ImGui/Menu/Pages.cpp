@@ -648,6 +648,10 @@ static void VisualsView()
 		FToggle(Vars::HealthOverlay::Polygons);
 		FToggle(Vars::HealthOverlay::ThroughWalls);
 		FSlider(Vars::HealthOverlay::MaxDistance);
+		FToggle(Vars::PlayerTrails::Enabled);
+		FToggle(Vars::PlayerTrails::ThroughWalls);
+		FSlider(Vars::PlayerTrails::Duration);
+		FSlider(Vars::PlayerTrails::MaxDistance);
 		FDropdown(Vars::Visuals::UI::StreamerMode);
 		FDropdown(Vars::Visuals::UI::ChatTags, FDropdownEnum::None, -28);
 		FColorPicker(Vars::Colors::Local);

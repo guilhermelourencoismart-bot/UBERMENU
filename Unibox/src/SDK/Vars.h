@@ -639,6 +639,12 @@ NAMESPACE_BEGIN(Vars)
 		CVar(ThroughWalls, "Health through walls", false, VISUAL);
 		CVar(MaxDistance, "Health overlay distance", 3500.f, VISUAL | SLIDER_CLAMP, 50.f, 10000.f, 50.f);
 	NAMESPACE_END(HealthOverlay)
+	NAMESPACE_BEGIN(PlayerTrails)
+		CVar(Enabled, "Enemy player trails", false, VISUAL);
+		CVar(ThroughWalls, "Trails through walls", false, VISUAL);
+		CVar(Duration, "Trail duration", 2.f, VISUAL | SLIDER_CLAMP, .1f, 10.f, .1f);
+		CVar(MaxDistance, "Trail distance", 3500.f, VISUAL | SLIDER_CLAMP, 50.f, 10000.f, 50.f);
+	NAMESPACE_END(PlayerTrails)
 
 	NAMESPACE_BEGIN(Visuals)
 		NAMESPACE_BEGIN(UI)

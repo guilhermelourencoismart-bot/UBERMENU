@@ -17,6 +17,7 @@
 #include "../Visuals/ESP/ESP.h"
 #include "../Visuals/Radar/Radar.h"
 #include "../Visuals/HealthBarESP/HealthBarESP.h"
+#include "../Visuals/PlayerTrails/PlayerTrails.h"
 #include "../Visuals/Visuals.h"
 #include "../Aimbot/Aimbot.h"
 #include "Overlay/CaptureOverlay.h"
@@ -88,6 +89,7 @@ void CRender::Render(IDirect3DDevice9* pDevice)
 		F::ESP.Draw(pBackground);
 		F::Radar.Draw(pBackground);
 		F::HealthBarESP.Draw(pBackground);
+		F::PlayerTrails.Draw(pBackground);
 		F::Aimbot.Draw(pBackground);
 		F::Visuals.DrawBestAimPos(pBackground);
 
