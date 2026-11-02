@@ -46,8 +46,8 @@ def validate(root, require_packages=False):
             continue
         output = item.findtext('m:ObjectFileName', namespaces=vcx_ns)
         if not output:
-            output = Path(source.replace('\\\\', '/')).stem + '.obj'
-        key = output.replace('\\\\', '/').casefold()
+            output = Path(source.replace(chr(92), '/')).stem + '.obj'
+        key = output.replace(chr(92), '/').casefold()
         if key in compile_outputs:
             errors.append(f'Object output collision: {source} and {compile_outputs[key]} -> {output}')
         compile_outputs[key] = source
