@@ -1,6 +1,7 @@
 #pragma once
 #include "WidgetEnv.h"
 #include "Localization.h"
+#include "Descriptions.h"
 #include "../Fonts/MaterialDesign/IconDefinitions.h"
 #include <ImGui/imgui_internal.h>
 #include <ImGui/imgui_stdlib.h>
@@ -1369,6 +1370,7 @@ namespace ImGui
 		if (Transparent || Disabled)
 			PopStyleVar();
 
+		FTooltip(MenuPTBR::Help("",StripDoubleHash(sLabel).c_str(),true,false,false).c_str(),bHovered);
 		return bReturn;
 	}
 
@@ -1709,6 +1711,7 @@ namespace ImGui
 			PopStyleVar();
 		PopID();
 
+		FTooltip(MenuPTBR::Help("",StripDoubleHash(sLabel).c_str(),pToggle!=nullptr,false,false).c_str(),bRowHovered || bToggleHovered);
 		return *pVar1 != flOriginal1 || pVar2 && *pVar2 != flOriginal2 || pToggle && *pToggle != bOriginalToggle;
 	}
 
@@ -2049,6 +2052,7 @@ namespace ImGui
 		if (Transparent || Disabled)
 			PopStyleVar();
 
+		FTooltip(MenuPTBR::Help("",StripDoubleHash(sLabel).c_str(),false,false,true).c_str(),tRow.m_bHovered);
 		return bReturn;
 	}
 

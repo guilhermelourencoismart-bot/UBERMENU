@@ -286,25 +286,25 @@ void CMenu::MenuESP()
 	{
 		FColorPicker("Color", &tGroup.m_tColor, FColorPickerEnum::Full);
 		FToggle("Marcadores override cor", &tGroup.m_bTagsOverrideColor);
-		FDropdown("Alvos", &tGroup.m_iTargets, { "Players", "Buildings", "Projectiles", "Ragdolls", "Objective", "NPCs", "Health", "Ammo", "Money", "Powerups", "Spellbook", "Bombs", "Gargoyle", "##Divider", "Fake angle", "Viewmodel weapon", "Viewmodel hands" }, {}, FDropdownEnum::Multi);
+		FDropdown("Alvos", &tGroup.m_iTargets, { "Jogadores", "Construções", "Projéteis", "Ragdolls", "Objetivo", "NPCs", "Vida", "Munição", "Dinheiro", "Poderes", "Livro", "Bombas", "Gárgula", "##Divider", "Fake angle", "Arma em tela arma", "Arma em tela hands" }, {}, FDropdownEnum::Multi);
 	} EndSection();
 	if (Section("Condições"))
 	{
-		FDropdown("Condições", &tGroup.m_iConditions, { "Enemy", "Team", "BLU", "RED", "##Divider", "Local", "Friends", "Party", "Priority", "Target", "##Divider", "Dormant" }, {}, FDropdownEnum::Multi);
+		FDropdown("Condições", &tGroup.m_iConditions, { "Inimigo", "Equipe", "BLU", "RED", "##Divider", "Local", "Amigos", "Party", "Prioridade", "Alvo", "##Divider", "Inativo" }, {}, FDropdownEnum::Multi);
 		PushTransparent(!(tGroup.m_iTargets & TargetsEnum::Players));
 		{
 			RoleDropdown("Roles", tGroup.m_vRoles);
-			FDropdown("Jogadores", &tGroup.m_iPlayers, { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy", "##Divider", "Invulnerable", "Crits", (tGroup.m_iPlayers & PlayerEnum::NotInvis) ? "Not invisible" : "Invisible", "Disguise", "Hurt", "##Divider", "Invisible -> Not invisible" }, {}, FDropdownEnum::Multi, 0, "All");
+			FDropdown("Jogadores", &tGroup.m_iPlayers, { "Scout", "Soldier", "Pyro", "Demoman", "Intenso", "Engineer", "Médico", "Sniper", "Spy", "##Divider", "Invulnerable", "Críticos", (tGroup.m_iPlayers & PlayerEnum::NotInvis) ? "Not invisível" : "Invisível", "Disfarce", "Hurt", "##Divider", "Invisible -> Not invisible" }, {}, FDropdownEnum::Multi, 0, "Todos");
 		}
 		PopTransparent();
 		PushTransparent(!(tGroup.m_iTargets & TargetsEnum::Buildings));
 		{
-			FDropdown("Construções", &tGroup.m_iBuildings, { "Sentry", "Dispenser", "Teleporter", "##Divider", "Hurt" }, {}, FDropdownEnum::Multi, 0, "All");
+			FDropdown("Construções", &tGroup.m_iBuildings, { "Sentry", "Dispenser", "Teleporter", "##Divider", "Hurt" }, {}, FDropdownEnum::Multi, 0, "Todos");
 		}
 		PopTransparent();
 		PushTransparent(!(tGroup.m_iTargets & TargetsEnum::Projectiles));
 		{
-			FDropdown("Projéteis", &tGroup.m_iProjectiles, { "Rocket", "Sticky", "Pipe", "Arrow", "Heal", "Flare", "Fire", "Repair", "Cleaver", "Milk", "Jarate", "Gas", "Bauble", "Baseball", "Energy", "Short circuit", "Meteor shower", "Lightning", "Fireball", "Bomb", "Bats", "Pumpkin", "Monoculus", "Skeleton", "Misc", "##Divider", "Crit", "Minicrit" }, {}, FDropdownEnum::Multi, 0, "All");
+			FDropdown("Projéteis", &tGroup.m_iProjectiles, { "Foguete", "Sticky", "Granada", "Arrow", "Cura", "Flare", "Disparo", "Repair", "Cleaver", "Milk", "Jarate", "Gas", "Bauble", "Baseball", "Energy", "Short circuit", "Meteor shower", "Lightning", "Fireball", "Bomb", "Bats", "Pumpkin", "Monoculus", "Skeleton", "Utilidades", "##Divider", "Crítico", "Minicrit" }, {}, FDropdownEnum::Multi, 0, "Todos");
 		}
 		PopTransparent();
 	} EndSection();
@@ -324,7 +324,7 @@ void CMenu::MenuESP()
 		FToggle("Compensação temporal", &tGroup.m_iBacktrack, BacktrackEnum::Enabled);
 		if (FPopupButton("Backtrack"))
 		{
-			FDropdown("Draw##Backtrack", &tGroup.m_iBacktrack, { "Last", "First", "##Divider", "Always" }, { BacktrackEnum::Last, BacktrackEnum::First, BacktrackEnum::Always }, FDropdownEnum::Multi | FDropdownEnum::NoSanitization, 0, "All");
+			FDropdown("Draw##Backtrack", &tGroup.m_iBacktrack, { "Last", "First", "##Divider", "Sempre" }, { BacktrackEnum::Last, BacktrackEnum::First, BacktrackEnum::Always }, FDropdownEnum::Multi | FDropdownEnum::NoSanitization, 0, "Todos");
 			FMDropdown("Visible material## Backtrack", &tGroup.m_tBacktrackChams.Visible);
 			FMDropdown("Occluded material## Backtrack", &tGroup.m_tBacktrackChams.Occluded);
 
@@ -349,7 +349,7 @@ void CMenu::MenuESP()
 		FToggle("Trajectory", &tGroup.m_iTrajectory, TrajectoryEnum::Enabled);
 		if (FPopupButton("Trajectory"))
 		{
-			FDropdown("Estados", &tGroup.m_iTrajectory, { "Predict", "##Divider", "Radius", "Trace", "Sphere", "##Divider", "Path" }, { TrajectoryEnum::Predict, TrajectoryEnum::Radius, TrajectoryEnum::Trace, TrajectoryEnum::Sphere, TrajectoryEnum::Path }, FDropdownEnum::Multi | FDropdownEnum::NoSanitization);
+			FDropdown("Estados", &tGroup.m_iTrajectory, { "Predict", "##Divider", "Radius", "Trace", "Sphere", "##Divider", "Trajetória" }, { TrajectoryEnum::Predict, TrajectoryEnum::Radius, TrajectoryEnum::Trace, TrajectoryEnum::Sphere, TrajectoryEnum::Path }, FDropdownEnum::Multi | FDropdownEnum::NoSanitization);
 			FToggle("Ignorar Z", &tGroup.m_iTrajectory, SightlinesEnum::IgnoreZ);
 
 			EndPopup();
@@ -412,10 +412,11 @@ void CMenu::MenuESP()
 
 		PushTransparent(tGroup.m_iTargets && !(tGroup.m_iTargets & TargetsEnum::ESP));
 		{
+			for(auto& caption:vEntries)caption=MenuPTBR::Text(caption);
 			FDropdown("Desenho", &tGroup.m_tESP.Draw, vEntries, vValues, FDropdownEnum::Multi);
 			PushTransparent(Transparent || !(tGroup.m_tESP.Draw & ESPEnum::Box));
 			{
-				FDropdown("Caixa estilo", &tGroup.m_tESP.BoxStyle, { "Solid", "Corner accent", "Corners only", "Outline", "Rounded" });
+				FDropdown("Caixa estilo", &tGroup.m_tESP.BoxStyle, { "Solid", "Canto accent", "Cantos somente", "Contorno", "Rounded" });
 			}
 			PopTransparent();
 			PushTransparent(Transparent || !(tGroup.m_tESP.Draw & ESPEnum::NameBackground));
@@ -1003,7 +1004,7 @@ void CMenu::MenuLogs(int iTab)
 			PushDisabled(iID == DEFAULT_TAG || iID == IGNORED_TAG);
 			{
 				int iLabel = Disabled ? 0 : tTag.m_bLabel;
-				FDropdown("Tipo", &iLabel, { "Priority", "Label" });
+				FDropdown("Tipo", &iLabel, { "Prioridade", "Label" });
 				tTag.m_bLabel = Disabled ? false : iLabel;
 			}
 			PopDisabled();
@@ -1013,7 +1014,7 @@ void CMenu::MenuLogs(int iTab)
 				FSlider("Followbot prioridade", &tTag.m_iFollowPriority, -1, 10, 1, tTag.m_iFollowPriority < 0 ? "Ignore" : "%i");
 				PushDisabled(bDisableVotePriority);
 				{
-					FDropdown("Votação prioridade", &tTag.m_iVotePriority, { "Defend", "Ignore", "Kick" }, { -1, 0, 1 });
+					FDropdown("Votação prioridade", &tTag.m_iVotePriority, { "Defend", "Ignorar", "Kick" }, { -1, 0, 1 });
 				}
 				PopDisabled();
 			}
@@ -2779,12 +2780,12 @@ void CMenu::MenuSettings(int iTab)
 			}
 
 			Subheader("Condição");
-			FDropdown("Tipo", &tBind.m_iType, { "Key", "Class", "Weapon type", "Item slot", "Misc" });
+			FDropdown("Tipo", &tBind.m_iType, { "Tecla", "Classe", "Arma tipo", "Item slot", "Utilidades" });
 			switch (tBind.m_iType)
 			{
-			case BindEnum::Key: FDropdown("Behavior", &tBind.m_iInfo, { "Hold", "Toggle", "Double click" }); break;
-			case BindEnum::Class: FDropdown("Classe", &tBind.m_iInfo, { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" }); break;
-			case BindEnum::WeaponType: FDropdown("Arma tipo", &tBind.m_iInfo, { "Hitscan", "Projectile", "Melee", "Throwable" }); break;
+			case BindEnum::Key: FDropdown("Behavior", &tBind.m_iInfo, { "Hold", "Alternar", "Duplo click" }); break;
+			case BindEnum::Class: FDropdown("Classe", &tBind.m_iInfo, { "Scout", "Soldier", "Pyro", "Demoman", "Intenso", "Engineer", "Médico", "Sniper", "Spy" }); break;
+			case BindEnum::WeaponType: FDropdown("Arma tipo", &tBind.m_iInfo, { "Acerto instantâneo", "Projéteis", "Corpo a corpo", "Throwable" }); break;
 			case BindEnum::ItemSlot: FDropdown("Item slot", &tBind.m_iInfo, { "1", "2", "3", "4", "5", "6", "7", "8", "9" }); break;
 			case BindEnum::Misc: FDropdown("Utilidades", &tBind.m_iInfo, { "Spectated", "Spectated 1st", "Spectated 3rd", "##Divider", "Zoomed", "Aiming" }); break;
 			}
@@ -2792,10 +2793,10 @@ void CMenu::MenuSettings(int iTab)
 				FKeybind("Tecla", tBind.m_iKey, FKeybindEnum::None, { Vars::Menu::PrimaryKey[DEFAULT_BIND], Vars::Menu::SecondaryKey[DEFAULT_BIND] });
 			{
 				int iNot = tBind.m_bNot;
-				FDropdown("While", &iNot, { "Active", "Not active" });
+				FDropdown("While", &iNot, { "Ativo", "Not ativo" });
 				tBind.m_bNot = iNot;
 			}
-			FDropdown("Visibilidade", &tBind.m_iVisibility, { "Always", "While active", "Hidden" });
+			FDropdown("Visibilidade", &tBind.m_iVisibility, { "Sempre", "While ativo", "Oculto" });
 
 			const bool bMatch = iBind != DEFAULT_BIND && F::Binds.m_vBinds.size() > iBind;
 			const bool bParentValid = tBind.m_iParent == DEFAULT_BIND || F::Binds.m_vBinds.size() > tBind.m_iParent;
