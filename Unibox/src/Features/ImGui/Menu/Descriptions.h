@@ -13,7 +13,26 @@ inline std::string ChoiceHelp(std::string_view field, std::string_view entry) {
   if(entry==Text("Legit")) return "Mantém a direção atual da mira; o teste de acerto decide quando o disparo pode ocorrer. Não puxa a câmera até o alvo.";
   if(entry==Text("Off")) return "Suspende a aplicação da mira automática. Os indicadores visuais possuem controles independentes.";
  }
+ if(field.find("Vars::Aimbot::General::SmoothingAlgorithm")!=field.npos) {
+  if(entry==Text("Unibox")) return "Usa a suavização original do Unibox. Apenas os modos de mira suave usam este ajuste.";
+  if(entry==Text("V2 cubic")) return "Usa uma progressão cúbica do V2 para aproximar a mira. Só afeta Smooth; o fator V2 ajusta a velocidade da aproximação.";
+  if(entry==Text("V2 remapped")) return "Reorganiza a intensidade da aproximação ao longo do movimento. Só afeta Smooth e depende do fator V2; não modifica Plain.";
+ }
+ if(field.find("TargetSelectionHitscan")!=field.npos || field.find("TargetSelectionProjectile")!=field.npos || field.find("TargetSelectionMelee")!=field.npos) {
+  if(entry==Text("FOV")) return "Prioriza quem está mais perto do centro da sua mira, e não necessariamente o inimigo mais próximo no mapa.";
+  if(entry==Text("Distance")) return "Prioriza o candidato fisicamente mais próximo. Os limites de visibilidade e alcance da arma continuam valendo.";
+  if(entry==Text("Hybrid")) return "Combina proximidade e ângulo para ordenar alvos. Não garante que o primeiro candidato possa ser atingido.";
+  if(entry==Text("Most health")) return "Prioriza alvos com mais vida. Isso muda a ordem de avaliação, não o dano causado.";
+  if(entry==Text("Least health")) return "Prioriza alvos com menos vida. Não ignora bloqueios ou proteções.";
+ }
  if(field.find("Vars::Aimbot::General::Ignore")!=field.npos) {
+  if(entry==Text("Friends")) return "Não considerar jogadores marcados como amigos na Steam. Este filtro não impede que o ESP os exiba.";
+  if(entry==Text("Party")) return "Não considerar integrantes do seu grupo (party) como alvos da mira.";
+  if(entry==Text("Unprioritized")) return "Não mirar em jogadores sem uma prioridade marcada; pode deixar vários inimigos fora da seleção.";
+  if(entry==Text("Team")) return "Ignorar seus companheiros de equipe na seleção de alvos.";
+  if(entry==Text("Disguised")) return "Ignorar Spies disfarçados. Não altera a exibição dos disfarces no ESP.";
+  if(entry==Text("Taunting")) return "Ignorar jogadores que estão executando uma provocação (taunt).";
+  if(entry==Text("Vaccinator")) return "Filtrar jogadores protegidos pelo Vaccinator conforme o tipo de dano relevante; não remove a proteção do jogador.";
   if(entry==Text("Unsimulated")) return "Exclui jogadores cujo movimento ficou sem atualização por mais ticks que a tolerância permitida. Aplica-se a hitscan e corpo a corpo; o teste está desativado no caminho de projéteis. Tick é um passo de simulação do jogo.";
   if(entry==Text("Dead ringer")) return "Exclui Spies com o Dead Ringer preparado para fingir a morte. Não significa que o Spy já morreu.";
   if(entry==Text("Sentry busters")) return "Exclui os robôs destruidores de torres do modo Mann vs. Machine.";
@@ -43,6 +62,21 @@ inline std::string Help(std::string_view key,const char* caption,bool toggle,boo
  {"Vars::Aimbot::General::AimFOV","Limita o ângulo em que a mira procura candidatos. Não limita a distância e não garante visibilidade ou acerto."},
  {"Vars::Aimbot::General::AutoShoot","Permite disparar quando a mira e a arma atendem às condições de tiro. Desligado, você controla o disparo."},
  {"Vars::Aimbot::General::AimType","Auxilia automaticamente a mira nos alvos permitidos pelos filtros. Não faz a arma atravessar paredes nem garante acertos. Plain direciona no disparo; Smooth aproxima gradualmente. Passe o mouse nos modos para comparar."},
+ {"Vars::Aimbot::General::Target","Define que objetos a mira pode considerar: jogadores, torres, dispensadores, teleportadores, stickies e outros. Selecionar um tipo não garante que a arma consiga atingi-lo."},
+ {"Vars::Aimbot::General::TargetSelectionHitscan","Ordena os alvos de armas hitscan (como rifles) por ângulo, distância ou vida. A ordem não dispensa a verificação de acerto."},
+ {"Vars::Aimbot::General::TargetSelectionProjectile","Ordena os candidatos de foguetes, granadas e outros projéteis antes de calcular a trajetória; não altera a velocidade real do projétil."},
+ {"Vars::Aimbot::General::TargetSelectionMelee","Define a prioridade de inimigos para ataques corpo a corpo. O alcance da arma e a simulação do golpe continuam obrigatórios."},
+ {"Vars::Aimbot::General::MaxTargets","Limita quantos alvos o sistema avalia em cada ciclo. Mais candidatos podem ajudar em situações cheias, mas aumentam o trabalho do processador."},
+ {"Vars::Aimbot::General::NoSpread","Tenta compensar a dispersão dos tiros onde o comportamento da arma e do servidor permite. Não elimina toda aleatoriedade nem faz todo disparo acertar."},
+ {"Vars::Aimbot::General::IgnoreInvisible","Define o limiar de invisibilidade que faz um Spy ser ignorado. Só tem efeito se o filtro de invisíveis também estiver marcado."},
+ {"Vars::Aimbot::General::FOVCircle","Exibe na tela o limite angular de procura. Esconder o círculo não desliga o limite do Aimbot."},
+ {"Vars::Aimbot::General::SmoothingAlgorithm","Seleciona o algoritmo de aproximação quando o modo Smooth está em uso. Plain e Silent não são afetados; SmoothVelocity tem cálculo próprio."},
+ {"Vars::Aimbot::General::LeadAndRestrict","Exibe limites e previsões relacionados à mira. É uma apresentação visual; não força a trajetória da arma nem garante acerto."},
+ {"Vars::Aimbot::Hitscan::Hitboxes","Define quais regiões do corpo a mira testa em armas de acerto instantâneo. Selecionar mais regiões aumenta alternativas, mas pode aumentar o custo de cálculo."},
+ {"Vars::Aimbot::Hitscan::MultipointHitboxes","Permite testar mais de um ponto em regiões do corpo escolhidas. Ajuda na checagem de visibilidade, mas pode exigir mais processamento."},
+ {"Vars::Aimbot::Hitscan::MultipointScale","Ajusta a distribuição dos pontos adicionais dentro da região de acerto. Não muda o tamanho real da hitbox do jogo."},
+ {"Vars::Aimbot::Melee::AutoBackstab","Tenta executar uma facada pelas costas com Spy quando houver oportunidade válida. Não garante backstab se posição, alcance ou proteção não permitirem."},
+
  {"Vars::Aimbot::General::Ignore","Retira da busca os jogadores nas condições marcadas, mesmo que estejam dentro do FOV. Passe o mouse nas condições para entender os filtros técnicos."},
  {"Vars::Aimbot::General::TickTolerance","Quantidade de passos de simulação sem atualização de movimento tolerada pelo filtro 'Sem atualização de movimento'. Aumentar aceita posições mais atrasadas; não corrige o atraso."},
  {"Vars::Aimbot::General::AssistStrength","Força de aproximação da mira nos modos que usam a suavização compartilhada. Não altera Plain ou Silent; algoritmos próprios do Smooth V2 usam o fator V2."},
