@@ -1311,6 +1311,22 @@ inline const char* Text(const char* text) {
  {"Sentry range","Alcance das torres"},
  {"Crit Hack","Controle de críticos"},
  {"FOV Circle","Mostrar círculo de busca"},
+ {"Peek check","Verificação de espiada"},
+ {"Peek amount","Margem da verificação de espiada"},
+ {"Hit chance","Probabilidade estimada de acerto"},
+ {"Autodet radius","Raio para detonação automática"},
+ {"Straight fuzzy value","Tolerância em trajetórias diretas"},
+ {"Vertical shift","Correção vertical da trajetória"},
+ {"Huntsman lerp","Interpolação da flecha (Huntsman)"},
+ {"Huntsman add","Ajuste adicional da flecha"},
+ {"Huntsman clamp","Limite da correção da flecha"},
+ {"Pull no Z","Correção sem altura (eixo Z)"},
+ {"Sentry LVL","Nível da torre automática"},
+ {"Dispenser LVL","Nível do dispensador"},
+ {"Teleporter LVL","Nível do teleportador"},
+ {"Prefer goal within","Preferir gol até esta distância"},
+ {"Pass preference","Preferência por passes"},
+ {"Switch at","Trocar quando atingir o limite"},
 
 };
  auto it=catalog.find(text);return it==catalog.end()?text:it->second.c_str();
