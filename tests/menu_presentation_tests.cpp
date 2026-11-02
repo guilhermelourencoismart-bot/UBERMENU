@@ -19,5 +19,7 @@ int main() {
  assert(std::string(asset.m_vValues[0])=="None" && std::string(asset.m_vValues[1])=="Target color");
  Variable choice{{"Target color"},{"None"},typeid(int).hash_code()};MenuPTBR::LocalizePresentation(choice);
  assert(std::string(choice.m_vValues.front())=="Nenhum");
- std::cout<<"11 presentation/help checks passed\n";
+ assert(MenuPTBR::SearchText("DISTÂNCIA e AÇÃO")=="distancia e acao");
+ assert(MenuPTBR::SearchText("Ângulos")==MenuPTBR::SearchText("angulos"));
+ std::cout<<"13 presentation/help checks passed\n";
 }

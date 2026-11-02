@@ -1658,7 +1658,7 @@ void Pages::Search(const std::string& sSearch)
 	if (const uint32_t uCurrHash = FNV1A::Hash32(sSearch.c_str()); uCurrHash != uStaticHash)
 	{
 		std::string sSearch2 = sSearch;
-		std::transform(sSearch2.begin(), sSearch2.end(), sSearch2.begin(), [](unsigned char c){ return char(std::tolower(c)); });
+		sSearch2=MenuPTBR::SearchText(sSearch2);
 
 		vVars.clear();
 		for (auto& pBase : G::Vars)
@@ -1676,7 +1676,7 @@ void Pages::Search(const std::string& sSearch)
 					sSearch3 = sSearch3.replace(iFind, strlen("Vars::"), "");
 				if (auto iFind = sSearch3.find("##"); iFind != std::string::npos)
 					sSearch3 = sSearch3.replace(iFind, strlen("##"), "");
-				std::transform(sSearch3.begin(), sSearch3.end(), sSearch3.begin(), [](unsigned char c){ return char(std::tolower(c)); });
+				sSearch3=MenuPTBR::SearchText(sSearch3);
 				if (sSearch3.find(sSearch2) != std::string::npos)
 				{
 					vVars.push_back(pBase);

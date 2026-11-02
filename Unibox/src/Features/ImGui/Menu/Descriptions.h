@@ -64,9 +64,9 @@ inline std::string Help(std::string_view key,const char* caption,bool toggle,boo
  if(key.ends_with("ShowFriendly"))return "Inclui entidades aliadas neste recurso. Não modifica a seleção de alvos dos outros sistemas.";
  if(key.ends_with("EnemyOnly"))return "Restringe este recurso aos inimigos. Desligado, aliados também podem ser incluídos conforme os demais filtros.";
  if(key.ends_with("ShowChams") || key.ends_with("EnableChams"))return "Aplica o destaque por materiais deste módulo usando o renderizador nativo. As cores e a visibilidade são definidas nas opções deste recurso.";
- if(color)return "Altera a cor e a transparência de “"+label+"” "+context+". Efeitos com paleta própria não são alterados.";
- if(choices)return "Seleciona “"+label+"” "+context+". Opções com várias marcações permitem combinar escolhas.";
- if(toggle)return "Ativa ou desativa “"+label+"” "+context+".";
- return "Ajusta “"+label+"” "+context+". O valor atual e a unidade são mostrados no controle.";
+ if(color)return "Altera a cor e a transparência de '"+label+"' "+context+". Efeitos com paleta própria não são alterados.";
+ if(choices)return "Seleciona '"+label+"' "+context+". Opções com várias marcações permitem combinar escolhas.";
+ if(toggle)return "Ativa ou desativa '"+label+"' "+context+".";
+ return "Ajusta '"+label+"' "+context+". O valor atual e a unidade são mostrados no controle.";
 }
 }

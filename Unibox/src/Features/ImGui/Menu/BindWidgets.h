@@ -295,7 +295,7 @@ namespace ImGui
 			if (bPopup) \
 			{ \
 				std::string sBind = iBindOverride != -1 ? tVar.m_vNames[iBindOverride] : tVar.m_vNames.back(); \
-				std::transform(sBind.begin(), sBind.end(), sBind.begin(), ::tolower); \
+				std::transform(sBind.begin(), sBind.end(), sBind.begin(), [](unsigned char c){return char(c>='A' && c<='Z'?c-'A'+'a':c); }); \
 				iFlags = iVarFlags; /*get rid of any visual flags*/ \
 				if (FNV1A::Hash32Const(#function) == FNV1A::Hash32Const("FColorPicker")) \
 					iFlags |= FColorPickerEnum::Full | FColorPickerEnum::RemoveVisuals; \
@@ -365,7 +365,7 @@ namespace ImGui
 			if (bPopup)
 			{
 				std::string sBind = tToggleVar.m_vNames.back();
-				std::transform(sBind.begin(), sBind.end(), sBind.begin(), ::tolower);
+				std::transform(sBind.begin(), sBind.end(), sBind.begin(), [](unsigned char c){return char(c>='A' && c<='Z'?c-'A'+'a':c); });
 				iToggleFlags = iToggleVarFlags;
 				iSliderFlags = iSliderVarFlags;
 				PushTransparent(false);

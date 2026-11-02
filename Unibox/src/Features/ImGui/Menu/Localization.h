@@ -1293,4 +1293,11 @@ template<class Variable> void LocalizePresentation(Variable& var) {
   for(auto& choice:var.m_vValues)choice=Text(choice);
 }
 
+inline std::string SearchText(std::string text) {
+ const std::pair<const char*,const char*> accents[]={{"á","a"},{"à","a"},{"ã","a"},{"â","a"},{"Á","a"},{"À","a"},{"Ã","a"},{"Â","a"},{"é","e"},{"ê","e"},{"É","e"},{"Ê","e"},{"í","i"},{"Í","i"},{"ó","o"},{"ô","o"},{"õ","o"},{"Ó","o"},{"Ô","o"},{"Õ","o"},{"ú","u"},{"ü","u"},{"Ú","u"},{"Ü","u"},{"ç","c"},{"Ç","c"}};
+ for(const auto& [from,to]:accents)for(size_t i=0;(i=text.find(from,i))!=std::string::npos;)text.replace(i,2,to);
+ for(char& c:text)if(c>='A' && c<='Z')c=char(c-'A'+'a');
+ return text;
+}
+
 }
