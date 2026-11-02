@@ -1,7 +1,7 @@
 # Recursos e controles
 
 O menu e as configurações permanecem Unibox. Os controles Comp ficam em
-Visuals/View e os controles V2 na seção General do Aimbot. Cada recurso novo
+Visuals/View, em um seletor de módulo, e os controles V2 nas categorias General/Weapons do Aimbot. Cada recurso novo
 começa desligado; o backend de mira pode ser selecionado entre V2 e Unibox.
 “Use Comp main ESP” alterna exclusivamente o desenho principal, preservando
 os grupos nativos e suas configurações quando desativado.
@@ -43,3 +43,12 @@ SwingPrediction.h do V2 não é chamado no upstream; a predição usada vem de
 AimbotMelee.cpp e das simulações nativas. Nenhum header morto é anunciado como
 um algoritmo em execução. Quatro variáveis CritHeals sem uso na origem
 (FontSize/CritColor/TextColor/ShowPercentage) não geraram controles inertes.
+
+## Seleção e extensões exclusivas
+
+O solver V2 é o padrão selecionado. Forward Track, Lob Angles, Target Dormant e
+armas exclusivas encaminham exclusivamente ao Unibox quando solicitados. Como
+Lob Angles é uma opção habilitada por padrão na base, desative-a (e Target
+Dormant) para usar Projectile V2; desative Forward Track para Hitscan V2.
+As opções nativas mantêm seus valores e binds. V2 usa Single/Multi para sampling
+de splash; Unibox continua com Trace/Face. O menu mostra a opção aplicável.

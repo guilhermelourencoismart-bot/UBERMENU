@@ -48,6 +48,8 @@ O controller Unibox seleciona exclusivamente um solver por comando. O backend
 V2 importa Global, Hitscan, Projectile e Melee completos, adaptados aos tipos
 Target_t, TickRecord, simulações, configurações e binds nativos. Passtime,
 grapple, laser pointer e mechanical arm são encaminhados ao backend Unibox;
+Forward Track, Lob Angles e Target Dormant também selecionam o nativo quando
+solicitados, preservando capacidades sem equivalente direto no V2;
 habilidades especiais, preview e auxiliares originais continuam no controller.
 Prioridade Navbot/Followbot/AutoHeal e seleção de saúde exclusiva são adaptadas.
 
@@ -68,3 +70,9 @@ raiz antiga ConVars e migração do radar legado. Configurações inválidas pre
 valores anteriores em vez de introduzir floats não finitos ou canais inválidos.
 O comportamento de carregar/salvar com o jogo e os callbacks gráficos permanece
 pendente de teste local; isso é diferente do round-trip automatizado do codec.
+
+O padrão nativo mantém Lob Angles habilitado. Por isso, para experimentar o
+solver Projectile V2, desative Lob Angles e Target Dormant. Hitscan V2 exige
+Forward Track desativado. A opção de solver não elimina essas extensões nem
+faz dois solvers escreverem o mesmo comando. Paths V2 usam chaves/cores e
+controles nativos; o usuário não precisa manter duas configurações de paths.

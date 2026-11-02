@@ -1,4 +1,4 @@
-# Amalgam Ultimate — integração em desenvolvimento
+# Amalgam Ultimate — candidata para testes locais
 
 Baseado em **[Unibox](https://github.com/GatoPotato658/Unibox)**, com adaptações
 selecionadas do [Amalgam-Comp](https://github.com/coffeegrind123/Amalgam-Comp)
@@ -8,8 +8,9 @@ Os créditos do Unibox também estão acessíveis no menu Visuals / View.
 Consulte [recursos](docs/FEATURES.md), [estado](docs/INTEGRATION-STATUS.md),
 [build](docs/BUILD.md), [testes](docs/TEST-RESULTS.md),
 [testes locais](docs/LOCAL-TESTING.md) e [licenças](docs/THIRD-PARTY-NOTICES.md).
-A build histórica aprovada precede os ports completos; o resultado da revisão
-atual é registrado nos documentos. Nenhuma execução no TF2 é afirmada.
+**[Build Windows aprovada](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41370128705)** para `f180e6b4`: quatro configurações x64.
+DLLs, símbolos e pacotes estão nos artefatos dessa execução. Nenhuma execução
+no TF2 é afirmada; consulte os limites e o procedimento de avaliação local.
 Os downloads da seção upstream abaixo pertencem ao projeto original.
 
 <div align="center">

@@ -160,3 +160,12 @@ compilação, testes e validação PE AMD64/PE32+ da DLL. Nome:
 `output/x64/Release/Uniboxx64Release.dll`; artefato `Uniboxx64Release`.
 A Fase 1 está concluída. As adaptações visuais/V2 e suas limitações estão
 registradas em INTEGRATION-STATUS.md; não são uma validação funcional no TF2.
+
+## Validação após os ports completos
+
+A Fase 1 permanece concluída e sua base foi preservada. A revisão `f180e6b4`
+com as integrações completas passou nas quatro configurações x64:
+https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41370128705
+Saídas Release e AVX2 verificadas e publicadas, incluindo
+`output/x64/Release/Uniboxx64Release.dll`. Consulte TEST-RESULTS.md para separar
+as verificações automatizadas dos testes locais ainda não executados no TF2.

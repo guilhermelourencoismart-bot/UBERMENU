@@ -1,0 +1,200 @@
+[
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/AmmoTracker.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/AmmoTracker/AmmoTracker.cpp",
+    "source_sha256": "67bf7a4dc8260ab0e75736782d8628c8209de645471f958fa9648cd2f6b22329",
+    "port_sha256": "feb31c4499c0c93b22167870155ce31c00f8ef3b72464cf87b54487969dddff9",
+    "source_lines": 606,
+    "port_lines": 611,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/CraterCheck.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/CraterCheck/CraterCheck.cpp",
+    "source_sha256": "ad84140275f2e7ab8f50b8198a3280d8fa2b88d1c5d68ced62f080ec8c305c0e",
+    "port_sha256": "fd5a3b966eca2ba0b8991c06a721eb9a38836bc104f52c217e0428aaf7be25ef",
+    "source_lines": 284,
+    "port_lines": 286,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/CritHeals.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/CritHeals/CritHeals.cpp",
+    "source_sha256": "95a147ac7e7313eca03601e3f6694016dbefdf4272b2aea698e289c5141983fc",
+    "port_sha256": "b51803da0abb9f8b5783719f82af0cb7a11eb5a3bc407360fcb78d975237471d",
+    "source_lines": 225,
+    "port_lines": 228,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/FocusFire.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/FocusFire/FocusFire.cpp",
+    "source_sha256": "7477e7e3214d6843a9a9f6b6f9b0a835e0e1e8cf76c0f433b5f29d444ce0d517",
+    "port_sha256": "83b666092c56bc7006a7835d24f5f47b7664db8e7f54000637763c2b41ded999",
+    "source_lines": 327,
+    "port_lines": 329,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/HealthBarESP.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/HealthBarESP/HealthBarESP.cpp",
+    "source_sha256": "e50e7f1cc0a83e042983057f34983581221a715b6ce456fff0e5ae106d5d886d",
+    "port_sha256": "7a79adba02975ce08afd692be1afa4969353edfc2d9a6ff8f5f96e47addec990",
+    "source_lines": 231,
+    "port_lines": 239,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/HiderESP.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/HiderESP/HiderESP.cpp",
+    "source_sha256": "b38a6646ff5f6fc5cc5a8d79fcc4df67ae2a0efd09b329e8fa9982576bd738a5",
+    "port_sha256": "e029521121a98b59081211d902f875bfa16cda3113471b3e347f7254af9a807e",
+    "source_lines": 185,
+    "port_lines": 187,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/MainESP.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/ESP/ESP.cpp",
+    "source_sha256": "bf9c3ebfc0fc92bf8704a9d71551634e18c5831cc479825ff922c616fed9bc71",
+    "port_sha256": "670b126cc8a07e1d77921bfd212eff27fbf09c4d4c4e966b9035ea1b9bbf8482",
+    "source_lines": 1416,
+    "port_lines": 1422,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/MedicUberBar.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/MedicUberBar/MedicUberBar.cpp",
+    "source_sha256": "45972f8cd803ab134922649cd2511ae542aac9c514eaca8a0fa5c072ba76f49c",
+    "port_sha256": "ab89b9629ece47325b25f115226b00d2e4c022c9ff44cc466f8834bb665a3d1a",
+    "source_lines": 215,
+    "port_lines": 224,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/OffScreenIndicators.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/OffScreenIndicators/OffScreenIndicators.cpp",
+    "source_sha256": "0c4d8cb7764f6f8228010586cc9dc2a182b397604608f8e60535b30efa34f9f7",
+    "port_sha256": "6ad309d868209cfa31e2115cd2daf6683ea472834a441f1a88b4ab4b8d7b115d",
+    "source_lines": 398,
+    "port_lines": 295,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/PlayerTrails.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/PlayerTrails/PlayerTrails.cpp",
+    "source_sha256": "bbb449a9fe9a9c87b6f5da6f06f9157dc3fb7a0b1a25225867d69dada1395ef1",
+    "port_sha256": "3635ea6c82140005d1a92634d18644724c93105aa00d6a616624e4896ce74894",
+    "source_lines": 346,
+    "port_lines": 351,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/PylonESP.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/PylonESP/PylonESP.cpp",
+    "source_sha256": "399567ba3fbe9be2bda9056c237e83d2c3823a7c1e9d499eb003902a7133f840",
+    "port_sha256": "9b7bb29fab33cc6d2b9f3460dc0531a883ba6ceaf7f0d0ebe19eff9ca183ad55",
+    "source_lines": 150,
+    "port_lines": 160,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/Radar.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/Radar/Radar.cpp",
+    "source_sha256": "44606da67712a0afbfcc8f47df6289fa75011b081bc4aa61be59404821b28063",
+    "port_sha256": "d7059fdee0169b7182cfa282ff5434f0a4b4e25ae6a2646d8caa7d8003762b92",
+    "source_lines": 382,
+    "port_lines": 360,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/SentryESP.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/SentryESP/SentryESP.cpp",
+    "source_sha256": "fab86c4219ee1c7e0814e7af8c42242b625324aa84abf23bf403dfc851356516",
+    "port_sha256": "2f8beddb7ac768d3af522def2b60de24669cdbe6494389789d08181299c0df70",
+    "source_lines": 299,
+    "port_lines": 305,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/SplashRadius.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/SplashRadius/SplashRadius.cpp",
+    "source_sha256": "5a911f20f0e70ced8bf840051c2689c6dcd86346154311d46653f93cddf07b34",
+    "port_sha256": "122bc54961e1697588ac745bed51166e4dabbb7e88e3d2ea40b9a04a46fff961",
+    "source_lines": 726,
+    "port_lines": 728,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/StickyESP.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/StickyESP/StickyESP.cpp",
+    "source_sha256": "748b9fafbb26bdef78e02f4de8fd1842b789a13284fc462aaa456c729d6443d9",
+    "port_sha256": "fe898572a402ca175f7e7173b05c1c0295930ee8f0f833f512cfa8dcdd5bdc75",
+    "source_lines": 234,
+    "port_lines": 241,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/Comp/UberTracker.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/UberTracker/UberTracker.cpp",
+    "source_sha256": "e5642c09e0c92bba0108af123f6dfb5e7b9c67e26f95434b9f4696e269143249",
+    "port_sha256": "daae105551136b3b1cb55bc2b0b336b66b2fe4368ebeae69068b3065d9373ccf",
+    "source_lines": 432,
+    "port_lines": 436,
+    "classification": "complete selected source port adapted to native interfaces; runtime untested"
+  },
+  {
+    "port": "Unibox/src/Features/Aimbot/V2/AimbotGlobal.cpp",
+    "origin": "Amalgam-v2-master/Amalgam/src/Features/Aimbot/AimbotGlobal/AimbotGlobal.cpp",
+    "source_sha256": "df6c27f88c4473cc9640b121eeb5c4c068d7c9447db526833efc9e174564eaf3",
+    "port_sha256": "2bde06b54a97708cfcfc94c570199574bdb8164e8c268d1b2beaa75eeb55b43e",
+    "source_method_count": 13,
+    "port_method_count": 13,
+    "missing_method_definitions": {},
+    "classification": "complete source solver port; native controller/simulations reused; compatibility helpers retained"
+  },
+  {
+    "port": "Unibox/src/Features/Aimbot/V2/AimbotHitscan.cpp",
+    "origin": "Amalgam-v2-master/Amalgam/src/Features/Aimbot/AimbotHitscan/AimbotHitscan.cpp",
+    "source_sha256": "97f76ec300fd743b4f085aaaf514936df2d4ecc4074a75739c2e53fefaf573e4",
+    "port_sha256": "060b81379f0ad6c4231e4c7d1e54a861eadfc2966d35c1ad3016a736d7924fc1",
+    "source_method_count": 6,
+    "port_method_count": 6,
+    "missing_method_definitions": {},
+    "classification": "complete source solver port; native controller/simulations reused; compatibility helpers retained"
+  },
+  {
+    "port": "Unibox/src/Features/Aimbot/V2/AimbotMelee.cpp",
+    "origin": "Amalgam-v2-master/Amalgam/src/Features/Aimbot/AimbotMelee/AimbotMelee.cpp",
+    "source_sha256": "4a908cae194e1114b86df7ce23d8a46bd7bc700747ac6413bbfa37af58a3c290",
+    "port_sha256": "f05d1fb1c0fe26457a07c0d6b5fb9d9b8a13b10e7ebcfea5ffc8a12e38748725",
+    "source_method_count": 9,
+    "port_method_count": 9,
+    "missing_method_definitions": {},
+    "classification": "complete source solver port; native controller/simulations reused; compatibility helpers retained"
+  },
+  {
+    "port": "Unibox/src/Features/Aimbot/V2/AimbotProjectile.cpp",
+    "origin": "Amalgam-v2-master/Amalgam/src/Features/Aimbot/AimbotProjectile/AimbotProjectile.cpp",
+    "source_sha256": "39d95c5c1a7fca16dd56c3b48c82a5e8fa25a431cf0e7bc3831150c4c4a3da55",
+    "port_sha256": "711a0947036748dff2daa3f7c768b44bdd28a132454f609cc9f946b10958e977",
+    "source_method_count": 20,
+    "port_method_count": 20,
+    "missing_method_definitions": {},
+    "classification": "complete source solver port; native controller/simulations reused; compatibility helpers retained"
+  },
+  {
+    "port": "Unibox/src/Features/Visuals/EnemyCam/EnemyCam.cpp",
+    "origin": "Amalgam-Comp-master/Amalgam/src/Features/Visuals/EnemyCam/EnemyCam.cpp",
+    "source_sha256": "44721a8f395d994d9adc3d7e447459eeb5715a595b677efb3fdc34258199ff59",
+    "classification": "selection/view/window adapted; native camera resources reused; runtime untested",
+    "port_sha256": "91755817f2086533c70f3870557c73dc919c78f2e8759310fd77564d2e892138"
+  },
+  {
+    "port": "Unibox/src/Features/Aimbot/AimbotUtils/AimSmoothing.h",
+    "origin": "Amalgam-v2-master/Amalgam/src/Features/Aimbot/AimbotUtils/AimSmoothing.h",
+    "source_sha256": "3e51db49fe75568dfa2819873f962ba312cbcd6c2a5a20bcd48ead64d8af56b2",
+    "classification": "pure formulas adapted and connected to native/V2 Smooth paths",
+    "port_sha256": "d504b24652620056eb820855ee1a062d702232a76e26e1c939b18ae11307f3ec"
+  }
+]

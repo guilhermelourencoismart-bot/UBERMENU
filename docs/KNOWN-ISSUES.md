@@ -1,7 +1,7 @@
 # Pendências e limites verificáveis
 
-1. Build Windows da revisão atual aguardando resultado. Builds históricas não
-   comprovam código adicionado posteriormente. Ver CI-RESULTS.json/TEST-RESULTS.md.
+1. Build `f180e6b4` aprovada nas quatro variantes x64 em 41370128705.
+   Execução no TF2 não testada; ver KNOWN-RUNTIME-RISKS.md e TEST-RESULTS.md.
 2. ProfileStalker .cpp/.h originais não distribuídos (também ignorados no upstream).
    A integração condicional está preservada; não foi inventado substituto.
 3. Sem MSVC local; validação da DLL depende do runner Windows-2022. Git push e

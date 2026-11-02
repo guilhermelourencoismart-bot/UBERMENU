@@ -1,0 +1,45 @@
+f180e6b4 Prevent native and imported solvers from overwriting shared object filenames
+bea91bf8 Guard shared camera render target dimensions before viewport clamping
+7d33cc3a Reject degenerate polygon fills before ImGui triangulation
+9cda5294 Triangulate concave pickup pie charts correctly in the native ImGui renderer
+c2758128 Apply offscreen text alpha to its alpha channel and bound pickup chart segments
+c2bd6d5e Align Comp ESP ownership queries with its cache members
+19ca1b7c Preserve native exclusive targeting modes and bound invalid visual configuration inputs
+ad6dd3e2 Adapt V2 splash modes without changing native settings and use base entity interface
+c9480149 Resolve visual ownership per entity and unify native controls; guard ballistic boundaries
+bf2fbb7d Package verified candidates and complete source with build and runtime documentation
+1f84c37e Repair V2 trajectory scope and native trace constants; release shared icon resources
+9ed251c7 Validate config color/window persistence and target identity resets
+68a6ff64 Integrate Comp critical-heal, splash and landing indicators
+cef5de68 Port complete Comp main ESP and wire V2 smoothing modes
+ce04a442 Adapt V2 backtrack hitboxes to native bone records
+dd2aea1a Validate V2 FOV, ballistics, routing, configuration serialization and bind migrations in production paths
+9996e848 Complete EnemyCam selection, tracking, offsets and independent viewport using native resources
+9c602c0a Port complete V2 global, hitscan, projectile and melee solvers with exclusive compatibility routing
+02ad70e3 Port full Comp offscreen labels, health, class, distance and Steam avatars through ImGui
+c5621ccb Align complete Comp ports with Unibox trace and player information contracts
+2f0bcc77 Port complete Comp radar filters, health, icons, avatars, colors and appearance controls
+39806b50 Replace reduced health, trails, pickup, sentry and sticky paths with complete Comp implementations
+c3a364c9 Port complete Comp medic, pylon, focus-fire and hider modules to ImGui command recording
+f80eb614 Record final Windows x64 build success and remaining runtime limitations [skip ci]
+ce9d5442 Preserve non-player arrows and native group colors in ImGui alternative
+11817216 Record baseline success, integration attempt and cache test evidence
+874de499 Exercise real Unibox snapshot cache copying and concurrent publication
+fa6099bc Synchronize enemy camera presentation flag across render callbacks
+cdbfb518 Harden MSVC activation and expose build diagnostics per variant
+59c37e66 Document integration scope, provenance, licenses and validation limits
+311df519 Preserve textmode overlays and guard legacy pickup event dereferences
+ca7633c0 Validate AMD64 DLL headers and build failure paths in CI
+8b6b6147 Connect V2 cubic and remapped smoothing to hitscan and projectile aim
+a4bc7788 Adapt Comp enemy viewpoint through Unibox camera lifecycle
+c128bc5e Adapt Comp sticky filtering and projected bounds to Unibox
+b5aace44 Adapt Comp sentry target overlay without duplicating group boxes
+849dc2f0 Use Unibox base entity interface in pickup event handler
+ec4fd350 Adapt Comp pickup event association and ImGui respawn indicators
+081057a0 Adapt Comp offscreen geometry to existing Unibox groups and ImGui
+e003b49f Adapt timed Comp player trails with serial-aware snapshot cache
+16cf317a Adapt Comp health overlay with duplicate-bar suppression
+6e8deb17 Adapt V2 SmoothVelocity tick cache and guard missing targets
+7be28dc0 Adapt Comp radar projection to Unibox ImGui snapshots
+c97b4221 Document phase 1.5 run and GitHub API network blocker [skip ci]
+56a46a57 Prepare Unibox Windows x64 build validation

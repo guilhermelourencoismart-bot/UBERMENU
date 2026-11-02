@@ -17,7 +17,9 @@ Este procedimento é para o proprietário avaliar o comportamento posteriormente
 5. Exercite morte/respawn, troca de classe/arma, desconexão, troca de mapa,
    resolução, screenshots, unload/reload. Para EnemyCam, teste todos os modos,
    desaparecimento do alvo e prioridade da câmera de projéteis.
-6. Para Aimbot, registre backend, modo, arma, filtros, binds e cenário. Compare
+6. Para Aimbot, registre backend, modo, arma, filtros, binds e cenário. Para
+   Projectile V2, desative Lob Angles/Target Dormant; para Hitscan V2, Forward
+   Track deve estar desligado. Essas extensões usam o solver nativo. Compare
    Passtime, armas especiais, Navbot e Followbot com a configuração original.
    Separe erro determinístico, resultado intermitente e comportamento esperado.
 
