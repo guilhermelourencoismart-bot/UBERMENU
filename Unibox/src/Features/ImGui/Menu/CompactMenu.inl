@@ -80,6 +80,8 @@ static void CompactHome()
         FDropdown(Vars::Aimbot::General::AimType);
         CompactExplanation(CurrentAimModeExplanation());
         if (Vars::Aimbot::General::AimType[DEFAULT_BIND]) {
+            FDropdown(Vars::Aimbot::General::Solver);
+            CompactExplanation("Unibox ou V2: escolhe o sistema que calcula a mira. O Unibox continua sendo usado automaticamente em armas e recursos exclusivos que exigem compatibilidade.");
             FSlider(Vars::Aimbot::General::AimFOV);
             CompactExplanation("FOV é a área angular em que a mira procura alvos: menor é mais restrito, maior aceita alvos mais afastados do centro. Não é distância.");
             FToggle(Vars::Aimbot::General::AutoShoot);
@@ -91,8 +93,7 @@ static void CompactHome()
             FToggle(Vars::Aimbot::General::FOVCircle);
             FColorPicker(Vars::Colors::FOVCircle);
             if (DetailLayer("Avançado: suavização e motor")) {
-                CompactExplanation("Estas opções são específicas: não alteram Plain ou Silent. O motor V2 e o Unibox preservam caminhos diferentes conforme a arma.");
-                FDropdown(Vars::Aimbot::General::Solver);
+                CompactExplanation("As curvas e fatores seguintes não alteram Plain ou Silent. Smooth usa as opções de suavização; SmoothVelocity tem curva própria.");
                 FDropdown(Vars::Aimbot::General::SmoothingAlgorithm);
                 FSlider(Vars::Aimbot::General::AssistStrength);
                 FDropdown(Vars::Aimbot::General::SmoothCurve);
