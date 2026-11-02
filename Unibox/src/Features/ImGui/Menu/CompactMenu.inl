@@ -18,7 +18,7 @@ static void FavoritesPage()
         FLabel("A busca encontra também os ajustes avançados.");
         if (FButton("Adicionar pela busca")) Shell::SearchText = "aim";
     } EndSection();
-    const auto keys = MenuPresentation::Preferences.favorites;
+    const auto keys = MenuPresentation::Preferences.Snapshot().favorites;
     int column = 0;
     for (const auto& key : keys) {
         auto it = std::find_if(G::Vars.begin(), G::Vars.end(), [&](auto var){ return key == var->Name(); });

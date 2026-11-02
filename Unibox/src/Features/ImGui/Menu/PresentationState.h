@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <mutex>
 
 // Presentation metadata only. Feature values remain in the original ConfigVars.
 namespace MenuPresentation
@@ -29,5 +30,16 @@ namespace MenuPresentation
             return favorites.size() != old;
         }
     };
-    inline State Preferences;
+    class Store
+    {
+        std::mutex mutex;
+        State state;
+    public:
+        State Snapshot() { std::lock_guard lock(mutex); return state; }
+        void Replace(State value) { std::lock_guard lock(mutex); state = std::move(value); }
+        bool Contains(const std::string& key) { std::lock_guard lock(mutex); return state.Contains(key); }
+        bool Add(const std::string& key) { std::lock_guard lock(mutex); return state.Add(key); }
+        bool Remove(const std::string& key) { std::lock_guard lock(mutex); return state.Remove(key); }
+    };
+    inline Store Preferences;
 }

@@ -639,7 +639,7 @@ void CConfigs::LoadState()
 
 		boost::property_tree::ptree tRead;
 		read_json(m_sStatePath, tRead);
-		MenuPresentation::Preferences = ConfigCodec::ReadMenuState(tRead);
+		MenuPresentation::Preferences.Replace(ConfigCodec::ReadMenuState(tRead));
 		const std::string sConfig = tRead.get("Config", m_sCurrentConfig);
 		const std::string sVisuals = tRead.get("Visuals", m_sCurrentVisuals);
 		const std::string sSkins = tRead.get("Skins", m_sCurrentSkins);
@@ -658,7 +658,7 @@ void CConfigs::SaveState() const
 	try
 	{
 		boost::property_tree::ptree tWrite;
-		ConfigCodec::WriteMenuState(tWrite, MenuPresentation::Preferences);
+		ConfigCodec::WriteMenuState(tWrite, MenuPresentation::Preferences.Snapshot());
 		tWrite.put("Config", m_sCurrentConfig);
 		tWrite.put("Skins", m_sCurrentSkins);
 		tWrite.put("Visuals", m_sCurrentVisuals);

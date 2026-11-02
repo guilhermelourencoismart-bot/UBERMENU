@@ -14,7 +14,7 @@ inline std::string ChoiceHelp(std::string_view field, std::string_view entry) {
   if(entry==Text("Off")) return "Suspende a aplicação da mira automática. Os indicadores visuais possuem controles independentes.";
  }
  if(field.find("Vars::Aimbot::General::Ignore")!=field.npos) {
-  if(entry==Text("Unsimulated")) return "Exclui jogadores cujo movimento ficou sem atualização por mais ticks que a tolerância permitida. Tick é um passo de simulação do jogo.";
+  if(entry==Text("Unsimulated")) return "Exclui jogadores cujo movimento ficou sem atualização por mais ticks que a tolerância permitida. Aplica-se a hitscan e corpo a corpo; o teste está desativado no caminho de projéteis. Tick é um passo de simulação do jogo.";
   if(entry==Text("Dead ringer")) return "Exclui Spies com o Dead Ringer preparado para fingir a morte. Não significa que o Spy já morreu.";
   if(entry==Text("Sentry busters")) return "Exclui os robôs destruidores de torres do modo Mann vs. Machine.";
   if(entry==Text("Invisible")) return "Exclui jogadores invisíveis conforme o limite de invisibilidade configurado.";
@@ -80,6 +80,57 @@ inline std::string Help(std::string_view key,const char* caption,bool toggle,boo
  else if(key.find("ESP::")!=key.npos)context="no ESP principal; não altera os filtros do Aimbot";
  else if(key.find("Binds::")!=key.npos)context="nos atalhos e suas condições de ativação";
  else context="nesta categoria do menu";
+ static const std::map<std::string_view,std::string_view,std::less<>> parameters={
+ {"Width","Largura horizontal do desenho. Aumentar deixa o elemento mais largo."},
+ {"Height","Altura vertical do desenho. Aumentar deixa o elemento mais alto."},
+ {"Thickness","Espessura do traço. Aumentar reforça as linhas sem ampliar a área detectada."},
+ {"LineWidth","Espessura das linhas do indicador. Não altera o alcance de detecção."},
+ {"Segments","Número de lados usados para desenhar círculos. Mais lados suavizam a borda e exigem mais desenho."},
+ {"Radius","Raio da área representada pelo indicador. Não muda o alcance real da arma ou da explosão."},
+ {"ShowName","Escreve o nome junto ao marcador para identificar o jogador ou a entidade."},
+ {"ShowNames","Escreve nomes junto aos marcadores para identificar jogadores ou entidades."},
+ {"ShowDistance","Escreve a distância até a entidade ao lado do indicador. Não filtra entidades distantes por si só."},
+ {"ShowHealth","Acrescenta informação de vida ao marcador para comparar o estado dos jogadores."},
+ {"ShowHealthBars","Representa a vida restante como uma barra que diminui conforme o jogador recebe dano."},
+ {"ShowPercentage","Escreve a porcentagem da carga de Über, além da representação visual da barra."},
+ {"ShowSeconds","Escreve os segundos restantes estimados até o suprimento reaparecer."},
+ {"ShowMilliseconds","Acrescenta frações de segundo ao tempo estimado de retorno dos suprimentos."},
+ {"ShowGroundPieChart","Desenha no chão do local de coleta um círculo de progresso para o retorno do suprimento."},
+ {"ShowScreenPieChart","Desenha um círculo de progresso sobre a posição do suprimento na tela."},
+ {"ShowHudOverlay","Acrescenta uma representação na interface para acompanhar o retorno dos suprimentos."},
+ {"ScaleWithDistance","Diminui o indicador com a distância para reduzir a ocupação da tela por objetos distantes."},
+ {"ScaleTextWithDistance","Varia o tamanho do texto com a distância, usando os limites mínimo e máximo configurados."},
+ {"TextSizeMin","Menor tamanho permitido para o texto quando ele varia com a distância."},
+ {"TextSizeMax","Maior tamanho permitido para o texto quando ele varia com a distância."},
+ {"TextSizeDefault","Tamanho do texto quando o escalonamento por distância não está em uso."},
+ {"PieChartSegments","Número de lados do círculo de progresso. Mais lados deixam a borda mais suave."},
+ {"PieChartSize","Tamanho do círculo que representa o progresso até o retorno do suprimento."},
+ {"MinScreenChartSize","Menor tamanho permitido para o círculo na tela quando ele varia com a distância."},
+ {"MaxScreenChartSize","Maior tamanho permitido para o círculo na tela quando ele varia com a distância."},
+ {"MaxScaleDistance","Distância usada como limite para reduzir o tamanho de textos ou indicadores."},
+ {"ShowFill","Preenche o interior da área indicada. A cor e sua transparência determinam quanto do cenário fica encoberto."},
+ {"ShowEdge","Desenha o contorno da área indicada, permitindo enxergar seu limite sem depender do preenchimento."},
+ {"EdgeWidth","Espessura do contorno da área desenhada. Não muda a área detectada."},
+ {"OnlyShowLethal","Oculta estimativas de pouso seguro e mostra somente os locais estimados como letais."},
+ {"DrawOutOfRange","Mantém entidades além do alcance na borda do Radar em vez de escondê-las."},
+ {"BackgroundAlpha","Opacidade do fundo: zero deixa o fundo invisível; valores maiores facilitam a leitura e encobrem mais o cenário."},
+ {"LineAlpha","Opacidade das linhas: zero oculta os traços; valores maiores deixam as linhas mais visíveis."},
+ {"Window","Posição e dimensões da janela. Não muda o campo de visão nem o alcance da detecção."},
+ {"DormantDuration","Tempo durante o qual informações antigas de uma entidade sem atualização continuam sendo desenhadas."},
+ {"DormantPriority","Mantém informações antigas somente para jogadores marcados como prioritários, em vez de todos os jogadores."},
+ {"MaxTargets","Limita quantos candidatos são avaliados. Aumentar permite comparar mais alvos e aumenta o trabalho por comando."},
+ {"IgnoreInvisible","Porcentagem de invisibilidade usada pelo filtro de jogadores invisíveis. Só tem efeito quando esse filtro está marcado."},
+ {"FOVCircle","Desenha o limite angular de busca na tela. O círculo é visual; o FOV continua valendo com o desenho oculto."},
+ {"PrioritizeFollowbot","Dá preferência ao alvo usado pelo Followbot na seleção da mira, respeitando as condições da arma."},
+ {"PrioritizeNavbot","Dá preferência ao alvo usado pelo Navbot na seleção da mira, respeitando as condições da arma."},
+ {"Target","Define quais tipos de entidade podem ser candidatos da mira: jogadores, construções ou outros objetos selecionados."},
+ {"TargetSelectionHitscan","Ordena os candidatos de armas de acerto instantâneo por ângulo, distância, vida ou combinação de critérios."},
+ {"TargetSelectionProjectile","Ordena os candidatos de armas de projéteis antes da avaliação de trajetória e tempo de impacto."},
+ {"TargetSelectionMelee","Ordena os candidatos corpo a corpo antes do teste de alcance e acerto."}
+ };
+ const auto separator=key.rfind("::");
+ const auto leaf=separator==key.npos?key:key.substr(separator+2);
+ if(auto it=parameters.find(leaf);it!=parameters.end()) return std::string(it->second)+" Aplicação: "+context+".";
  const std::string label=Text(caption);
  if(key.ends_with("MaxDistance"))return "Distância máxima para mostrar ou considerar entidades neste recurso. Aumentar inclui entidades mais distantes; não altera outros módulos.";
  if(key.ends_with("ShowThroughWalls") || key.ends_with("ThroughWalls"))return "Permite mostrar este indicador mesmo quando uma parede bloqueia a visão. Não dá ao Aimbot permissão para acertar através da parede.";
