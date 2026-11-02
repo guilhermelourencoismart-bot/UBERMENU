@@ -78,3 +78,13 @@ e 64 inserções para capacidade de favoritos aprovados. A compilação Windows
 desta revisão foi iniciada; os links anteriores pertencem à versão anterior.
 A revisão integral das descrições avançadas e a avaliação visual permanecem
 pendentes. Não considerar todos os textos do menu revisados.
+
+## DLL do menu em camadas
+
+Código `1606efa7`: job Release x64 concluído, com DLL/PDB/log/pacote/fontes
+publicados. [Baixar a DLL Release](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41391957842/artifacts/13117593447).
+[Execução Windows](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41391957842).
+O workflow exige os testes nativos, a compilação/linkedição e a verificação
+PE32+/AMD64 antes de publicar a DLL. As outras três variantes ainda estavam
+em execução no momento deste registro; isso não deve ser lido como aprovação
+da matriz inteira. O binário não foi executado no TF2.

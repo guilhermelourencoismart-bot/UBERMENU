@@ -459,5 +459,42 @@
       }
     ],
     "evidence": "Public GitHub Actions summary; workflow requires tests, MSBuild and actual DLL PE verification before upload. Binary artifacts not downloaded locally. TF2 not executed."
+  },
+  {
+    "run_id": 41391957842,
+    "commit": "1606efa7",
+    "scope": "layered compact menu and plain-language critical-hit limitations",
+    "observed_status": "in_progress",
+    "release_x64": "success; DLL, PDB, build log, package and source artifacts published",
+    "jobs_completed_observed": 1,
+    "artifacts": [
+      {
+        "name": "Amalgam-Ultimate-Release",
+        "summary": "Amalgam-Ultimate-Release 18.8 MB sha256:5e02a8765d17e1f626cb9cb762a67af99af49f0718018eac17a2486977f1c3c0",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41391957842/artifacts/13117758219"
+      },
+      {
+        "name": "Amalgam-Ultimate-source",
+        "summary": "Amalgam-Ultimate-source 5.34 MB sha256:c3fe8e2e95b6887c724e67f87440c18af978911f2415950022dc72a4d8aee787",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41391957842/artifacts/13117698143"
+      },
+      {
+        "name": "Uniboxx64Release",
+        "summary": "Uniboxx64Release 2.8 MB sha256:b09f92d4ca6e8b431816fe48a434e3277864fb1b9e5d381c3cc703feb208a438",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41391957842/artifacts/13117593447"
+      },
+      {
+        "name": "Uniboxx64ReleasePDB",
+        "summary": "Uniboxx64ReleasePDB 16.2 MB sha256:869f9971440637170a219d3b405366a8e94f6b4e7544868db14d5c4db8b40cc9",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41391957842/artifacts/13117254018"
+      },
+      {
+        "name": "build-log-Release",
+        "summary": "build-log-Release 437 KB sha256:a74b77543b33e65575a9ab572e41a6cae8d129331ad79e5cfbe67b7dd4cba7cb",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41391957842/artifacts/13117977411"
+      }
+    ],
+    "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41391957842",
+    "evidence": "Public summary and artifact names; Release workflow requires native tests, build and PE verification before publication. Other configurations still running; TF2 not executed."
   }
 ]
