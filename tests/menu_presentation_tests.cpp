@@ -24,6 +24,16 @@ int main() {
  assert(MenuPTBR::SearchText("Ângulos")==MenuPTBR::SearchText("angulos"));
  assert(std::string(MenuPTBR::Text("Dead ringer"))=="Dead Ringer preparado");
  assert(std::string(MenuPTBR::Text("Sentry"))=="Torre automática");
+ assert(std::string(MenuPTBR::Text("Heavy"))=="Heavy"); // class name, not a literal translation
+ assert(std::string(MenuPTBR::Text("heavy"))=="Heavy");
+ assert(std::string(MenuPTBR::Text("No spread"))=="Compensar dispersão dos disparos");
+ assert(std::string(MenuPTBR::Text("Air splash"))=="Explosão no ar");
+ assert(std::string(MenuPTBR::Text("Auto airblast"))=="Refletir projéteis automaticamente");
+ assert(std::string(MenuPTBR::Text("Players.json"))=="Players.json"); // never corrupt file names
+ assert(MenuPTBR::ChoiceHelp("Vars::Aimbot::General::SmoothingAlgorithm",MenuPTBR::Text("V2 cubic")).find("Só afeta Smooth")!=std::string::npos);
+ assert(MenuPTBR::ChoiceHelp("Vars::Aimbot::General::TargetSelectionHitscan",MenuPTBR::Text("FOV")).find("centro")!=std::string::npos);
+ assert(MenuPTBR::Help("Vars::Aimbot::General::NoSpread","No spread",true,false,false).find("Não elimina")!=std::string::npos);
+
  assert(std::string(MenuPTBR::Text("Unsimulated"))=="Sem atualização de movimento");
  assert(MenuPTBR::ChoiceHelp("Vars::Aimbot::General::AimType",MenuPTBR::Text("Plain")).find("não influenciam")!=std::string::npos);
  assert(MenuPTBR::ChoiceHelp("Vars::Aimbot::General::Ignore",MenuPTBR::Text("Dead ringer")).find("Spies")!=std::string::npos);
