@@ -63,3 +63,14 @@ Itens 3/5/6/7 implementados e compilados em `9e8df21b`: categorias Comp
 separadas, rótulos PT-BR, ajuda por hover, busca sem acentos e Mouse4.
 Build aprovada: https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41384099020
 Os dois backends de ESP/Aimbot permanecem. Detalhes: MENU-PTBR.md.
+
+## Interface compacta
+
+Implementada em `5b42ebd4`: Início/Essencial, entrada para personalização e
+menu completo, busca global preservada, favoritos persistidos no estado original
+e indicador de roteamento elegível da arma. Nenhum backend ou algoritmo foi
+substituído. Textos principais de mira e filtros corrigidos; revisão integral
+das descrições avançadas ainda parcial. Veja COMPACT-MENU.md e LOCAL-TESTING.md.
+
+Compilação e testes MSVC: 4/4 configurações x64 aprovadas em https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298.
+DLL Release/AVX2 publicadas; layout e interação no jogo ainda não executados.

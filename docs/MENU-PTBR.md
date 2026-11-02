@@ -70,3 +70,9 @@ interação gráfica dentro do TF2.
 - [Uniboxx64Release](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41384099020/artifacts/13114233796)
 - [Uniboxx64ReleaseAVX2](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41384099020/artifacts/13115100957)
 - [Amalgam-Ultimate-source](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41384099020/artifacts/13114797778)
+
+## Revisão posterior: interface compacta
+
+A revisão `5b42ebd4` acrescenta Início/Essencial, favoritos e ajuda dos modos.
+O catálogo atual possui 1.301 rótulos. Consulte [COMPACT-MENU.md](COMPACT-MENU.md)
+para os downloads e limites da revisão contextual dos textos avançados.

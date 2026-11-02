@@ -121,7 +121,7 @@
     "run_id": 41370128705,
     "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41370128705",
     "observed_status": "Success",
-    "summary": "Triggered via push November 2, 2026 01:00 guilhermelourencoismart-bot pushed f180e6b integration/phase1-unibox Status Success Total duration 14m 35s Artifacts 17 msbuild.yml on: push Matrix: msbuild 4 jobs completed Show all jobs Oh hello! Nice to see you. Made with \u2764\ufe0f by humans.txt Fit to window Zoom out Zoom in Annotations 4 w",
+    "summary": "Triggered via push November 2, 2026 01:00 guilhermelourencoismart-bot pushed f180e6b integration/phase1-unibox Status Success Total duration 14m 35s Artifacts 17 msbuild.yml on: push Matrix: msbuild 4 jobs completed Show all jobs Oh hello! Nice to see you. Made with ❤️ by humans.txt Fit to window Zoom out Zoom in Annotations 4 w",
     "errors": [],
     "observed_at_utc": "2026-11-02 01:14:48",
     "commit": "f180e6b4df9657aaf7f8667b89981b42b3d020b6",
@@ -237,7 +237,7 @@
     "run_id": 41384099020,
     "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41384099020",
     "observed_status": "Success",
-    "summary": "Triggered via push November 2, 2026 03:37 guilhermelourencoismart-bot pushed 9e8df21 integration/phase1-unibox Status Success Total duration 13m 57s Artifacts 17 msbuild.yml on: push Matrix: msbuild 4 jobs completed Show all jobs Oh hello! Nice to see you. Made with \u2764\ufe0f by humans.txt Fit to window Zoom out Zoom in Annotations 4 w",
+    "summary": "Triggered via push November 2, 2026 03:37 guilhermelourencoismart-bot pushed 9e8df21 integration/phase1-unibox Status Success Total duration 13m 57s Artifacts 17 msbuild.yml on: push Matrix: msbuild 4 jobs completed Show all jobs Oh hello! Nice to see you. Made with ❤️ by humans.txt Fit to window Zoom out Zoom in Annotations 4 w",
     "errors": [],
     "observed_at_utc": "2026-11-02 03:51:47",
     "commit": "9e8df21b6eeb2a9802e7092d628044eb8eec18f9",
@@ -354,5 +354,110 @@
       "menu_presentation_cpp": 13
     },
     "evidence": "public final Success and artifact metadata; mandatory restore/tests/MSBuild/link/PE/package steps; GUI/TF2 interaction not executed"
+  },
+  {
+    "run_id": 41388300298,
+    "commit": "5b42ebd4a11409030e3d1e108d99e237f5d025bc",
+    "scope": "compact menu, favorites and contextual Portuguese help",
+    "observed_status": "success",
+    "jobs_completed": 4,
+    "artifacts_count": 17,
+    "duration_reported": "14m 40s",
+    "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298",
+    "tests": {
+      "python": 11,
+      "math_cache_policy": 101,
+      "config_codec": 34,
+      "presentation": 25,
+      "favorite_capacity_insertions": 64
+    },
+    "artifacts": [
+      {
+        "id": "13116652678",
+        "text": "Amalgam-Ultimate-Release 18.7 MB sha256:892faff611541881c2c73aa3e9f706128aaa7d81c7fdc589a0a49b5c5d803eba",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116652678"
+      },
+      {
+        "id": "13117020552",
+        "text": "Amalgam-Ultimate-ReleaseAVX2 18.7 MB sha256:f0ad313b45b40be1dee9aa5c49b7378fe5c62482edb7beeb281c3a19ad236dd3",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13117020552"
+      },
+      {
+        "id": "13116840996",
+        "text": "Amalgam-Ultimate-ReleaseTextmode 13.2 MB sha256:a0e6ff43ad59f6297360713294d47fffaa8dab263816032d19e41cd81e1c442a",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116840996"
+      },
+      {
+        "id": "13116274726",
+        "text": "Amalgam-Ultimate-ReleaseTextmodeAVX2 13.2 MB sha256:538154e65c0a64d5dbfa9afa479bdcfb80571609d3ddd802231bb0d95f936481",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116274726"
+      },
+      {
+        "id": "13116108101",
+        "text": "Amalgam-Ultimate-source 5.34 MB sha256:969703783b7f4233f69d3250c8cdf7125dd0e6070bed20afb5c385b574126a38",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116108101"
+      },
+      {
+        "id": "13116453522",
+        "text": "Uniboxx64Release 2.8 MB sha256:3f73097042b841229163ef842315d96f8090b14a71d9ed544df9ff3f3d80bc40",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116453522"
+      },
+      {
+        "id": "13117145198",
+        "text": "Uniboxx64ReleaseAVX2 2.8 MB sha256:83525ff8155b63980134505c418f6f5d4eb461216f273df71ceaa268042c687f",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13117145198"
+      },
+      {
+        "id": "13116399717",
+        "text": "Uniboxx64ReleaseAVX2PDB 16.1 MB sha256:382aebeeacdb81d9e50b15cdca64b8b86c9262a7f34792b7499ed0fb28fd3554",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116399717"
+      },
+      {
+        "id": "13116333991",
+        "text": "Uniboxx64ReleasePDB 16.2 MB sha256:dd9a09b425c2e2419bfb076f12a493462d5309b382915f3b97e5d00da7415fea",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116333991"
+      },
+      {
+        "id": "13116781584",
+        "text": "Uniboxx64ReleaseTextmode 1.33 MB sha256:db6a32c6d1c6e61167021ac881de39635336603aefea8e153ce885ca37b51ecd",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116781584"
+      },
+      {
+        "id": "13116752675",
+        "text": "Uniboxx64ReleaseTextmodeAVX2 1.33 MB sha256:393009338323673f0edf6f997170fff4c6d5e7614356aae85ee6a01c9c1ff0a4",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116752675"
+      },
+      {
+        "id": "13116683098",
+        "text": "Uniboxx64ReleaseTextmodeAVX2PDB 12 MB sha256:d43647469c49600e3fb593e046b289e73667dc682410a03e79f506e0638b274c",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116683098"
+      },
+      {
+        "id": "13116672340",
+        "text": "Uniboxx64ReleaseTextmodePDB 12 MB sha256:df9f7ce732d1bdeb117fa5503ab7a240625e64ec6c33405b9d803249abf452b3",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116672340"
+      },
+      {
+        "id": "13116358802",
+        "text": "build-log-Release 437 KB sha256:55b9e3fc9dae3728978fdd20a5ea0c1d8709108e4eac4ad06b4a70f04c1fb459",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116358802"
+      },
+      {
+        "id": "13116668397",
+        "text": "build-log-ReleaseAVX2 438 KB sha256:f752dea6a9d66ba6fec93dfd2272c73927029b99e44d419213ed3a519da72033",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116668397"
+      },
+      {
+        "id": "13116249156",
+        "text": "build-log-ReleaseTextmode 433 KB sha256:72a93b74eb414913f52f15868369c364428b2cbf1cc90e43fff34c28adbc726a",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116249156"
+      },
+      {
+        "id": "13116638315",
+        "text": "build-log-ReleaseTextmodeAVX2 434 KB sha256:bea0f2c26afaacab7fec4088412c3b8a1dbd59c278ed54181f8f7b84a9563855",
+        "url": "https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116638315"
+      }
+    ],
+    "evidence": "Public GitHub Actions summary; workflow requires tests, MSBuild and actual DLL PE verification before upload. Binary artifacts not downloaded locally. TF2 not executed."
   }
 ]

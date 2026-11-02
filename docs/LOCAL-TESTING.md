@@ -36,3 +36,25 @@ Marque cada cenário como aprovado, falhou ou não executado. Guarde capturas e
 logs com o mesmo identificador do cenário. Não atribua uma falha a um módulo
 somente porque ele ainda não foi testado. Relatórios/dumps reais orientarão as
 correções; este documento não afirma qualquer teste de jogo já realizado.
+
+## Menu compacto e revisão de linguagem
+
+1. Abra o menu em Início → Essencial. Compare os valores de Aimbot e Radar com
+   Personalizar e com as respectivas páginas completas. Alterar um valor em
+   qualquer apresentação deve aparecer na outra, sem redefinir os demais.
+2. Use botão direito em FOV, escolha Adicionar aos favoritos e confira
+   Início → Favoritos. Salve o perfil, recarregue o módulo e confira a lista.
+   Remova o favorito e confirme que o valor do recurso foi preservado.
+3. Busque por 'distancia', 'ângulos', 'torres' e 'Sem atualização'. Confira também
+   que os identificadores Vars:: continuam localizáveis pela busca.
+4. Passe o mouse no modo de mira selecionado e nas alternativas da lista aberta.
+   Plain deve informar ausência de suavização; Dead Ringer deve explicar
+   preparação de morte falsa, e não um Spy morto.
+5. Compare o indicador de roteamento com o motor escolhido e as extensões da
+   arma. 'Unibox (compatibilidade)' pode aparecer com V2 selecionado. O texto
+   não comprova alvo adquirido ou disparo.
+6. Registre capturas de textos cortados ou traduções ruins com caminho da página,
+   nome da opção, modo selecionado, escala do menu, resolução e commit da DLL.
+   Anexe a configuração usada, removendo nomes pessoais quando necessário.
+
+Esta lista é um roteiro para avaliação local, não um registro de testes realizados.

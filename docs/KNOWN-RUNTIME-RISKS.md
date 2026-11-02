@@ -27,3 +27,12 @@ limites de evidência e pontos de observação, não falhas inventadas.
 Use LOCAL-TESTING.md para registrar evidências e distinguir defeitos observados
 faltantes de cenários não executados. Nenhum desses cenários bloqueia por si só
 a publicação dos artefatos que passarem na compilação e nos testes obrigatórios.
+
+## Revisão compacta do menu
+
+A ergonomia da nova página Início, do popup de favoritos e das descrições por
+alternativa não foi testada no jogo. Os testes portáveis verificam textos e
+persistência, mas não comprovam hover, posicionamento ou ausência de sobreposição.
+Algumas opções avançadas ainda utilizam descrições por categoria e precisam de
+revisão contextual. O indicador de roteamento usa snapshot elegível com validade
+de um segundo, sem afirmar que ocorreu um disparo ou acerto.

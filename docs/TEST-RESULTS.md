@@ -75,3 +75,26 @@ Foi verificado o PE real das DLLs antes de publicar. Tradução preserva IDs e
 valores de recursos; migração F3→Mouse4 preserva outras teclas personalizadas.
 Nenhum teste gráfico no TF2 foi executado. A presença e legibilidade dos
 acentos, hover, layout e botão físico Mouse4 permanecem para avaliação local.
+
+## Menu compacto e ajuda contextual
+
+Commit de código `5b42ebd4`. Preflight: 1.339 referências; 11 testes Python;
+101 verificações de cálculo/cache; 34 verificações do codec; 25 verificações
+de apresentação/ajuda e 64 inserções para testar o limite dos favoritos.
+Todos passaram localmente com Python/GCC; não são prova de interação no jogo.
+O catálogo com 1.301 rótulos está sincronizado pelo gerador.
+Uma verificação local adicional de concorrência, fora da suíte CI, executou
+10.000 snapshots enquanto duas threads alteravam favoritos, sem violar o limite
+ou produzir duplicatas nos snapshots observados. Isso não comprova ausência
+de todas as condições de corrida do programa.
+
+A nova apresentação usa os mesmos wrappers de configuração e binds. A ajuda
+específica dos modos de mira foi comparada com os caminhos de execução.
+A revisão de todas as descrições avançadas continua parcial; detalhes em
+COMPACT-MENU.md. A validação visual continua pendente.
+
+Windows-2022/VS2022 v143: Release, ReleaseAVX2, ReleaseTextmode e
+ReleaseTextmodeAVX2 aprovados em https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298.
+A suíte obrigatória passou no MSVC; as quatro DLLs foram verificadas pelo runner
+e publicadas com PDB/logs/pacotes. Foram observados 17 artefatos no resumo público;
+os binários não foram baixados nem executados neste workspace.

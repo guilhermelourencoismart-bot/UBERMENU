@@ -46,5 +46,13 @@ específico; não se deve considerar toda a documentação do menu revisada.
 - 101 verificações de cálculo/cache/política.
 - 34 verificações de codec, incluindo round trip JSON de favoritos e estado antigo.
 - 25 verificações de apresentação/ajuda e 64 inserções para limite de favoritos.
-- Windows/MSVC: aguardando [CI desta revisão](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388085381); não usar a CI anterior como prova.
+- Windows/MSVC v143: quatro variantes x64 aprovadas em `5b42ebd4`.
+  [CI aprovada](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298): 4 jobs, 17 artefatos, 14m40s.
+  DLLs verificadas no runner como PE32+/AMD64 antes da publicação.
 - Aparência, legibilidade, hover, navegação e interação no jogo: avaliação local pendente.
+
+## Downloads desta revisão
+
+- [Uniboxx64Release](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116453522)
+- [Uniboxx64ReleaseAVX2](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13117145198)
+- [Amalgam-Ultimate-source](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116108101)
