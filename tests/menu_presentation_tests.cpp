@@ -36,5 +36,11 @@ int main() {
  assert(favorites.Remove("Vars::Aimbot::General::AimFOV") && favorites.favorites.empty());
  for(size_t i=0;i<MenuPresentation::MaxFavorites;++i) assert(favorites.Add("Vars::Test::"+std::to_string(i)));
  assert(!favorites.Add("Vars::Test::overflow"));
- std::cout<<"25 presentation/help checks and 64 favorite capacity checks passed\n";
+ const auto critHelp=MenuPTBR::Help("Vars::CritHack::ForceCrits","Force crits",true,false,false);
+ assert(critHelp.find("Não funciona em toda arma")!=std::string::npos);
+ assert(critHelp.find("100%")!=std::string::npos && critHelp.find("servidor")!=std::string::npos);
+ assert(MenuPTBR::Help("Vars::CritHack::CritEffects","Crit effects",true,false,false).find("não cria dano")!=std::string::npos);
+ assert(MenuPTBR::Help("Vars::Radar::Players","Radar players",true,false,false).find("não basta")!=std::string::npos);
+ assert(std::string(MenuPTBR::Text("Force crits"))=="Tentar críticos");
+ std::cout<<"30 presentation/help checks and 64 favorite capacity checks passed\n";
 }

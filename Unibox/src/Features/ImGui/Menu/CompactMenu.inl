@@ -39,48 +39,99 @@ static void FavoritesPage()
     EndTable();
 }
 
+static bool DetailLayer(const char* title)
+{
+    Spacing();
+    return CollapsingHeader(title, ImGuiTreeNodeFlags_None);
+}
+
 static void CompactHome()
 {
     if (!PageTable("CompactHome", 2)) return;
     TableNextColumn();
     if (Section("Aimbot")) {
         FDropdown(Vars::Aimbot::General::AimType);
-        FDropdown(Vars::Aimbot::General::Solver);
-        FSlider(Vars::Aimbot::General::AimFOV);
-        FToggle(Vars::Aimbot::General::AutoShoot);
-        const char* routes[] = {"Roteamento: inativo ou sem atualização", "Roteamento da arma: Unibox", "Roteamento da arma: V2", "Roteamento da arma: Unibox (compatibilidade)"};
-        FLabel(routes[std::clamp(F::V2Router.DisplayRoute(), 0, 3)]);
-        FTooltip("Mostra o motor escolhido para a arma no último comando, não confirma aquisição de alvo ou disparo. Extensões exclusivas usam o Unibox.");
-        if (FButton("Personalizar mira")) OpenDetail(MenuPageAimbot, 0);
-        if (FButton("Avançado: armas e simulação")) OpenDetail(MenuPageAimbot, 1);
-    } EndSection();
-    if (Section("ESP")) {
-        FToggle(Vars::Comp::ESP::Enabled);
-        FLabel(Vars::Comp::ESP::Enabled.Value ? "Sistema selecionado: Comp" : "Sistema selecionado: grupos Unibox");
-        if (Vars::Comp::ESP::Enabled[DEFAULT_BIND]) {
-            FDropdown(Vars::Comp::ESP::Draw);
-            FColorPicker(Vars::Comp::Palette::Target);
+        if (Vars::Aimbot::General::AimType[DEFAULT_BIND]) {
+            FSlider(Vars::Aimbot::General::AimFOV);
+            FToggle(Vars::Aimbot::General::AutoShoot);
         }
-        if (FButton("Personalizar ESP")) OpenDetail(MenuPageVisuals, Vars::Comp::ESP::Enabled[DEFAULT_BIND] ? 4 : 0, 0);
-        if (FButton("Cores e destaque do alvo")) OpenDetail(MenuPageVisuals, 4, 16);
+        if (DetailLayer("Personalizar mira")) {
+            FDropdown(Vars::Aimbot::General::Target);
+            FDropdown(Vars::Aimbot::General::Ignore);
+            FToggle(Vars::Aimbot::General::FOVCircle);
+            FColorPicker(Vars::Colors::FOVCircle);
+            if (DetailLayer("Avançado: suavização e motor")) {
+                FDropdown(Vars::Aimbot::General::Solver);
+                FDropdown(Vars::Aimbot::General::SmoothingAlgorithm);
+                FSlider(Vars::Aimbot::General::AssistStrength);
+                FDropdown(Vars::Aimbot::General::SmoothCurve);
+                FSlider(Vars::Aimbot::General::SmoothCurveAmount);
+                FSlider(Vars::Aimbot::General::V2SmoothFactor);
+                const char* routes[] = {"Motor: sem atualização", "Motor da arma: Unibox", "Motor da arma: V2", "Motor da arma: Unibox por compatibilidade"};
+                FLabel(routes[std::clamp(F::V2Router.DisplayRoute(),0,3)]);
+                if(FButton("Todas as opções de armas")) OpenDetail(MenuPageAimbot,1);
+            }
+        }
+    } EndSection();
+    if (Section("Críticos")) {
+        FToggle(Vars::CritHack::ForceCrits);
+        if (DetailLayer("Personalizar críticos")) {
+            FToggle(Vars::CritHack::AvoidRandomCrits);
+            FToggle(Vars::CritHack::AlwaysMeleeCrit);
+            FToggle(Vars::CritHack::CritEffects);
+        }
     } EndSection();
     TableNextColumn();
+    if (Section("ESP")) {
+        FToggle(Vars::Comp::ESP::Enabled);
+        if(Vars::Comp::ESP::Enabled[DEFAULT_BIND]) {
+            FDropdown(Vars::Comp::ESP::Draw);
+            FDropdown(Vars::Comp::ESP::Player);
+        }
+        if(DetailLayer("Personalizar ESP")) {
+            FColorPicker(Vars::Comp::Palette::Target);
+            FDropdown(Vars::Comp::ESP::Building);
+            if(FButton("Todos os detalhes do ESP")) OpenDetail(MenuPageVisuals,Vars::Comp::ESP::Enabled[DEFAULT_BIND]?4:0,0);
+            if(FButton("Paleta completa de cores")) OpenDetail(MenuPageVisuals,4,16);
+        }
+    } EndSection();
     if (Section("Radar")) {
         FToggle(Vars::Radar::Enabled);
-        FDropdown(Vars::Comp::Radar::Main::Style);
-        FSlider(Vars::Radar::Range);
-        FDropdown(Vars::Comp::Radar::Player::Draw);
-        if (FButton("Personalizar Radar")) OpenDetail(MenuPageVisuals, 4, 13);
+        if(Vars::Radar::Enabled[DEFAULT_BIND]) {
+            FToggle(Vars::Radar::Players);
+            FSlider(Vars::Radar::Range);
+        }
+        if(DetailLayer("Personalizar Radar")) {
+            FDropdown(Vars::Comp::Radar::Main::Style);
+            FDropdown(Vars::Comp::Radar::Player::Draw);
+            if(FButton("Aparência e demais entidades")) OpenDetail(MenuPageVisuals,4,13);
+        }
     } EndSection();
-    if (Section("Seu menu")) {
-        FLabel("Essencial aqui. Todos os detalhes a um clique.");
-        if (FButton("Menu completo / Avançado")) OpenDetail(MenuPageAimbot, 0);
-        if (FButton("Meus favoritos")) OpenDetail(MenuPageHome, 1);
-        if (FButton("Configurações: salvar e carregar")) OpenDetail(MenuPageSettings, 0);
-        if (FButton("Movimento e utilidades")) OpenDetail(MenuPageMisc, 0);
-        if (FButton("Bots e navegação")) OpenDetail(MenuPageMisc, 2);
-        FLabel("Ctrl+F: buscar em todas as categorias.");
-        FLabel("Botão direito: favoritos e binds.");
+    EndTable();
+}
+
+static void CompactLibrary()
+{
+    if(!PageTable("CompactLibrary",2)) return;
+    TableNextColumn();
+    if(Section("Personalização visual")) {
+        if(FButton("ESP e indicadores Comp"))OpenDetail(MenuPageVisuals,4);
+        if(FButton("Câmeras"))OpenDetail(MenuPageVisuals,1);
+        if(FButton("Cenário"))OpenDetail(MenuPageVisuals,2);
+        if(FButton("Aparência do menu e atalhos"))OpenDetail(MenuPageVisuals,3);
+    } EndSection();
+    if(Section("Movimento e automação")) {
+        if(FButton("Movimento"))OpenDetail(MenuPageMisc,0);
+        if(FButton("Automação"))OpenDetail(MenuPageMisc,1);
+        if(FButton("Bots e navegação"))OpenDetail(MenuPageMisc,2);
+    } EndSection();
+    TableNextColumn();
+    if(Section("Perfil e opções completas")) {
+        if(FButton("Salvar e carregar configurações"))OpenDetail(MenuPageSettings,0);
+        if(FButton("Binds: condições e atalhos"))OpenDetail(MenuPageSettings,1);
+        if(FButton("Abrir menu completo"))OpenDetail(MenuPageAimbot,0);
+        FLabel("Ctrl+F busca também opções avançadas.");
+        FLabel("Botão direito em uma opção: favorito e bind.");
         FLabel("Base Unibox — GatoPotato658");
     } EndSection();
     EndTable();

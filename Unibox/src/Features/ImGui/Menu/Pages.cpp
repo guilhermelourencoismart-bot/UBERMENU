@@ -1662,7 +1662,7 @@ bool Pages::Draw(int iPage, int iSub)
 	switch (iPage)
 	{
 	case MenuPageHome:
-		if (iSub == 1) FavoritesPage(); else CompactHome();
+		if (iSub == 1) FavoritesPage(); else if (iSub == 2) CompactLibrary(); else CompactHome();
 		return true;
 	case MenuPageAimbot:
 		F::AntiCheatCompatibility.EnforceSettings();

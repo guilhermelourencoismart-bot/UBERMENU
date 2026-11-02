@@ -23,7 +23,7 @@ inline const std::vector<NavPage_t> vMenuPages = {
 	{ "Jogadores", ICON_MD_GROUP, { "Sala", "Marcadores", "Marcados", "Registros", "Avisos" } },
 	{ "Skins", ICON_MD_PALETTE, { "Armas", "Mochila" } },
 	{ "Configurações", ICON_MD_SETTINGS, { "Arquivos", "Atalhos", "Materiais", "Utilidades" } },
-	{ "Início", ICON_MD_HOME, { "Essencial", "Favoritos" } }
+	{ "Início", ICON_MD_HOME, { "Essencial", "Favoritos", "Explorar tudo" } }
 };
 
 namespace Pages
