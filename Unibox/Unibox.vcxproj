@@ -83,15 +83,15 @@
     <ClInclude Include="src\SDK\CompVars.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Features\Visuals\Comp\AmmoTracker.cpp" />
+    <ClCompile Include="src\Features\Visuals\Comp\AmmoTracker.cpp"><ObjectFileName>$(IntDir)Comp_AmmoTracker.obj</ObjectFileName></ClCompile>
     <ClInclude Include="src\Features\Visuals\Comp\AmmoTracker.h" />
-    <ClCompile Include="src\Features\Visuals\Comp\HealthBarESP.cpp" />
+    <ClCompile Include="src\Features\Visuals\Comp\HealthBarESP.cpp"><ObjectFileName>$(IntDir)Comp_HealthBarESP.obj</ObjectFileName></ClCompile>
     <ClInclude Include="src\Features\Visuals\Comp\HealthBarESP.h" />
-    <ClCompile Include="src\Features\Visuals\Comp\PlayerTrails.cpp" />
+    <ClCompile Include="src\Features\Visuals\Comp\PlayerTrails.cpp"><ObjectFileName>$(IntDir)Comp_PlayerTrails.obj</ObjectFileName></ClCompile>
     <ClInclude Include="src\Features\Visuals\Comp\PlayerTrails.h" />
-    <ClCompile Include="src\Features\Visuals\Comp\SentryESP.cpp" />
+    <ClCompile Include="src\Features\Visuals\Comp\SentryESP.cpp"><ObjectFileName>$(IntDir)Comp_SentryESP.obj</ObjectFileName></ClCompile>
     <ClInclude Include="src\Features\Visuals\Comp\SentryESP.h" />
-    <ClCompile Include="src\Features\Visuals\Comp\StickyESP.cpp" />
+    <ClCompile Include="src\Features\Visuals\Comp\StickyESP.cpp"><ObjectFileName>$(IntDir)Comp_StickyESP.obj</ObjectFileName></ClCompile>
     <ClInclude Include="src\Features\Visuals\Comp\StickyESP.h" />
   </ItemGroup>
   <ItemGroup>
@@ -99,21 +99,21 @@
     <ClInclude Include="src\Features\Visuals\Comp\CompColor.h" />
     <ClCompile Include="src\Features\Visuals\Comp\CompEntities.cpp" />
     <ClInclude Include="src\Features\Visuals\Comp\CompEntities.h" />
-    <ClCompile Include="src\Features\Visuals\Comp\Radar.cpp" />
+    <ClCompile Include="src\Features\Visuals\Comp\Radar.cpp"><ObjectFileName>$(IntDir)Comp_Radar.obj</ObjectFileName></ClCompile>
     <ClInclude Include="src\Features\Visuals\Comp\Radar.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Features\Visuals\Comp\OffScreenIndicators.cpp" />
+    <ClCompile Include="src\Features\Visuals\Comp\OffScreenIndicators.cpp"><ObjectFileName>$(IntDir)Comp_OffScreenIndicators.obj</ObjectFileName></ClCompile>
     <ClInclude Include="src\Features\Visuals\Comp\OffScreenIndicators.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Features\Aimbot\V2\AimbotGlobal.cpp" />
+    <ClCompile Include="src\Features\Aimbot\V2\AimbotGlobal.cpp"><ObjectFileName>$(IntDir)V2_AimbotGlobal.obj</ObjectFileName></ClCompile>
     <ClInclude Include="src\Features\Aimbot\V2\AimbotGlobal.h" />
-    <ClCompile Include="src\Features\Aimbot\V2\AimbotHitscan.cpp" />
+    <ClCompile Include="src\Features\Aimbot\V2\AimbotHitscan.cpp"><ObjectFileName>$(IntDir)V2_AimbotHitscan.obj</ObjectFileName></ClCompile>
     <ClInclude Include="src\Features\Aimbot\V2\AimbotHitscan.h" />
-    <ClCompile Include="src\Features\Aimbot\V2\AimbotMelee.cpp" />
+    <ClCompile Include="src\Features\Aimbot\V2\AimbotMelee.cpp"><ObjectFileName>$(IntDir)V2_AimbotMelee.obj</ObjectFileName></ClCompile>
     <ClInclude Include="src\Features\Aimbot\V2\AimbotMelee.h" />
-    <ClCompile Include="src\Features\Aimbot\V2\AimbotProjectile.cpp" />
+    <ClCompile Include="src\Features\Aimbot\V2\AimbotProjectile.cpp"><ObjectFileName>$(IntDir)V2_AimbotProjectile.obj</ObjectFileName></ClCompile>
     <ClInclude Include="src\Features\Aimbot\V2\AimbotProjectile.h" />
     <ClInclude Include="src\Features\Aimbot\V2\V2Menu.inl" />
     <ClInclude Include="src\SDK\V2Vars.h" />
