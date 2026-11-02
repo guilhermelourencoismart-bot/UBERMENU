@@ -3910,10 +3910,7 @@ void CMenu::Render()
 
     static bool localized=false;
     if(!localized) {
-        for(auto var:G::Vars) {
-            for(auto& name:var->m_vNames)name=MenuPTBR::Text(name);
-            for(auto& choice:var->m_vValues)choice=MenuPTBR::Text(choice);
-        }
+        for(auto var:G::Vars)MenuPTBR::LocalizePresentation(*var);
         localized=true;
     }
 	m_bInKeybind = false;

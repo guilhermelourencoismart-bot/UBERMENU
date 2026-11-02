@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include <string_view>
+#include <typeinfo>
 // Display text only: IDs, configuration keys and binds are never translated.
 namespace MenuPTBR {
 inline const char* Text(const char* text) {
@@ -1285,4 +1286,11 @@ inline const char* Text(const char* text) {
 };
  auto it=catalog.find(text);return it==catalog.end()?text:it->second.c_str();
 }
+// String-valued choices may be asset/configuration identifiers: keep them intact.
+template<class Variable> void LocalizePresentation(Variable& var) {
+ for(auto& name:var.m_vNames)name=Text(name);
+ if(var.m_iType==typeid(int).hash_code())
+  for(auto& choice:var.m_vValues)choice=Text(choice);
+}
+
 }
