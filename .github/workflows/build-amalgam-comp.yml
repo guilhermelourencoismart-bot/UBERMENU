@@ -1,0 +1,72 @@
+name: Build Amalgam-Comp DLL (standalone)
+
+on:
+  push:
+    branches:
+      - build/amalgam-comp-dll
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Amalgam-Comp x64 FreeType AVX2
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - name: Checkout last known working Amalgam-Comp source
+        uses: actions/checkout@v4
+        with:
+          repository: coffeegrind123/Amalgam-Comp
+          ref: af114a93829a3fddc6f39100d19d9b6370998826
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Configure MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Configure NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Install C++ dependencies
+        shell: pwsh
+        run: |
+          git clone --depth 1 https://github.com/microsoft/vcpkg.git vcpkg
+          if ($LASTEXITCODE -ne 0) { throw 'vcpkg clone failed' }
+          & .\vcpkg\bootstrap-vcpkg.bat -disableMetrics
+          if ($LASTEXITCODE -ne 0) { throw 'vcpkg bootstrap failed' }
+          & .\vcpkg\vcpkg.exe install cpr:x64-windows-static nlohmann-json:x64-windows-static freetype:x64-windows-static
+          if ($LASTEXITCODE -ne 0) { throw 'vcpkg dependencies failed' }
+          & .\vcpkg\vcpkg.exe integrate install
+          if ($LASTEXITCODE -ne 0) { throw 'vcpkg integration failed' }
+
+      - name: Restore NuGet
+        shell: pwsh
+        run: |
+          nuget restore Amalgam.sln -NonInteractive
+          if ($LASTEXITCODE -ne 0) { throw 'NuGet restore failed' }
+
+      - name: Build x64 DLL
+        shell: pwsh
+        run: |
+          msbuild Amalgam.sln /m /p:Configuration=ReleaseFreetypeAVX2 /p:Platform=x64 /verbosity:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'MSBuild failed' }
+
+      - name: Verify DLL output
+        shell: pwsh
+        run: |
+          $dlls = @(Get-ChildItem -Path output/x64/Release -Filter *.dll -File -ErrorAction SilentlyContinue)
+          if ($dlls.Count -eq 0) { throw 'No DLL produced in output/x64/Release' }
+          $dlls | ForEach-Object {
+            Write-Host "DLL: $($_.Name) ($($_.Length) bytes)"
+            Get-FileHash $_.FullName -Algorithm SHA256 | Format-List
+          }
+
+      - name: Publish standalone Amalgam-Comp DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: Amalgam-Comp-x64-AVX2-DLL
+          path: output/x64/Release/*.dll
+          if-no-files-found: error
+          retention-days: 30
