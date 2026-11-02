@@ -56,3 +56,25 @@ específico; não se deve considerar toda a documentação do menu revisada.
 - [Uniboxx64Release](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116453522)
 - [Uniboxx64ReleaseAVX2](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13117145198)
 - [Amalgam-Ultimate-source](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388300298/artifacts/13116108101)
+
+## Revisão em camadas
+
+A revisão posterior separa Essencial, Favoritos e Explorar tudo. Essencial
+mostra Aimbot, críticos, ESP e Radar. Personalizar abre opções dentro do recurso;
+o motor e os cálculos ficam na camada Avançado. Explorar tudo concentra
+atalhos para câmeras, cenário, movimento, bots, binds e perfis.
+
+Nenhum valor é redefinido ao recolher um painel. Todos os controles continuam
+ligados às mesmas configurações e binds. O Radar passa a expor explicitamente
+a inclusão de jogadores; ESP expõe os filtros de jogadores para evitar uma
+aparência de recurso ligado sem entidades permitidas.
+
+Tentar críticos descreve os limites de arma, servidor e reserva. A prioridade
+corpo a corpo continua condicionada ao alvo do Aimbot; efeitos visuais não
+produzem dano crítico. Nenhum algoritmo de críticos ou mira foi modificado.
+
+Validação local: 11 testes Python, 34 verificações de codec, 30 de apresentação
+e 64 inserções para capacidade de favoritos aprovados. A compilação Windows
+desta revisão foi iniciada; os links anteriores pertencem à versão anterior.
+A revisão integral das descrições avançadas e a avaliação visual permanecem
+pendentes. Não considerar todos os textos do menu revisados.
