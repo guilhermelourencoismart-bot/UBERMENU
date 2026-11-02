@@ -285,8 +285,8 @@ void CMenu::MenuESP()
 	if (Section("Group"))
 	{
 		FColorPicker("Color", &tGroup.m_tColor, FColorPickerEnum::Full);
-		FToggle("Marcadores override cor", &tGroup.m_bTagsOverrideColor);
-		FDropdown("Alvos", &tGroup.m_iTargets, { "Jogadores", "Construções", "Projéteis", "Ragdolls", "Objetivo", "NPCs", "Vida", "Munição", "Dinheiro", "Poderes", "Livro", "Bombas", "Gárgula", "##Divider", "Fake angle", "Arma em tela arma", "Arma em tela hands" }, {}, FDropdownEnum::Multi);
+		FToggle("Marcadores substituem a cor", &tGroup.m_bTagsOverrideColor);
+		FDropdown("Alvos", &tGroup.m_iTargets, { "Jogadores", "Construções", "Projéteis", "Ragdolls", "Objetivo", "NPCs", "Vida", "Munição", "Dinheiro", "Poderes", "Livro", "Bombas", "Gárgula", "##Divider", "Fake angle", "Arma em primeira pessoa", "Mãos em primeira pessoa" }, {}, FDropdownEnum::Multi);
 	} EndSection();
 	if (Section("Condições"))
 	{
@@ -294,7 +294,7 @@ void CMenu::MenuESP()
 		PushTransparent(!(tGroup.m_iTargets & TargetsEnum::Players));
 		{
 			RoleDropdown("Roles", tGroup.m_vRoles);
-			FDropdown("Jogadores", &tGroup.m_iPlayers, { "Scout", "Soldier", "Pyro", "Demoman", "Intenso", "Engineer", "Médico", "Sniper", "Spy", "##Divider", "Invulnerable", "Críticos", (tGroup.m_iPlayers & PlayerEnum::NotInvis) ? "Not invisível" : "Invisível", "Disfarce", "Hurt", "##Divider", "Invisible -> Not invisible" }, {}, FDropdownEnum::Multi, 0, "Todos");
+			FDropdown("Jogadores", &tGroup.m_iPlayers, { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Médico", "Sniper", "Spy", "##Divider", "Invulnerable", "Críticos", (tGroup.m_iPlayers & PlayerEnum::NotInvis) ? "Visível" : "Invisível", "Disfarce", "Hurt", "##Divider", "Invisible -> Not invisible" }, {}, FDropdownEnum::Multi, 0, "Todos");
 		}
 		PopTransparent();
 		PushTransparent(!(tGroup.m_iTargets & TargetsEnum::Buildings));
@@ -310,7 +310,7 @@ void CMenu::MenuESP()
 	} EndSection();
 	if (Section("Utilidades"))
 	{
-		FToggle("Offscreen arrows", &tGroup.m_bOffscreenArrows);
+		FToggle("Setas para alvos fora da tela", &tGroup.m_bOffscreenArrows);
 		if (FPopupButton("OffscreenArrows"))
 		{
 			FSlider("Deslocamento", &tGroup.m_iOffscreenArrowsOffset, 0, 1000, 25, "%i", FSliderEnum::Precision);
@@ -319,29 +319,29 @@ void CMenu::MenuESP()
 			EndPopup();
 		}
 
-		FToggle("Item timer", &tGroup.m_bPickupTimer);
+		FToggle("Tempo de retorno dos itens", &tGroup.m_bPickupTimer);
 
 		FToggle("Compensação temporal", &tGroup.m_iBacktrack, BacktrackEnum::Enabled);
 		if (FPopupButton("Backtrack"))
 		{
 			FDropdown("Draw##Backtrack", &tGroup.m_iBacktrack, { "Last", "First", "##Divider", "Sempre" }, { BacktrackEnum::Last, BacktrackEnum::First, BacktrackEnum::Always }, FDropdownEnum::Multi | FDropdownEnum::NoSanitization, 0, "Todos");
-			FMDropdown("Visible material## Backtrack", &tGroup.m_tBacktrackChams.Visible);
-			FMDropdown("Occluded material## Backtrack", &tGroup.m_tBacktrackChams.Occluded);
+			FMDropdown("Material visível## Backtrack", &tGroup.m_tBacktrackChams.Visible);
+			FMDropdown("Material atrás de paredes## Backtrack", &tGroup.m_tBacktrackChams.Occluded);
 
 			Subheader("Glow");
 			PushTransparent(!tGroup.m_tBacktrackGlow.Stencil);
 			{
-				FSlider("Stencil scale## Backtrack", &tGroup.m_tBacktrackGlow.Stencil, 0, 10, 1, "%i", FSliderEnum::Min);
+				FSlider("Escala de contorno## Backtrack", &tGroup.m_tBacktrackGlow.Stencil, 0, 10, 1, "%i", FSliderEnum::Min);
 			}
 			PopTransparent();
 			PushTransparent(!tGroup.m_tBacktrackGlow.Blur);
 			{
-				FSlider("Blur scale## Backtrack", &tGroup.m_tBacktrackGlow.Blur, 0.f, 10.f, 1.f, "%g", FSliderEnum::Min | FSliderEnum::Precision);
+				FSlider("Intensidade do brilho## Backtrack", &tGroup.m_tBacktrackGlow.Blur, 0.f, 10.f, 1.f, "%g", FSliderEnum::Min | FSliderEnum::Precision);
 			}
 			PopTransparent();
 			FSlider("Render start## Backtrack", &tGroup.m_tBacktrackGlow.Start, 0.f, 2048.f, 128, "%.fHU", FSliderEnum::Min);
 			FSlider("Render end## Backtrack", &tGroup.m_tBacktrackGlow.End, 512.f, 8192.f, 128.f, "%.fHU", FSliderEnum::Min);
-			FToggle("Distance to alpha## Backtrack", &tGroup.m_tBacktrackGlow.SmoothAlpha);
+			FToggle("Distância controla transparência## Backtrack", &tGroup.m_tBacktrackGlow.SmoothAlpha);
 
 			EndPopup();
 		}
@@ -367,7 +367,7 @@ void CMenu::MenuESP()
 	TableNextColumn();
 	if (Section("ESP"))
 	{
-		std::vector<const char*> vEntries = { "Name", "Name background", "Box", "Distance" };
+		std::vector<const char*> vEntries = { "Name", "Fundo do nome", "Box", "Distance" };
 		std::vector<int> vValues = { ESPEnum::Name, ESPEnum::NameBackground, ESPEnum::Box, ESPEnum::Distance };
 		if (tGroup.m_iTargets & TargetsEnum::Players)
 		{
@@ -376,7 +376,7 @@ void CMenu::MenuESP()
 		}
 		if (tGroup.m_iTargets & (TargetsEnum::Players | TargetsEnum::Buildings))
 		{
-			vEntries.insert(vEntries.end(), { "Health bar", "Health text" });
+			vEntries.insert(vEntries.end(), { "Barra de vida", "Vida em texto" });
 			vValues.insert(vValues.end(), { ESPEnum::HealthBar, ESPEnum::HealthText });
 		}
 		if (tGroup.m_iTargets & TargetsEnum::Players)
@@ -416,19 +416,19 @@ void CMenu::MenuESP()
 			FDropdown("Desenho", &tGroup.m_tESP.Draw, vEntries, vValues, FDropdownEnum::Multi);
 			PushTransparent(Transparent || !(tGroup.m_tESP.Draw & ESPEnum::Box));
 			{
-				FDropdown("Caixa estilo", &tGroup.m_tESP.BoxStyle, { "Solid", "Canto accent", "Cantos somente", "Contorno", "Rounded" });
+				FDropdown("Caixa estilo", &tGroup.m_tESP.BoxStyle, { "Solid", "Cantos destacados", "Cantos somente", "Contorno", "Rounded" });
 			}
 			PopTransparent();
 			PushTransparent(Transparent || !(tGroup.m_tESP.Draw & ESPEnum::NameBackground));
 			{
 				int iOpacity = tGroup.m_tESP.BackgroundOpacity;
-				FSlider("Fundo opacity", &iOpacity, 0, 255, 5, "%i", FSliderEnum::Clamp);
+				FSlider("Transparência do fundo", &iOpacity, 0, 255, 5, "%i", FSliderEnum::Clamp);
 				tGroup.m_tESP.BackgroundOpacity = byte(iOpacity);
 			}
 			PopTransparent();
-			FSlider("Draw start## ESP", &tGroup.m_tESP.Start, 0.f, 2048.f, 128.f, "%.fHU", FSliderEnum::Clamp);
-			FSlider("Draw end## ESP", &tGroup.m_tESP.End, 512.f, 8192.f, 128.f, "%.fHU", FSliderEnum::Min);
-			FToggle("Distance to alpha## ESP", &tGroup.m_tESP.SmoothAlpha);
+			FSlider("Mostrar a partir de##ESP", &tGroup.m_tESP.Start, 0.f, 2048.f, 128.f, "%.fHU", FSliderEnum::Clamp);
+			FSlider("Mostrar até##ESP", &tGroup.m_tESP.End, 512.f, 8192.f, 128.f, "%.fHU", FSliderEnum::Min);
+			FToggle("Distância controla transparência## ESP", &tGroup.m_tESP.SmoothAlpha);
 		}
 		PopTransparent();
 	} EndSection();
@@ -436,8 +436,8 @@ void CMenu::MenuESP()
 	{
 		if (!tGroup.m_iTargets || tGroup.m_iTargets & TargetsEnum::Occluded)
 		{
-			FMDropdown("Visible material", &tGroup.m_tChams.Visible);
-			FMDropdown("Occluded material", &tGroup.m_tChams.Occluded);
+			FMDropdown("Material visível", &tGroup.m_tChams.Visible);
+			FMDropdown("Material atrás de paredes", &tGroup.m_tChams.Occluded);
 		}
 		else
 			FMDropdown("Material", &tGroup.m_tChams.Visible);
@@ -454,9 +454,9 @@ void CMenu::MenuESP()
 			FSlider("Blur escala", &tGroup.m_tGlow.Blur, 0.f, 10.f, 1.f, "%g", FSliderEnum::Min | FSliderEnum::Precision);
 		}
 		PopTransparent();
-		FSlider("Render start## Glow", &tGroup.m_tGlow.Start, 0.f, 2048.f, 128, "%.fHU", FSliderEnum::Clamp);
-		FSlider("Render end## Glow", &tGroup.m_tGlow.End, 512.f, 8192.f, 128.f, "%.fHU", FSliderEnum::Min);
-		FToggle("Distance to alpha## Glow", &tGroup.m_tGlow.SmoothAlpha);
+		FSlider("Brilho a partir de##Glow", &tGroup.m_tGlow.Start, 0.f, 2048.f, 128, "%.fHU", FSliderEnum::Clamp);
+		FSlider("Brilho até##Glow", &tGroup.m_tGlow.End, 512.f, 8192.f, 128.f, "%.fHU", FSliderEnum::Min);
+		FToggle("Distância controla transparência## Glow", &tGroup.m_tGlow.SmoothAlpha);
 	} EndSection();
 
 	EndTable();
@@ -2784,7 +2784,7 @@ void CMenu::MenuSettings(int iTab)
 			switch (tBind.m_iType)
 			{
 			case BindEnum::Key: FDropdown("Behavior", &tBind.m_iInfo, { "Hold", "Alternar", "Duplo click" }); break;
-			case BindEnum::Class: FDropdown("Classe", &tBind.m_iInfo, { "Scout", "Soldier", "Pyro", "Demoman", "Intenso", "Engineer", "Médico", "Sniper", "Spy" }); break;
+			case BindEnum::Class: FDropdown("Classe", &tBind.m_iInfo, { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Médico", "Sniper", "Spy" }); break;
 			case BindEnum::WeaponType: FDropdown("Arma tipo", &tBind.m_iInfo, { "Acerto instantâneo", "Projéteis", "Corpo a corpo", "Throwable" }); break;
 			case BindEnum::ItemSlot: FDropdown("Item slot", &tBind.m_iInfo, { "1", "2", "3", "4", "5", "6", "7", "8", "9" }); break;
 			case BindEnum::Misc: FDropdown("Utilidades", &tBind.m_iInfo, { "Spectated", "Spectated 1st", "Spectated 3rd", "##Divider", "Zoomed", "Aiming" }); break;
