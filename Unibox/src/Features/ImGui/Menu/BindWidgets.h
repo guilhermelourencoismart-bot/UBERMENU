@@ -266,6 +266,17 @@ namespace ImGui
 		return iBind;
 	}
 
+    template<class T>
+    inline std::string VariableHelp(ConfigVar<T>& var, const T& value, const char* label)
+    {
+        auto help = MenuPTBR::Help(var.Name(),label,std::is_same_v<T,bool>,std::is_same_v<T,Color_t> || std::is_same_v<T,Gradient_t>,!var.m_vValues.empty());
+        if constexpr (std::is_same_v<T,int>) {
+            if (std::string_view(var.Name()) == "Vars::Aimbot::General::AimType" && value >= 0 && size_t(value) < var.m_vValues.size())
+                help += "\n" + MenuPTBR::ChoiceHelp(var.Name(),var.m_vValues[value]);
+        }
+        return help;
+    }
+
 	#define WRAPPER(function, type, parameters, arguments) \
 	inline bool function(ConfigVar<type>& tVar, parameters, bool* pHovered = nullptr, int iBindOverride = -1, int iLabelOverride = -1) \
 	{ \
@@ -277,11 +288,7 @@ namespace ImGui
 		SuppressInnerTooltip=true; \
 		bool bReturn = function(std::format("{}## {}", sLabel, tVar.Name()).c_str(), arguments, &bHovered); \
 		SuppressInnerTooltip=false; \
-		std::string help = MenuPTBR::Help(tVar.Name(),sLabel,std::is_same_v<type,bool>,std::is_same_v<type,Color_t> || std::is_same_v<type,Gradient_t>,!tVar.m_vValues.empty()); \
-		if constexpr (std::is_same_v<type,int>) { \
-			if (std::string_view(tVar.Name()) == "Vars::Aimbot::General::AimType" && tVal >= 0 && size_t(tVal) < tVar.m_vValues.size()) \
-				help += "\n" + MenuPTBR::ChoiceHelp(tVar.Name(),tVar.m_vValues[tVal]); \
-		} \
+		const auto help = VariableHelp(tVar,tVal,sLabel); \
 		FTooltip(help.c_str(),bHovered); \
 		FSet(tVar, tVal); \
 		if (pHovered) \
