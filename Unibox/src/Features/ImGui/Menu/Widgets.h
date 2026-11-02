@@ -43,6 +43,7 @@ namespace ImGui
 	inline std::unordered_map<uint32_t, int> ActiveMap = {};
 
 	inline bool Disabled = false, Transparent = false;
+    inline bool SuppressInnerTooltip=false;
 	inline int CurrentBind = DEFAULT_BIND;
 	inline bool Hovered = false;
 
@@ -425,7 +426,7 @@ namespace ImGui
 
 	inline void FTooltip(const char* sTooltip, bool bCondition = IsItemHovered(), float flWrapWidth = 300, ImFont* pFont = F::Render.FontSmall, ImVec2* pPosOverride = nullptr, ImVec2* pSizeOverride = nullptr)
 	{
-		if (!bCondition)
+		if (!bCondition || SuppressInnerTooltip)
 			return;
 
         static int helpFrame=-1;static ImVec2 helpAnchor={-1,-1};

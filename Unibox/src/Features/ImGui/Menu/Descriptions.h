@@ -54,6 +54,16 @@ inline std::string Help(std::string_view key,const char* caption,bool toggle,boo
  else if(key.find("Binds::")!=key.npos)context="nos atalhos e suas condições de ativação";
  else context="nesta categoria do menu";
  const std::string label=Text(caption);
+ if(key.ends_with("MaxDistance"))return "Distância máxima para mostrar ou considerar entidades neste recurso. Aumentar inclui entidades mais distantes; não altera outros módulos.";
+ if(key.ends_with("ShowThroughWalls") || key.ends_with("ThroughWalls"))return "Permite mostrar este indicador mesmo quando uma parede bloqueia a visão. Não dá ao Aimbot permissão para acertar através da parede.";
+ if(key.ends_with("Alpha") || key.ends_with("ActiveAlpha"))return "Controla a transparência deste desenho: zero oculta; valores maiores deixam mais visível. As cores de outros módulos continuam independentes.";
+ if(key.ends_with("TrailLifetime"))return "Tempo que cada ponto do rastro permanece visível antes de desaparecer. Aumentar conserva mais histórico, sem prever o futuro do jogador.";
+ if(key.ends_with("TrackerTimeWindow"))return "Período recente em que ataques são contados para identificar fogo concentrado. Ataques mais antigos deixam de contar.";
+ if(key.ends_with("MinAttackers"))return "Número mínimo de atacantes diferentes necessário para destacar um inimigo sob fogo concentrado.";
+ if(key.ends_with("TimeToMark"))return "Tempo que o inimigo precisa permanecer parado para receber a marca. Movimento acima da tolerância reinicia a contagem.";
+ if(key.ends_with("ShowFriendly"))return "Inclui entidades aliadas neste recurso. Não modifica a seleção de alvos dos outros sistemas.";
+ if(key.ends_with("EnemyOnly"))return "Restringe este recurso aos inimigos. Desligado, aliados também podem ser incluídos conforme os demais filtros.";
+ if(key.ends_with("ShowChams") || key.ends_with("EnableChams"))return "Aplica o destaque por materiais deste módulo usando o renderizador nativo. As cores e a visibilidade são definidas nas opções deste recurso.";
  if(color)return "Altera a cor e a transparência de “"+label+"” "+context+". Efeitos com paleta própria não são alterados.";
  if(choices)return "Seleciona “"+label+"” "+context+". Opções com várias marcações permitem combinar escolhas.";
  if(toggle)return "Ativa ou desativa “"+label+"” "+context+".";

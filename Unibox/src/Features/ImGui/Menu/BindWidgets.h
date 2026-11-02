@@ -272,7 +272,9 @@ namespace ImGui
 		iFlags |= iVarFlags; \
 		auto tVal = FGet(tVar, true); \
 		bool bHovered = false; \
+		SuppressInnerTooltip=true; \
 		bool bReturn = function(std::format("{}## {}", sLabel, tVar.Name()).c_str(), arguments, &bHovered); \
+		SuppressInnerTooltip=false; \
 		FTooltip(MenuPTBR::Help(tVar.Name(),sLabel,std::is_same_v<type,bool>,std::is_same_v<type,Color_t> || std::is_same_v<type,Gradient_t>,!tVar.m_vValues.empty()).c_str(),bHovered); \
 		FSet(tVar, tVal); \
 		if (pHovered) \

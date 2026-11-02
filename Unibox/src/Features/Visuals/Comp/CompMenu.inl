@@ -13,6 +13,7 @@ static void FullCompSettings()
   FLabel("Base: Unibox — GatoPotato658");
   FLabel("github.com/GatoPotato658/Unibox");
  } EndSection();
+ TableNextColumn();
  switch(selected) {
  case 0:
 if(Section("Principal ESP - Comp")) {
