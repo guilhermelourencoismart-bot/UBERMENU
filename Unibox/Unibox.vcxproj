@@ -1222,6 +1222,8 @@
   <ItemGroup>
     <ClInclude Include="src\Features\ImGui\Menu\Localization.h" />
     <ClInclude Include="src\Features\ImGui\Menu\Descriptions.h" />
+    <ClInclude Include="src\Features\ImGui\Menu\PresentationState.h" />
+    <ClInclude Include="src\Features\ImGui\Menu\CompactMenu.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

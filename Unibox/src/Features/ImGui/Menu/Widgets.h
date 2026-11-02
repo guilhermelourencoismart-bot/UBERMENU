@@ -2039,6 +2039,13 @@ namespace ImGui
 						*pVar = vValues[i], bReturn = true;
 					FOptionText(tOption, sStripped.c_str(), H::Draw.Scale(bModifiable ? 36 : 12), OptionColor(tOption, bSelected, true));
 				}
+                const auto choiceHelp = MenuPTBR::ChoiceHelp(sLabel, sStripped);
+                if (!choiceHelp.empty()) {
+                    const bool suppressed = SuppressInnerTooltip;
+                    SuppressInnerTooltip = false;
+                    FTooltip(choiceHelp.c_str(), IsItemHovered());
+                    SuppressInnerTooltip = suppressed;
+                }
 				i++;
 			}
 

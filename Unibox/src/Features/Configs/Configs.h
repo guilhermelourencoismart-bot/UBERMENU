@@ -42,6 +42,9 @@ public:
 	std::atomic_bool m_bVisualsLoading = false;
 	std::atomic_bool m_bSkinsLoading = false;
 
+	// Persist presentation metadata through the existing atomic state writer.
+	void SaveMenuState() const { SaveState(); }
+
 private:
 	void LoadState();
 	void SaveState() const;

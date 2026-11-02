@@ -2,6 +2,7 @@
 #include <cassert>
 #include <iostream>
 #include <vector>
+#include "../Unibox/src/Features/ImGui/Menu/PresentationState.h"
 int main() {
  assert(std::string(MenuPTBR::Text("Target color"))=="Cor do alvo selecionado");
  assert(std::string(MenuPTBR::Text("Vars::Comp::Palette::Target"))=="Vars::Comp::Palette::Target");
@@ -21,5 +22,19 @@ int main() {
  assert(std::string(choice.m_vValues.front())=="Nenhum");
  assert(MenuPTBR::SearchText("DISTÂNCIA e AÇÃO")=="distancia e acao");
  assert(MenuPTBR::SearchText("Ângulos")==MenuPTBR::SearchText("angulos"));
- std::cout<<"13 presentation/help checks passed\n";
+ assert(std::string(MenuPTBR::Text("Dead ringer"))=="Dead Ringer preparado");
+ assert(std::string(MenuPTBR::Text("Sentry"))=="Torre automática");
+ assert(std::string(MenuPTBR::Text("Unsimulated"))=="Sem atualização de movimento");
+ assert(MenuPTBR::ChoiceHelp("Vars::Aimbot::General::AimType",MenuPTBR::Text("Plain")).find("não influenciam")!=std::string::npos);
+ assert(MenuPTBR::ChoiceHelp("Vars::Aimbot::General::Ignore",MenuPTBR::Text("Dead ringer")).find("Spies")!=std::string::npos);
+ assert(MenuPTBR::ChoiceHelp("Vars::Skins::Name",MenuPTBR::Text("Plain")).empty());
+ MenuPresentation::State favorites;
+ assert(favorites.Add("Vars::Aimbot::General::AimFOV"));
+ assert(!favorites.Add("Vars::Aimbot::General::AimFOV"));
+ assert(!favorites.Add("arbitrary-key"));
+ assert(favorites.Contains("Vars::Aimbot::General::AimFOV"));
+ assert(favorites.Remove("Vars::Aimbot::General::AimFOV") && favorites.favorites.empty());
+ for(size_t i=0;i<MenuPresentation::MaxFavorites;++i) assert(favorites.Add("Vars::Test::"+std::to_string(i)));
+ assert(!favorites.Add("Vars::Test::overflow"));
+ std::cout<<"25 presentation/help checks and 64 favorite capacity checks passed\n";
 }

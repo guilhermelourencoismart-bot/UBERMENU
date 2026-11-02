@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/property_tree/ptree.hpp>
+#include "../ImGui/Menu/PresentationState.h"
 #include <charconv>
 #include <cmath>
 #include <optional>
@@ -10,6 +11,24 @@
 // Shared by the production serializer and isolated regression tests.
 namespace ConfigCodec
 {
+    inline void WriteMenuState(boost::property_tree::ptree& tree, const MenuPresentation::State& state)
+    {
+        boost::property_tree::ptree favorites;
+        for (const auto& key : state.favorites) {
+            boost::property_tree::ptree item; item.put_value(key);
+            favorites.push_back({"", item});
+        }
+        tree.put_child("Menu.Favorites", favorites);
+    }
+    inline MenuPresentation::State ReadMenuState(const boost::property_tree::ptree& tree)
+    {
+        MenuPresentation::State state;
+        if (auto favorites = tree.get_child_optional("Menu.Favorites"))
+            for (const auto& entry : *favorites)
+                if (entry.first.empty() && entry.second.empty())
+                    state.Add(entry.second.get_value<std::string>());
+        return state;
+    }
     template<class T> void WriteScalar(boost::property_tree::ptree& tree,const std::string& key,const T& value) { tree.put(key,value); }
     template<class T> bool ReadScalar(const boost::property_tree::ptree& tree,const std::string& key,T& value)
     {

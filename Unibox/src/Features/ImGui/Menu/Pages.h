@@ -10,7 +10,8 @@ enum EMenuPage
 	MenuPageAnticheat,
 	MenuPagePlayers,
 	MenuPageSkins,
-	MenuPageSettings
+	MenuPageSettings,
+	MenuPageHome = MenuPresentation::HomePage
 };
 
 inline const std::vector<NavPage_t> vMenuPages = {
@@ -21,7 +22,8 @@ inline const std::vector<NavPage_t> vMenuPages = {
 	{ "Monitoramento", ICON_MD_GPP_MAYBE, { "Suspeitos", "Detecção" } },
 	{ "Jogadores", ICON_MD_GROUP, { "Sala", "Marcadores", "Marcados", "Registros", "Avisos" } },
 	{ "Skins", ICON_MD_PALETTE, { "Armas", "Mochila" } },
-	{ "Configurações", ICON_MD_SETTINGS, { "Arquivos", "Atalhos", "Materiais", "Utilidades" } }
+	{ "Configurações", ICON_MD_SETTINGS, { "Arquivos", "Atalhos", "Materiais", "Utilidades" } },
+	{ "Início", ICON_MD_HOME, { "Essencial", "Favoritos" } }
 };
 
 namespace Pages

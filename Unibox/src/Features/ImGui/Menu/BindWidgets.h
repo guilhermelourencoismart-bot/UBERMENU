@@ -1,6 +1,8 @@
 #pragma once
 #include "Widgets.h"
 #include "Descriptions.h"
+#include "PresentationState.h"
+#include "../../Configs/Configs.h"
 
 namespace ImGui
 {
@@ -275,7 +277,12 @@ namespace ImGui
 		SuppressInnerTooltip=true; \
 		bool bReturn = function(std::format("{}## {}", sLabel, tVar.Name()).c_str(), arguments, &bHovered); \
 		SuppressInnerTooltip=false; \
-		FTooltip(MenuPTBR::Help(tVar.Name(),sLabel,std::is_same_v<type,bool>,std::is_same_v<type,Color_t> || std::is_same_v<type,Gradient_t>,!tVar.m_vValues.empty()).c_str(),bHovered); \
+		std::string help = MenuPTBR::Help(tVar.Name(),sLabel,std::is_same_v<type,bool>,std::is_same_v<type,Color_t> || std::is_same_v<type,Gradient_t>,!tVar.m_vValues.empty()); \
+		if constexpr (std::is_same_v<type,int>) { \
+			if (std::string_view(tVar.Name()) == "Vars::Aimbot::General::AimType" && tVal >= 0 && size_t(tVal) < tVar.m_vValues.size()) \
+				help += "\n" + MenuPTBR::ChoiceHelp(tVar.Name(),tVar.m_vValues[tVal]); \
+		} \
+		FTooltip(help.c_str(),bHovered); \
 		FSet(tVar, tVal); \
 		if (pHovered) \
 			*pHovered = bHovered; \
@@ -294,6 +301,13 @@ namespace ImGui
 			PopStyleVar(); \
 			if (bPopup) \
 			{ \
+				const bool favorite = MenuPresentation::Preferences.Contains(tVar.Name()); \
+				if (FButton(favorite ? "Remover dos favoritos" : "Adicionar aos favoritos")) \
+				{ \
+					if (favorite) MenuPresentation::Preferences.Remove(tVar.Name()); \
+					else MenuPresentation::Preferences.Add(tVar.Name()); \
+					F::Configs.SaveMenuState(); \
+				} \
 				std::string sBind = iBindOverride != -1 ? tVar.m_vNames[iBindOverride] : tVar.m_vNames.back(); \
 				std::transform(sBind.begin(), sBind.end(), sBind.begin(), [](unsigned char c){return char(c>='A' && c<='Z'?c-'A'+'a':c); }); \
 				iFlags = iVarFlags; /*get rid of any visual flags*/ \

@@ -1,6 +1,27 @@
 #pragma once
 #include "Localization.h"
 namespace MenuPTBR {
+inline std::string ChoiceHelp(std::string_view field, std::string_view entry) {
+ // Match only feature fields, so names of skins/assets never acquire gameplay help.
+ if(field.find("Vars::Aimbot::General::AimType")!=field.npos) {
+  if(entry==Text("Plain")) return "Puxa a mira diretamente para o alvo ao aplicar o disparo. Smooth e curva de suavização não influenciam este modo.";
+  if(entry==Text("Smooth")) return "Move a mira gradualmente até o alvo. O algoritmo, o fator e a curva de suavização determinam como ela se aproxima.";
+  if(entry==Text("SmoothVelocity")) return "Suaviza a aproximação levando em conta a velocidade do alvo. Usa a curva compartilhada por velocidade, não os algoritmos cúbico e remapeado do Smooth.";
+  if(entry==Text("Silent")) return "Aplica a direção do tiro no comando enviado ao jogo sem acompanhar essa direção com a câmera. Não usa suavização.";
+  if(entry==Text("Locking")) return "Mantém o direcionamento para o alvo nos comandos, mesmo entre disparos. Não usa curva de suavização.";
+  if(entry==Text("Assistive")) return "Corrige a direção do movimento que você faz com o mouse em direção ao alvo. A assistência depende do seu movimento e da força configurada.";
+  if(entry==Text("Legit")) return "Mantém a direção atual da mira; o teste de acerto decide quando o disparo pode ocorrer. Não puxa a câmera até o alvo.";
+  if(entry==Text("Off")) return "Suspende a aplicação da mira automática. Os indicadores visuais possuem controles independentes.";
+ }
+ if(field.find("Vars::Aimbot::General::Ignore")!=field.npos) {
+  if(entry==Text("Unsimulated")) return "Exclui jogadores cujo movimento ficou sem atualização por mais ticks que a tolerância permitida. Tick é um passo de simulação do jogo.";
+  if(entry==Text("Dead ringer")) return "Exclui Spies com o Dead Ringer preparado para fingir a morte. Não significa que o Spy já morreu.";
+  if(entry==Text("Sentry busters")) return "Exclui os robôs destruidores de torres do modo Mann vs. Machine.";
+  if(entry==Text("Invisible")) return "Exclui jogadores invisíveis conforme o limite de invisibilidade configurado.";
+  if(entry==Text("Invulnerable")) return "Exclui jogadores protegidos contra dano, como durante uma Über de invulnerabilidade, respeitando as exceções da arma.";
+ }
+ return {};
+}
 inline std::string Help(std::string_view key,const char* caption,bool toggle,bool color,bool choices) {
  static const std::map<std::string,std::string,std::less<>> exact={
  {"Vars::Comp::Palette::Target","Cor da caixa e do esqueleto do jogador selecionado pelo Aimbot. Não confirma disparo ou acerto. A paleta também atende ao ESP principal Comp."},
@@ -9,7 +30,13 @@ inline std::string Help(std::string_view key,const char* caption,bool toggle,boo
  {"Vars::Aimbot::General::Solver","Escolhe o sistema da mira. Forward Track, Lob Angles, alvos inativos e armas exclusivas mantêm o caminho Unibox, mesmo com V2 selecionado."},
  {"Vars::Aimbot::General::AimFOV","Limita o ângulo em que a mira procura candidatos. Não limita a distância e não garante visibilidade ou acerto."},
  {"Vars::Aimbot::General::AutoShoot","Permite disparar quando a mira e a arma atendem às condições de tiro. Desligado, você controla o disparo."},
- {"Vars::Aimbot::General::AimType","Escolhe como a mira é aplicada: direta, suavizada, assistida ou silenciosa. Os filtros de alvo e as condições da arma continuam valendo."},
+ {"Vars::Aimbot::General::AimType","Auxilia automaticamente a mira. Plain direciona o disparo sem suavização; Smooth aproxima a mira gradualmente. Abra a lista e passe o mouse nos modos para comparar seus efeitos."},
+ {"Vars::Aimbot::General::Ignore","Retira da busca os jogadores nas condições marcadas, mesmo que estejam dentro do FOV. Passe o mouse nas condições para entender os filtros técnicos."},
+ {"Vars::Aimbot::General::TickTolerance","Quantidade de passos de simulação sem atualização de movimento tolerada pelo filtro 'Sem atualização de movimento'. Aumentar aceita posições mais atrasadas; não corrige o atraso."},
+ {"Vars::Aimbot::General::AssistStrength","Força de aproximação da mira nos modos que usam a suavização compartilhada. Não altera Plain ou Silent; algoritmos próprios do Smooth V2 usam o fator V2."},
+ {"Vars::Aimbot::General::SmoothCurve","Distribui a velocidade de aproximação: início rápido, final rápido ou avanço linear. Afeta a suavização compartilhada; não altera Plain ou Silent."},
+ {"Vars::Aimbot::General::SmoothCurveAmount","Intensidade da curva de aproximação. Zero reduz a influência da curva. Não altera Plain, Silent ou os algoritmos próprios do Smooth V2."},
+ {"Vars::Aimbot::General::V2SmoothFactor","Controla o passo dos algoritmos cúbico e remapeado no modo Smooth. Valores maiores tornam a aproximação mais lenta. Não altera Plain ou SmoothVelocity."},
  {"Vars::Aimbot::General::SmoothingAlgorithm","Escolhe a curva do modo de mira suave. Suave por velocidade mantém sua própria curva ligada à velocidade do alvo."},
  {"Vars::Menu::SecondaryKey","Segundo botão para abrir ou fechar o menu. O padrão é Mouse4, o primeiro botão lateral do mouse. A tecla principal continua disponível."},
  {"Vars::Menu::PrimaryKey","Tecla principal para abrir ou fechar o menu. O atalho secundário também funciona."},
@@ -65,8 +92,12 @@ inline std::string Help(std::string_view key,const char* caption,bool toggle,boo
  if(key.ends_with("EnemyOnly"))return "Restringe este recurso aos inimigos. Desligado, aliados também podem ser incluídos conforme os demais filtros.";
  if(key.ends_with("ShowChams") || key.ends_with("EnableChams"))return "Aplica o destaque por materiais deste módulo usando o renderizador nativo. As cores e a visibilidade são definidas nas opções deste recurso.";
  if(color)return "Altera a cor e a transparência de '"+label+"' "+context+". Efeitos com paleta própria não são alterados.";
- if(choices)return "Seleciona '"+label+"' "+context+". Opções com várias marcações permitem combinar escolhas.";
- if(toggle)return "Ativa ou desativa '"+label+"' "+context+".";
- return "Ajusta '"+label+"' "+context+". O valor atual e a unidade são mostrados no controle.";
+ if(key.find("Show")!=key.npos || key.find("Draw")!=key.npos)return "Informação exibida: "+label+", "+context+". As marcações definem quais elementos aparecem juntos.";
+ if(key.find("Size")!=key.npos || key.find("Scale")!=key.npos)return "Dimensão de "+label+", "+context+". Valores maiores ocupam mais espaço na tela.";
+ if(key.find("Duration")!=key.npos || key.find("Lifetime")!=key.npos)return "Tempo de permanência de "+label+", "+context+". Valores maiores conservam o efeito por mais tempo.";
+ if(key.find("Distance")!=key.npos || key.find("Range")!=key.npos)return "Limite espacial de "+label+", "+context+". Um limite maior inclui posições mais distantes.";
+ if(choices)return label+": define quais alternativas serão usadas "+context+". Marcações múltiplas são combinadas; uma escolha única substitui a anterior.";
+ if(toggle)return label+": participa "+context+" quando marcado. Os parâmetros relacionados determinam o resultado.";
+ return label+": parâmetro de intensidade ou limite "+context+". A unidade apresentada indica a escala usada.";
 }
 }

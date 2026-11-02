@@ -1,8 +1,15 @@
 // Controls use the native menu and ConfigVar registry; only the selected panel is drawn.
+static int s_CompRequestedModule = -1;
 static void FullCompSettings()
 {
  static int selected=0,category=0;
  const std::vector<std::vector<int>> groups={{0,16},{6,8,11,20,3},{5,7,17,19,18,2},{12,13,14,15},{4,9,10,1}};
+ if (s_CompRequestedModule >= 0 && s_CompRequestedModule <= 20) {
+  selected=s_CompRequestedModule;
+  for(size_t i=0;i<groups.size();++i)
+   if(std::find(groups[i].begin(),groups[i].end(),selected)!=groups[i].end())category=int(i);
+  s_CompRequestedModule=-1;
+ }
  const std::vector<const char*> names={"ESP principal","Retorno de suprimentos","Risco de queda","Cura crítica","Câmera de inimigos","Fogo concentrado","Barras de vida","Jogadores parados","Barras de Über","Jogadores fora da tela","Rastros de jogadores","Médicos ocultos","Radar: construções","Radar: aparência","Radar: jogadores","Radar: itens","Paleta do ESP e Radar","Sentries","Área de explosão","Stickies","Resumo de Über"};
  if(Section("Módulos Comp")) {
   FDropdown("Categoria",&category,{"ESP e cores","Vida e médicos","Ameaças e combate","Radar","Acompanhamento e itens"});

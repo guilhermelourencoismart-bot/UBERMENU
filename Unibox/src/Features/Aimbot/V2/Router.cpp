@@ -5,6 +5,7 @@
 #include "AimbotMelee.h"
 void CV2Router::Reset()
 {
+    m_display.Set({});
     F::V2Global=CV2AimbotGlobal{}; F::V2Hitscan=CV2AimbotHitscan{};
     F::V2Projectile=CV2AimbotProjectile{}; F::V2Melee=CV2AimbotMelee{};
     G::AimTarget={}; G::AimPoint={}; m_targetIndex=-1; m_targetToken=0;
@@ -21,6 +22,9 @@ void CV2Router::Update(CTFPlayer* local,CTFWeaponBase* weapon)
         next.map=FNV1A::Hash32(I::EngineClient->GetLevelName()); next.tick=I::GlobalVars->tickcount;
     }
     if(m_context.Update(next)) Reset();
+    const int route = !next.valid || !Vars::Aimbot::General::AimType.Value ? 0 : Use(weapon) ? 2 :
+        Vars::Aimbot::General::Solver.Value==Vars::Aimbot::General::SolverEnum::V2 ? 3 : 1;
+    m_display.Set({route,std::chrono::steady_clock::now()});
     if(!next.valid) return;
     const int index=G::AimTarget.m_iEntIndex;
     if(index<=0) return;

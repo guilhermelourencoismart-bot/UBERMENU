@@ -7,6 +7,7 @@
 #include "../../Players/PlayerUtils.h"
 #include "../../Misc/AutoQueue/MvmQueue.h"
 #include "../../Simulation/ProjectileSimulation/ProjectileSimulation.h"
+#include "../../Aimbot/V2/Router.h"
 #if __has_include("../../Misc/ProfileStalker/ProfileStalker.h")
 #include "../../Misc/ProfileStalker/ProfileStalker.h"
 #define MENU_PROFILE_STALKER
@@ -81,7 +82,7 @@ static void AimbotGeneral()
 		return;
 
 	TableNextColumn();
-	if (Section("Mirando"))
+	if (Section("Aimbot"))
 	{
 		FDropdown(Vars::Aimbot::General::AimType);
 		FDropdown(Vars::Aimbot::General::Target);
@@ -1588,10 +1589,81 @@ static void PlayersLogging()
 	EndTable();
 }
 
+static bool DrawRegisteredVar(BaseVar* pBase)
+{
+	bool debugChanged = false;
+		if (auto pVar = pBase->As<bool>())
+		{
+			if (FToggle(*pVar) && FNV1A::Hash32(pVar->Name()) == FNV1A::Hash32Const("Vars::Debug::Options"))
+				debugChanged = true;
+		}
+		else if (auto pVar = pBase->As<int>())
+		{
+			if (!pVar->m_vValues.empty() || FNV1A::Hash32(pVar->Name()) == FNV1A::Hash32Const("Vars::ESP::ActiveGroups"))
+				FDropdown(*pVar);
+			else if (pVar->m_sExtra)
+			{
+				const char* sFormat = nullptr;
+				if (FNV1A::Hash32(pVar->Name()) == FNV1A::Hash32Const("Vars::Aimbot::Projectile::SplashAirCount") && !pVar->Map[DEFAULT_BIND])
+					sFormat = "random";
+				FSlider(*pVar, FSliderEnum::None, sFormat);
+			}
+			else
+			{
+				std::vector<int> vIgnore;
+				switch (FNV1A::Hash32(pVar->Name()))
+				{
+				case FNV1A::Hash32Const("Vars::Menu::PrimaryKey"): vIgnore = { Vars::Menu::SecondaryKey[DEFAULT_BIND], VK_LBUTTON, VK_RBUTTON }; break;
+				case FNV1A::Hash32Const("Vars::Menu::SecondaryKey"): vIgnore = { Vars::Menu::PrimaryKey[DEFAULT_BIND], VK_LBUTTON, VK_RBUTTON }; break;
+				default: vIgnore = { Vars::Menu::PrimaryKey[DEFAULT_BIND], Vars::Menu::SecondaryKey[DEFAULT_BIND] };
+				}
+				FKeybind(pVar->m_vNames.front(), pVar->Map[DEFAULT_BIND], FKeybindEnum::None, vIgnore);
+			}
+		}
+		else if (auto pVar = pBase->As<float>())
+		{
+			const char* sFormat = nullptr;
+			switch (FNV1A::Hash32(pVar->Name()))
+			{
+			case FNV1A::Hash32Const("Vars::Visuals::Prediction::PlayerDrawDuration"):
+			case FNV1A::Hash32Const("Vars::Visuals::Prediction::ProjectileDrawDuration"):
+				if (!pVar->Map[DEFAULT_BIND])
+					sFormat = "timed";
+				break;
+			case FNV1A::Hash32Const("Vars::Aimbot::Projectile::SplashRotateX"):
+			case FNV1A::Hash32Const("Vars::Aimbot::Projectile::SplashRotateY"):
+				if (pVar->Map[DEFAULT_BIND] < 0.f)
+					sFormat = "random";
+			}
+			FSlider(*pVar, FSliderEnum::None, sFormat);
+		}
+		else if (auto pVar = pBase->As<IntRange_t>())
+			FSlider(*pVar);
+		else if (auto pVar = pBase->As<FloatRange_t>())
+			FSlider(*pVar);
+		else if (auto pVar = pBase->As<std::string>())
+			FSDropdown(*pVar);
+		else if (auto pVar = pBase->As<std::vector<std::pair<std::string, ChamsMaterial_t>>>())
+			FMDropdown(*pVar);
+		else if (auto pVar = pBase->As<Color_t>())
+			FColorPicker(*pVar, FColorPickerEnum::Full);
+		else if (auto pVar = pBase->As<Gradient_t>())
+		{
+			FColorPicker(*pVar, true, FColorPickerEnum::Left);
+			FColorPicker(*pVar, false, FColorPickerEnum::Right);
+		}
+	return debugChanged;
+}
+
+#include "CompactMenu.inl"
+
 bool Pages::Draw(int iPage, int iSub)
 {
 	switch (iPage)
 	{
+	case MenuPageHome:
+		if (iSub == 1) FavoritesPage(); else CompactHome();
+		return true;
 	case MenuPageAimbot:
 		F::AntiCheatCompatibility.EnforceSettings();
 		switch (iSub)
@@ -1719,69 +1791,6 @@ void Pages::Search(const std::string& sSearch)
 		}
 	}
 
-	auto fDrawVar = [&](BaseVar* pBase)
-	{
-		if (auto pVar = pBase->As<bool>())
-		{
-			if (FToggle(*pVar) && FNV1A::Hash32(pVar->Name()) == FNV1A::Hash32Const("Vars::Debug::Options"))
-				uStaticHash = 0;
-		}
-		else if (auto pVar = pBase->As<int>())
-		{
-			if (!pVar->m_vValues.empty() || FNV1A::Hash32(pVar->Name()) == FNV1A::Hash32Const("Vars::ESP::ActiveGroups"))
-				FDropdown(*pVar);
-			else if (pVar->m_sExtra)
-			{
-				const char* sFormat = nullptr;
-				if (FNV1A::Hash32(pVar->Name()) == FNV1A::Hash32Const("Vars::Aimbot::Projectile::SplashAirCount") && !pVar->Map[DEFAULT_BIND])
-					sFormat = "random";
-				FSlider(*pVar, FSliderEnum::None, sFormat);
-			}
-			else
-			{
-				std::vector<int> vIgnore;
-				switch (FNV1A::Hash32(pVar->Name()))
-				{
-				case FNV1A::Hash32Const("Vars::Menu::PrimaryKey"): vIgnore = { Vars::Menu::SecondaryKey[DEFAULT_BIND], VK_LBUTTON, VK_RBUTTON }; break;
-				case FNV1A::Hash32Const("Vars::Menu::SecondaryKey"): vIgnore = { Vars::Menu::PrimaryKey[DEFAULT_BIND], VK_LBUTTON, VK_RBUTTON }; break;
-				default: vIgnore = { Vars::Menu::PrimaryKey[DEFAULT_BIND], Vars::Menu::SecondaryKey[DEFAULT_BIND] };
-				}
-				FKeybind(pVar->m_vNames.front(), pVar->Map[DEFAULT_BIND], FKeybindEnum::None, vIgnore);
-			}
-		}
-		else if (auto pVar = pBase->As<float>())
-		{
-			const char* sFormat = nullptr;
-			switch (FNV1A::Hash32(pVar->Name()))
-			{
-			case FNV1A::Hash32Const("Vars::Visuals::Prediction::PlayerDrawDuration"):
-			case FNV1A::Hash32Const("Vars::Visuals::Prediction::ProjectileDrawDuration"):
-				if (!pVar->Map[DEFAULT_BIND])
-					sFormat = "timed";
-				break;
-			case FNV1A::Hash32Const("Vars::Aimbot::Projectile::SplashRotateX"):
-			case FNV1A::Hash32Const("Vars::Aimbot::Projectile::SplashRotateY"):
-				if (pVar->Map[DEFAULT_BIND] < 0.f)
-					sFormat = "random";
-			}
-			FSlider(*pVar, FSliderEnum::None, sFormat);
-		}
-		else if (auto pVar = pBase->As<IntRange_t>())
-			FSlider(*pVar);
-		else if (auto pVar = pBase->As<FloatRange_t>())
-			FSlider(*pVar);
-		else if (auto pVar = pBase->As<std::string>())
-			FSDropdown(*pVar);
-		else if (auto pVar = pBase->As<std::vector<std::pair<std::string, ChamsMaterial_t>>>())
-			FMDropdown(*pVar);
-		else if (auto pVar = pBase->As<Color_t>())
-			FColorPicker(*pVar, FColorPickerEnum::Full);
-		else if (auto pVar = pBase->As<Gradient_t>())
-		{
-			FColorPicker(*pVar, true, FColorPickerEnum::Left);
-			FColorPicker(*pVar, false, FColorPickerEnum::Right);
-		}
-	};
 
 	if (!PageTable("SearchTable", 2))
 		return;
@@ -1798,7 +1807,7 @@ void Pages::Search(const std::string& sSearch)
 			if (Section(vGroups[i].m_sLabel.c_str()))
 			{
 				for (auto pBase : vGroups[i].m_vVars)
-					fDrawVar(pBase);
+					if (DrawRegisteredVar(pBase)) uStaticHash = 0;
 			} EndSection();
 		}
 		if (iColumns == 1)

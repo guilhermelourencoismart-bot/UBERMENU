@@ -1,5 +1,6 @@
 #pragma once
 #include "Widgets.h"
+#include "PresentationState.h"
 #include "../Easings/Easings.h"
 #include <unordered_set>
 
@@ -58,7 +59,7 @@ namespace Shell
 		}
 	}
 
-	inline int Page = 0;
+	inline int Page = MenuPresentation::HomePage;
 	inline std::vector<int> Subs = {};
 	inline std::string SearchText = "";
 
@@ -185,7 +186,7 @@ namespace Shell
 		}
 
 		if (sSearch.empty() && !bActive)
-			pDrawList->AddText({ vMin.x + flIconPad, floorf(vMin.y + (flHeight - GetTextLineHeight()) / 2) }, FadeColor(F::Render.Inactive), "Search");
+			pDrawList->AddText({ vMin.x + flIconPad, floorf(vMin.y + (flHeight - GetTextLineHeight()) / 2) }, FadeColor(F::Render.Inactive), "Buscar em tudo");
 
 		SetCursorPos(vPos);
 		return bChanged;
@@ -292,8 +293,9 @@ namespace Shell
 			for (; iStyle < TabStyleIcon; iStyle++)
 			{
 				float flTotal = 0.f;
-				for (auto& tNavPage : vPages)
-					flTotal += TopTabWidth(tNavPage, iStyle) + H::Draw.Scale(4);
+				for (size_t i = 0; i < vPages.size(); ++i)
+					if (iPage != MenuPresentation::HomePage || i == MenuPresentation::HomePage)
+						flTotal += TopTabWidth(vPages[i], iStyle) + H::Draw.Scale(4);
 				if (flTabsX + flTotal <= flTabsRight)
 					break;
 			}
@@ -302,6 +304,7 @@ namespace Shell
 			float flX = flTabsX;
 			for (int i = 0; i < vPages.size(); i++)
 			{
+				if (iPage == MenuPresentation::HomePage && i != MenuPresentation::HomePage) continue;
 				SetCursorPos({ flX, floorf((flTopHeight - flTabHeight) / 2) });
 				if (TopTab(vPages[i], i == iPage && !bSearch, iStyle, flTabHeight))
 					fSelect(i, vSubs[i]);

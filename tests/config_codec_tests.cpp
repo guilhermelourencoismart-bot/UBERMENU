@@ -57,5 +57,15 @@ int main()
     oldKeys.put("Vars.Vars::Menu::SecondaryKey.-1",0x73);MigrateMenuKey(oldKeys);
     Check(oldKeys.get<int>("Vars.Vars::Menu::SecondaryKey.-1")==0x73,"custom shortcut retained");
     boost::property_tree::ptree absent;MigrateMenuKey(absent);Check(absent.empty(),"absent settings retain new defaults");
+    MenuPresentation::State favorites;
+    favorites.Add("Vars::Aimbot::General::AimFOV"); favorites.Add("Vars::Comp::Palette::Target");
+    boost::property_tree::ptree state; WriteMenuState(state, favorites);
+    std::stringstream serialized; boost::property_tree::write_json(serialized,state);
+    boost::property_tree::ptree reloaded; boost::property_tree::read_json(serialized,reloaded);
+    Check(ReadMenuState(reloaded).favorites==favorites.favorites,"favorite stable keys survive real JSON round trip");
+    Check(ReadMenuState(absent).favorites.empty(),"old state without favorites retains default");
+    boost::property_tree::ptree invalidFavorite; invalidFavorite.put_value("not-a-variable");
+    reloaded.get_child("Menu.Favorites").push_back({"",invalidFavorite});
+    Check(ReadMenuState(reloaded).favorites==favorites.favorites,"invalid favorites are ignored without changing valid keys");
     std::cout<<checks<<" config/bind codec checks passed\n";
 }
