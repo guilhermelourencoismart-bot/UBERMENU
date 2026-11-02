@@ -38,6 +38,17 @@ def validate(root, require_packages=False):
 
     ns = {'m': 'http://schemas.microsoft.com/developer/msbuild/2003'}
     tree = ET.parse(project)
+    # CL defaults to $(IntDir)%(Filename).obj: distinct source directories can
+    # silently overwrite each other's objects before the linker sees them.
+    objects = {}
+    for source in tree.findall('.//m:ClCompile[@Include]', ns):
+        name = source.get('Include').replace('\\', '/')
+        target = source.findtext('m:ObjectFileName', namespaces=ns)
+        target = target or ('$(IntDir)' + Path(name).stem + '.obj')
+        target = target.replace('$(IntDir)', '').replace('\\', '/').casefold()
+        if target in objects:
+            errors.append(f'Object output collision: {objects[target]} and {name} -> {target}')
+        objects[target] = name
     group = tree.find("m:PropertyGroup[@Label='Configuration'][@Condition=\"'$(Configuration)|$(Platform)'=='Release|x64'\"]", ns)
     if group is None or group.findtext('m:PlatformToolset', namespaces=ns) != 'v143':
         errors.append('Release|x64 must use MSVC v143.')

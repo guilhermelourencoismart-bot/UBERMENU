@@ -51,6 +51,14 @@ class PreflightTests(unittest.TestCase):
         path.write_text(text, encoding='utf-8')
         self.assertTrue(any('duplicate' in error for error in self.check()))
 
+    def test_object_basename_collision(self):
+        source = self.root / 'Unibox/src/Features/Misc/Radar.cpp'
+        source.write_text('// deliberately conflicting source fixture')
+        path = self.root / 'Unibox/Unibox.vcxproj'
+        text = path.read_text(encoding='utf-8-sig').replace('</Project>', '<ItemGroup><ClCompile Include="src/Features/Misc/Radar.cpp" /></ItemGroup></Project>')
+        path.write_text(text, encoding='utf-8')
+        self.assertTrue(any('Object output collision' in error for error in self.check()))
+
     def test_restore_required(self):
         shutil.rmtree(self.root / 'packages', ignore_errors=True)
         self.assertTrue(any('Package not restored' in error for error in self.check(True)))
