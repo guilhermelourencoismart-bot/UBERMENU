@@ -176,7 +176,7 @@ NAMESPACE_BEGIN(Vars)
 		CVar(CheatTitle, "Cheat title", std::string("unibox"), VISUAL | DROPDOWN_AUTOUPDATE);
 		CVar(CheatTag, "Cheat tag", std::string("[unibox]"), VISUAL);
 		CVar(PrimaryKey, "Primary key", VK_INSERT, NOBIND);
-		CVar(SecondaryKey, "Secondary key", VK_F3, NOBIND);
+		CVar(SecondaryKey, "Secondary key", VK_XBUTTON1, NOBIND);
 
 		CVar(BindWindow, "Bind window", true);
 		CVar(BindWindowTitle, "Bind window title", true);

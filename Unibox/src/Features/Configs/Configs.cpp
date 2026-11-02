@@ -844,6 +844,7 @@ bool CConfigs::LoadConfig(const std::string& sConfigName, bool bNotify)
 		boost::property_tree::ptree tRead;
 		read_json(tPath.string(), tRead);
         ConfigCodec::MigrateLegacyRadar(tRead);
+        ConfigCodec::MigrateMenuKey(tRead);
 		vOldBinds = F::Binds.m_vBinds;
 		vOldGroups = F::Groups.m_vGroups;
 		vRestore = CaptureConfigMaps();
@@ -1088,6 +1089,7 @@ bool CConfigs::LoadVisual(const std::string& sConfigName, bool bNotify)
 		boost::property_tree::ptree tRead;
 		read_json(tPath.string(), tRead);
         ConfigCodec::MigrateLegacyRadar(tRead);
+        ConfigCodec::MigrateMenuKey(tRead);
 		vOldGroups = F::Groups.m_vGroups;
 		vRestore = CaptureConfigMaps();
 		bTransaction = true;
@@ -1362,6 +1364,7 @@ bool CConfigs::LoadSkins(const std::string& sConfigName, bool bNotify)
 		boost::property_tree::ptree tRead;
 		read_json(tPath.string(), tRead);
         ConfigCodec::MigrateLegacyRadar(tRead);
+        ConfigCodec::MigrateMenuKey(tRead);
 		bTransaction = true;
 
 		LoadSkinChanger(tRead);

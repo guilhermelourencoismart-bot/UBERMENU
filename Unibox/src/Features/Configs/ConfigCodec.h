@@ -71,6 +71,12 @@ namespace ConfigCodec
             }
         }
     }
+    inline void MigrateMenuKey(boost::property_tree::ptree& root)
+    {
+        auto vars=Variables(root);if(!vars)return;
+        const std::string key="Vars::Menu::SecondaryKey.-1";
+        int value=0;if(ReadScalar(*vars,key,value) && value==0x72)vars->put(key,0x05);
+    }
     inline void MigrateLegacyRadar(boost::property_tree::ptree& root)
     {
         auto variables=Variables(root);if(!variables)return;

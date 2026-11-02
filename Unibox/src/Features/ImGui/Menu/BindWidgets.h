@@ -1,5 +1,6 @@
 #pragma once
 #include "Widgets.h"
+#include "Descriptions.h"
 
 namespace ImGui
 {
@@ -272,6 +273,7 @@ namespace ImGui
 		auto tVal = FGet(tVar, true); \
 		bool bHovered = false; \
 		bool bReturn = function(std::format("{}## {}", sLabel, tVar.Name()).c_str(), arguments, &bHovered); \
+		FTooltip(MenuPTBR::Help(tVar.Name(),sLabel,std::is_same_v<type,bool>,std::is_same_v<type,Color_t> || std::is_same_v<type,Gradient_t>,!tVar.m_vValues.empty()).c_str(),bHovered); \
 		FSet(tVar, tVal); \
 		if (pHovered) \
 			*pHovered = bHovered; \
@@ -334,6 +336,7 @@ namespace ImGui
 		const char* sLabel = tToggleVar.m_vNames.front();
 		bool bReturn = FToggleSlider(std::format("{}## {}", sLabel, tToggleVar.Name()).c_str(), &bVal, &tSliderVal, tMin, tMax, tStep, sFormat, iToggleFlags, iSliderFlags, &bHovered);
 
+		FTooltip(MenuPTBR::Help(tToggleVar.Name(),sLabel,true,false,false).c_str(),bHovered);
 		FSet(tToggleVar, bVal);
 		FSet(tSliderVar, tSliderVal);
 
@@ -414,7 +417,10 @@ namespace ImGui
 
 	inline void FKeybind(ConfigVar<int>& tVar, int iFlags = FKeybindEnum::None, std::vector<int> vIgnore = { Vars::Menu::PrimaryKey[DEFAULT_BIND], Vars::Menu::SecondaryKey[DEFAULT_BIND] }, ImVec2 vSize = { 0, 30 }, int iSizeOffset = 0, bool* pHovered = nullptr)
 	{
-		FKeybind(tVar.m_vNames.front(), tVar[DEFAULT_BIND], iFlags, vIgnore, vSize, iSizeOffset, pHovered);
+		bool hovered=false;
+        FKeybind(tVar.m_vNames.front(), tVar[DEFAULT_BIND], iFlags, vIgnore, vSize, iSizeOffset, &hovered);
+        if(pHovered)*pHovered=hovered;
+        FTooltip(MenuPTBR::Help(tVar.Name(),tVar.m_vNames.front(),false,false,false).c_str(),hovered);
 	}
 
 	inline bool dropdown_with_group_headers(ConfigVar<int>& t_var, int flags, int size_offset, std::initializer_list<std::tuple<int, const char*, int>> group_headers)
@@ -424,6 +430,7 @@ namespace ImGui
 		flags |= variable_flags;
 		int value = FGet(t_var, true);
 		bool changed = FDropdown(std::format("{}## {}", label, t_var.Name()).c_str(), &value, t_var.m_vValues, {}, flags, size_offset, t_var.m_sExtra ? t_var.m_sExtra : "None", nullptr, nullptr, group_headers);
+		FTooltip(MenuPTBR::Help(t_var.Name(),label,false,false,true).c_str());
 		FSet(t_var, value);
 		return changed;
 	}

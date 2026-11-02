@@ -51,5 +51,11 @@ int main()
     std::map<int,Color> colorBinds{{-1,{1,2,3,4}},{1,{10,20,30,40}}};
     auto colors=WriteBindMap(colorBinds,[](auto& t,const auto& k,const auto& c){WriteColor(t,k,c);});Color bound{};ReadColor(colors,"1",bound);
     Check(bound.r==10&&bound.a==40,"per-bind module colors serialize through production codec");
+    boost::property_tree::ptree oldKeys;
+    oldKeys.put("Vars.Vars::Menu::SecondaryKey.-1",0x72);MigrateMenuKey(oldKeys);
+    Check(oldKeys.get<int>("Vars.Vars::Menu::SecondaryKey.-1")==5,"stock F3 migrates to Mouse4");
+    oldKeys.put("Vars.Vars::Menu::SecondaryKey.-1",0x73);MigrateMenuKey(oldKeys);
+    Check(oldKeys.get<int>("Vars.Vars::Menu::SecondaryKey.-1")==0x73,"custom shortcut retained");
+    boost::property_tree::ptree absent;MigrateMenuKey(absent);Check(absent.empty(),"absent settings retain new defaults");
     std::cout<<checks<<" config/bind codec checks passed\n";
 }

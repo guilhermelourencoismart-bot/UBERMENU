@@ -1,5 +1,6 @@
 #pragma once
 #include "WidgetEnv.h"
+#include "Localization.h"
 #include "../Fonts/MaterialDesign/IconDefinitions.h"
 #include <ImGui/imgui_internal.h>
 #include <ImGui/imgui_stdlib.h>
@@ -427,6 +428,10 @@ namespace ImGui
 		if (!bCondition)
 			return;
 
+        static int helpFrame=-1;static ImVec2 helpAnchor={-1,-1};
+        const auto anchor=pPosOverride?*pPosOverride:!pRowSizes->empty()?pRowSizes->back().m_vPos:GetItemRectMin();
+        if(helpFrame==GetFrameCount() && helpAnchor==anchor)return;
+        helpFrame=GetFrameCount();helpAnchor=anchor;
 		PushFont(pFont);
 
 		ImDrawList* pDrawList = GetForegroundDrawList();
@@ -885,7 +890,7 @@ namespace ImGui
 		if (bReturn)
 		{
 			if (bTitled)
-				RenderTitledBackground(H::Draw.Scale(34), StripDoubleHash(sLabel).c_str());
+				RenderTitledBackground(H::Draw.Scale(34), MenuPTBR::Text(StripDoubleHash(sLabel).c_str()));
 			else
 				RenderBackground(F::Render.Background0p5);
 		}

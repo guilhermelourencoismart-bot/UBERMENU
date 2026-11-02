@@ -71,7 +71,7 @@ static void FontPicker()
 			s_bFontDialogOpen = false;
 	}
 	PopTransparent();
-	if (bSet && FButton("Reset font", FButtonEnum::Right))
+	if (bSet && FButton("Restaurar fonte", FButtonEnum::Right))
 		Vars::Menu::CustomFont.Value.clear();
 }
 
@@ -81,7 +81,7 @@ static void AimbotGeneral()
 		return;
 
 	TableNextColumn();
-	if (Section("Targeting"))
+	if (Section("Mirando"))
 	{
 		FDropdown(Vars::Aimbot::General::AimType);
 		FDropdown(Vars::Aimbot::General::Target);
@@ -98,12 +98,12 @@ static void AimbotGeneral()
 		PopTransparent();
 		FSlider(Vars::Aimbot::General::MaxTargets);
 
-		Subheader("Selection");
+		Subheader("Seleção");
 		FDropdown(Vars::Aimbot::General::TargetSelectionHitscan);
 		FDropdown(Vars::Aimbot::General::TargetSelectionProjectile);
 		FDropdown(Vars::Aimbot::General::TargetSelectionMelee);
 	} EndSection();
-	if (Section("Aim"))
+	if (Section("Mira"))
 	{
 		FSlider(Vars::Aimbot::General::AimFOV);
 		FToggle(Vars::Aimbot::General::FOVCircle);
@@ -140,7 +140,7 @@ static void AimbotGeneral()
 		}
 		PopDisabled();
 	} EndSection();
-	if (Section("Backtrack"))
+	if (Section("Compensação temporal"))
 	{
 		PushDisabled(F::AntiCheatCompatibility.Active());
 		{
@@ -166,7 +166,7 @@ static void AimbotGeneral()
 
 				EndPopup();
 			}
-			if (DebugRow("Backtrack"))
+			if (DebugRow("Compensação temporal"))
 			{
 				FSlider(Vars::Backtrack::Offset);
 
@@ -184,7 +184,7 @@ static void AimbotWeapons()
 		return;
 
 	TableNextColumn();
-	if (Section("Hitscan"))
+	if (Section("Acerto instantâneo"))
 	{
 		FDropdown(Vars::Aimbot::Hitscan::Hitboxes);
 		FDropdown(Vars::Aimbot::Hitscan::MultipointHitboxes);
@@ -198,19 +198,19 @@ static void AimbotWeapons()
 		FToggle(Vars::Aimbot::Hitscan::ForwardTrack);
 		FTooltip("Simulates the target forward to where they will be by the time your shot lands. The mode adapts automatically. Likes to miss when your ping is >80.");
 	} EndSection();
-	if (Section("Melee"))
+	if (Section("Corpo a corpo"))
 	{
 		FToggle(Vars::Aimbot::Melee::AutoBackstab);
 		FToggle(Vars::Aimbot::Melee::IgnoreRazorback);
 		FToggle(Vars::Aimbot::Melee::SwingPrediction);
 		FToggle(Vars::Aimbot::Melee::WhipTeam);
-        Subheader("V2 melee"); V2MeleeSettings();
+        Subheader("V2 corpo a corpo"); V2MeleeSettings();
 	} EndSection();
 	if (Vars::Debug::Options.Value)
 	{
 		if (Section("Debug##Weapons"))
 		{
-			if (DebugRow("Hitscan"))
+			if (DebugRow("Acerto instantâneo"))
 			{
 				FDropdown(Vars::Aimbot::Hitscan::ForwardTrackMode);
 				FToggle(Vars::Aimbot::Hitscan::ForwardTrackAirOnly);
@@ -221,7 +221,7 @@ static void AimbotWeapons()
 
 				EndPopup();
 			}
-			if (DebugRow("Projectile"))
+			if (DebugRow("Projéteis"))
 			{
 				FSlider(Vars::Aimbot::Projectile::VelocityAverageCount);
 				FSlider(Vars::Aimbot::Projectile::VerticalShift);
@@ -245,7 +245,7 @@ static void AimbotWeapons()
 
 				EndPopup();
 			}
-			if (DebugRow("Splash"))
+			if (DebugRow("Explosão"))
 			{
 				PushTransparent(Vars::Aimbot::Projectile::SplashMode.Value != Vars::Aimbot::Projectile::SplashModeEnum::Trace);
 				{
@@ -277,7 +277,7 @@ static void AimbotWeapons()
 
 				EndPopup();
 			}
-			if (DebugRow("Ground"))
+			if (DebugRow("Chão"))
 			{
 				FSlider(Vars::Aimbot::Projectile::GroundSamples);
 				FSlider(Vars::Aimbot::Projectile::GroundStraightFuzzyValue);
@@ -290,7 +290,7 @@ static void AimbotWeapons()
 
 				EndPopup();
 			}
-			if (DebugRow("Air"))
+			if (DebugRow("Aéreo"))
 			{
 				FSlider(Vars::Aimbot::Projectile::AirSamples);
 				FSlider(Vars::Aimbot::Projectile::AirStraightFuzzyValue);
@@ -303,7 +303,7 @@ static void AimbotWeapons()
 
 				EndPopup();
 			}
-			if (DebugRow("Projectile misc"))
+			if (DebugRow("Projétil utilidades"))
 			{
 				FSlider(Vars::Aimbot::Projectile::DeltaCount);
 				FDropdown(Vars::Aimbot::Projectile::DeltaMode);
@@ -313,7 +313,7 @@ static void AimbotWeapons()
 
 				EndPopup();
 			}
-			if (DebugRow("Melee"))
+			if (DebugRow("Corpo a corpo"))
 			{
 				FSlider(Vars::Aimbot::Melee::SwingTicks);
 				FToggle(Vars::Aimbot::Melee::SwingPredictLag);
@@ -327,9 +327,9 @@ static void AimbotWeapons()
 	}
 
 	TableNextColumn();
-	if (Section("Projectile"))
+	if (Section("Projéteis"))
 	{
-		Subheader("V2 projectile"); V2ProjectileSettings();
+		Subheader("V2 projétil"); V2ProjectileSettings();
 		FDropdown(Vars::Aimbot::Projectile::StrafePrediction);
 		FDropdown(Vars::Aimbot::Projectile::SplashPrediction);
 		FDropdown(Vars::Aimbot::Projectile::Hitboxes);
@@ -351,7 +351,7 @@ static void AimbotWeapons()
 		}
 		PopTransparent();
 
-		Subheader("Utility");
+		Subheader("Utilidade");
 		FDropdown(Vars::Aimbot::Projectile::AutoDetonate);
 		FTooltip("WARNING: \"Aim at stickies\" silently snaps your view to stickies so the Scottish Resistance can detonate them. This is a blatant feature.");
 		FSlider(Vars::Aimbot::Projectile::AutodetRadius);
@@ -369,7 +369,7 @@ static void AimbotSupport()
 		return;
 
 	TableNextColumn();
-	if (Section("Healing"))
+	if (Section("Cura"))
 	{
 		FDropdown(Vars::Aimbot::Healing::HealPriority);
 		FDropdown(Vars::Aimbot::Healing::DangerIgnore);
@@ -519,18 +519,18 @@ static void AimbotDraw()
 	if (Section("Hitbox"))
 	{
 		FDropdown(Vars::Visuals::Hitbox::BonesEnabled);
-		FLabel("Target edge");
+		FLabel("Alvo borda");
 		PathColors(Vars::Colors::TargetHitboxEdge, Vars::Colors::TargetHitboxEdgeIgnoreZ);
-		FLabel("Target face");
+		FLabel("Alvo face");
 		PathColors(Vars::Colors::TargetHitboxFace, Vars::Colors::TargetHitboxFaceIgnoreZ);
-		FLabel("Bone edge");
+		FLabel("Bone borda");
 		PathColors(Vars::Colors::BoneHitboxEdge, Vars::Colors::BoneHitboxEdgeIgnoreZ);
 		FLabel("Bone face");
 		PathColors(Vars::Colors::BoneHitboxFace, Vars::Colors::BoneHitboxFaceIgnoreZ);
 
 		Subheader("Bounds");
 		FDropdown(Vars::Visuals::Hitbox::BoundsEnabled);
-		FLabel("Bounds edge");
+		FLabel("Bounds borda");
 		PathColors(Vars::Colors::BoundHitboxEdge, Vars::Colors::BoundHitboxEdgeIgnoreZ);
 		FLabel("Bounds face");
 		PathColors(Vars::Colors::BoundHitboxFace, Vars::Colors::BoundHitboxFaceIgnoreZ);
@@ -540,7 +540,7 @@ static void AimbotDraw()
 	{
 		if (Section("Debug##Draw"))
 		{
-			if (DebugRow("Paths"))
+			if (DebugRow("Trajetórias"))
 			{
 				FDropdown(Vars::Visuals::Prediction::RealPath, FDropdownEnum::None, -56);
 				PathColors(Vars::Colors::RealPath, Vars::Colors::RealPathIgnoreZ);
@@ -585,7 +585,7 @@ static void AimbotDraw()
 	}
 
 	TableNextColumn();
-	if (Section("Prediction"))
+	if (Section("Previsão"))
 	{
 		FDropdown(Vars::Visuals::Prediction::RealPath, FDropdownEnum::None, -56);
 		FDropdown(Vars::Visuals::Prediction::PlayerPath, FDropdownEnum::None, -56);
@@ -603,7 +603,7 @@ static void AimbotDraw()
 		FSlider(Vars::Visuals::Prediction::PlayerDrawDuration, FSliderEnum::None, !Vars::Visuals::Prediction::PlayerDrawDuration[DEFAULT_BIND] ? "timed" : "%g");
 		FSlider(Vars::Visuals::Prediction::ProjectileDrawDuration, FSliderEnum::None, !Vars::Visuals::Prediction::ProjectileDrawDuration[DEFAULT_BIND] ? "timed" : "%g");
 
-		Subheader("Aim position");
+		Subheader("Mira posição");
 		FToggle(Vars::Visuals::Prediction::BestAimPos);
 		FColorPicker(Vars::Colors::AimPosColor);
 		PushTransparent(!Vars::Visuals::Prediction::BestAimPos.Value);
@@ -615,7 +615,7 @@ static void AimbotDraw()
 		}
 		PopTransparent();
 	} EndSection();
-	if (Section("Simulation"))
+	if (Section("Simulação"))
 	{
 		FDropdown(Vars::Visuals::Simulation::TrajectoryPath, FDropdownEnum::None, -56);
 		PathColors(Vars::Colors::TrajectoryPath, Vars::Colors::TrajectoryPathIgnoreZ);
@@ -648,7 +648,7 @@ static void VisualsView()
 		FToggle(Vars::Visuals::AntiObs::Enabled);
 		FToggle(Vars::Visuals::Other::KillstreakWeapons);
 	} EndSection();
-	if (Section("Camera"))
+	if (Section("Câmera"))
 	{
 		PushTransparent(!Vars::Visuals::UI::FieldOfView.Value);
 		{
@@ -667,10 +667,9 @@ static void VisualsView()
 		PopTransparent();
 	} EndSection();
 
-	FullCompSettings();
 
 	TableNextColumn();
-	if (Section("Thirdperson"))
+	if (Section("Terceira pessoa"))
 	{
 		FToggle(Vars::Visuals::Thirdperson::Enabled);
 		FToggle(Vars::Visuals::Thirdperson::Crosshair);
@@ -682,7 +681,7 @@ static void VisualsView()
 		if (Vars::Debug::Options.Value)
 			FToggle(Vars::Visuals::Thirdperson::Scale);
 	} EndSection();
-	if (Section("Viewmodel"))
+	if (Section("Arma em tela"))
 	{
 		FToggle(Vars::Visuals::Viewmodel::CrosshairAim);
 		FToggle(Vars::Visuals::Viewmodel::ViewmodelAim);
@@ -723,14 +722,14 @@ static void VisualsWorld()
 	};
 
 	TableNextColumn();
-	if (Section("World"))
+	if (Section("Mundo"))
 	{
 		FSDropdown(WorldTexture);
 		FSDropdown(SkyboxChanger);
 		FToggle(NearPropFade);
 		FToggle(NoPropFade);
 
-		Subheader("Modulation");
+		Subheader("Modulação");
 		FDropdown(Modulations);
 		fModulation(Vars::Colors::WorldModulation, ModulationsEnum::World, FColorPickerEnum::Left);
 		fModulation(Vars::Colors::SkyModulation, ModulationsEnum::Sky, FColorPickerEnum::Right);
@@ -753,7 +752,7 @@ static void VisualsWorld()
 	} EndSection();
 
 	TableNextColumn();
-	if (Section("Removals"))
+	if (Section("Remoções"))
 	{
 		FToggle(Vars::Visuals::Removals::Interpolation);
 		PushTransparent(Vars::Visuals::Removals::Interpolation.Value);
@@ -828,7 +827,7 @@ static void VisualsMenu()
 		if (Section("Debug##Menu"))
 		{
 			FontPicker();
-			if (DebugRow("Indicator colors"))
+			if (DebugRow("Indicator cores"))
 			{
 				FColorPicker(Vars::Colors::IndicatorGood, FColorPickerEnum::Left);
 				FColorPicker(Vars::Colors::IndicatorTextGood, FColorPickerEnum::Right);
@@ -853,7 +852,7 @@ static void HvHTicks()
 		return;
 
 	TableNextColumn();
-	if (Section("Doubletap"))
+	if (Section("Disparo duplo"))
 	{
 		PushDisabled(F::AntiCheatCompatibility.Active());
 		{
@@ -868,7 +867,7 @@ static void HvHTicks()
 		}
 		PopDisabled();
 	} EndSection();
-	if (Section("Auto peek"))
+	if (Section("Automático peek"))
 	{
 		FToggle(Vars::AutoPeek::Enabled);
 	} EndSection();
@@ -995,7 +994,7 @@ static void MiscMain()
 		return;
 
 	TableNextColumn();
-	if (Section("Movement"))
+	if (Section("Movimento"))
 	{
 		using namespace Vars::Misc::Movement;
 		FDropdown(AutoStrafe);
@@ -1035,7 +1034,7 @@ static void MiscMain()
 		if (Section("Debug##Movement"))
 		{
 			using namespace Vars::Misc::Movement;
-			if (DebugRow("Rocket jump"))
+			if (DebugRow("Foguete jump"))
 			{
 				FSlider(AutoRocketJumpChokeGrounded);
 				FSlider(AutoRocketJumpChokeAir);
@@ -1089,7 +1088,7 @@ static void MiscMain()
 			FDropdown(Vars::Misc::TelemetryBlocker::Mode);
 		}
 	} EndSection();
-	if (Section("Sound"))
+	if (Section("Som"))
 	{
 		FDropdown(Vars::Misc::Sound::Block);
 		FToggle(Vars::Misc::Sound::HitsoundAlways);
@@ -1106,7 +1105,7 @@ static void MiscAutomation()
 		return;
 
 	TableNextColumn();
-	if (Section("Automation"))
+	if (Section("Automação"))
 	{
 		using namespace Vars::Misc::Automation;
 		FDropdown(AntiBackstab);
@@ -1139,7 +1138,7 @@ static void MiscAutomation()
 		PopTransparent();
 		FToggleSlider(AutoVoteMap, AutoVoteMapOption);
 	} EndSection();
-	if (Section("Taunts"))
+	if (Section("Provocações"))
 	{
 		using namespace Vars::Misc::Automation;
 		FToggle(TauntControl);
@@ -1247,7 +1246,7 @@ static void MiscBots()
 			FSlider(NavEngine::StuckExpireTime);
 			FSlider(NavEngine::StuckTime);
 
-			Subheader("Visibility");
+			Subheader("Visibilidade");
 			FToggle(NavEngine::VischeckEnabled);
 			FSlider(NavEngine::VischeckTime);
 			FSlider(NavEngine::VischeckCacheTime);
@@ -1390,7 +1389,7 @@ static void MiscBots()
 		PopTransparent();
 		FToggle(BotUtils::AutoHeatmakerFocus);
 	} EndSection();
-	if (Section("Auto item"))
+	if (Section("Automático item"))
 	{
 		using namespace Vars::Misc::Automation::AutoItem;
 		FDropdown(Enable);
@@ -1439,7 +1438,7 @@ static void MiscQueueing()
 		}
 		PopTransparent();
 	} EndSection();
-	if (Section("Casual automation"))
+	if (Section("Casual automação"))
 	{
 		PushTransparent(!AutoCasualQueue.Value);
 		{
@@ -1503,7 +1502,7 @@ static void AnticheatDetection()
 
 	using namespace Vars::CheatDetection;
 	TableNextColumn();
-	if (Section("Detection"))
+	if (Section("Detecção"))
 	{
 		FDropdown(Methods);
 		PushTransparent(!DetectionsRequired.Value);
@@ -1517,7 +1516,7 @@ static void AnticheatDetection()
 			FSlider(MinChoking);
 		}
 		PopTransparent();
-		Subheader("Crit manipulation");
+		Subheader("Crítico manipulation");
 		PushTransparent(!(Methods.Value & MethodsEnum::CritManipulation));
 		{
 			FSlider(CritWindow);
@@ -1527,7 +1526,7 @@ static void AnticheatDetection()
 	} EndSection();
 
 	TableNextColumn();
-	if (Section("Aim flicking"))
+	if (Section("Mira flicking"))
 	{
 		PushTransparent(!(Methods.Value & MethodsEnum::AimFlicking));
 		{
@@ -1536,7 +1535,7 @@ static void AnticheatDetection()
 		}
 		PopTransparent();
 	} EndSection();
-	if (Section("Lag compensation"))
+	if (Section("Atraso compensação"))
 	{
 		PushTransparent(!(Methods.Value & MethodsEnum::LagCompAbuse));
 		{
@@ -1557,7 +1556,7 @@ static void PlayersLogging()
 
 	using namespace Vars::Logging;
 	TableNextColumn();
-	if (Section("Logging"))
+	if (Section("Registros"))
 	{
 		FDropdown(Logs);
 		FDropdown(NotificationPosition);
@@ -1609,6 +1608,9 @@ bool Pages::Draw(int iPage, int iSub)
 		case 1: VisualsView(); return true;
 		case 2: VisualsWorld(); return true;
 		case 3: VisualsMenu(); return true;
+        case 4:
+            if(PageTable("CompVisuals",2)) { TableNextColumn(); FullCompSettings(); EndTable(); }
+            return true;
 		}
 		break;
 	case MenuPageHvH:
@@ -1656,7 +1658,7 @@ void Pages::Search(const std::string& sSearch)
 	if (const uint32_t uCurrHash = FNV1A::Hash32(sSearch.c_str()); uCurrHash != uStaticHash)
 	{
 		std::string sSearch2 = sSearch;
-		std::transform(sSearch2.begin(), sSearch2.end(), sSearch2.begin(), ::tolower);
+		std::transform(sSearch2.begin(), sSearch2.end(), sSearch2.begin(), [](unsigned char c){ return char(std::tolower(c)); });
 
 		vVars.clear();
 		for (auto& pBase : G::Vars)
@@ -1674,7 +1676,7 @@ void Pages::Search(const std::string& sSearch)
 					sSearch3 = sSearch3.replace(iFind, strlen("Vars::"), "");
 				if (auto iFind = sSearch3.find("##"); iFind != std::string::npos)
 					sSearch3 = sSearch3.replace(iFind, strlen("##"), "");
-				std::transform(sSearch3.begin(), sSearch3.end(), sSearch3.begin(), ::tolower);
+				std::transform(sSearch3.begin(), sSearch3.end(), sSearch3.begin(), [](unsigned char c){ return char(std::tolower(c)); });
 				if (sSearch3.find(sSearch2) != std::string::npos)
 				{
 					vVars.push_back(pBase);

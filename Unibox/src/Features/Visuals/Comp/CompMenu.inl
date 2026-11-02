@@ -1,16 +1,21 @@
 // Controls use the native menu and ConfigVar registry; only the selected panel is drawn.
 static void FullCompSettings()
 {
- static int selected=0;
- if(Section("Comp visuals")) {
-  FDropdown("Module",&selected,{"Main ESP", "AmmoTracker", "CraterCheck", "CritHeals", "Enemy camera", "FocusFire", "HealthBarESP", "HiderESP", "MedicUberBar", "Offscreen players", "PlayerTrails", "PylonESP", "Radar Building", "Radar Main", "Radar Player", "Radar World", "Radar colors", "SentryESP", "SplashRadius", "StickyESP", "UberTracker"});
-  FLabel("Base: Unibox - GatoPotato658 / MIT + attribution");
+ static int selected=0,category=0;
+ const std::vector<std::vector<int>> groups={{0,16},{6,8,11,20,3},{5,7,17,19,18,2},{12,13,14,15},{4,9,10,1}};
+ const std::vector<const char*> names={"ESP principal","Retorno de suprimentos","Risco de queda","Cura crítica","Câmera de inimigos","Fogo concentrado","Barras de vida","Jogadores parados","Barras de Über","Jogadores fora da tela","Rastros de jogadores","Médicos ocultos","Radar: construções","Radar: aparência","Radar: jogadores","Radar: itens","Paleta do ESP e Radar","Sentries","Área de explosão","Stickies","Resumo de Über"};
+ if(Section("Módulos Comp")) {
+  FDropdown("Categoria",&category,{"ESP e cores","Vida e médicos","Ameaças e combate","Radar","Acompanhamento e itens"});
+  const auto& values=groups.at(category);
+  if(std::find(values.begin(),values.end(),selected)==values.end())selected=values.front();
+  std::vector<const char*> entries;for(int index:values)entries.push_back(names[index]);
+  FDropdown("Módulo",&selected,entries,values);
+  FLabel("Base: Unibox — GatoPotato658");
   FLabel("github.com/GatoPotato658/Unibox");
-  FLabel("Visual modules: Amalgam-Comp");
  } EndSection();
  switch(selected) {
  case 0:
-if(Section("Main ESP - Comp")) {
+if(Section("Principal ESP - Comp")) {
  FToggle(Vars::Comp::ESP::Enabled);
  FDropdown(Vars::Comp::ESP::Draw);
  FDropdown(Vars::Comp::ESP::Player);
@@ -87,7 +92,7 @@ FToggle(Vars::Comp::CritHeals::ShowOnEnemies);
 } EndSection();
  break;
  case 4:
-if(Section("Enemy camera - Comp")) {
+if(Section("Inimigo câmera - Comp")) {
 FToggle(Vars::EnemyCam::Enabled);
 FToggle(Vars::EnemyCam::VisibleOnly);
 FSlider(Vars::EnemyCam::MaxDistance);
@@ -169,7 +174,7 @@ FColorPicker(Vars::Comp::MedicUberBar::DeadColor);
 } EndSection();
  break;
  case 9:
-if(Section("Offscreen players - Comp")) {
+if(Section("Offscreen jogadores - Comp")) {
 FToggle(Vars::Comp::Features::OffScreenIndicators);
 FToggle(Vars::Comp::Features::OffScreenIndicatorsName);
 FToggle(Vars::Comp::Features::OffScreenIndicatorsClass);
@@ -208,7 +213,7 @@ FSlider(Vars::Comp::PylonESP::Segments);
 } EndSection();
  break;
  case 12:
-if(Section("Radar Building - Comp")) {
+if(Section("Radar construção - Comp")) {
 FToggle(Vars::Comp::Radar::Building::Enabled);
 FToggle(Vars::Comp::Radar::Building::Background);
 FDropdown(Vars::Comp::Radar::Building::Draw);
@@ -217,7 +222,7 @@ FToggle(Vars::Comp::Radar::Building::Health);
 } EndSection();
  break;
  case 13:
-if(Section("Radar Main - Comp")) {
+if(Section("Radar principal - Comp")) {
 FToggle(Vars::Comp::Radar::Main::Enabled);
 FToggle(Vars::Comp::Radar::Main::DrawOutOfRange);
 FDropdown(Vars::Comp::Radar::Main::Style);
@@ -227,7 +232,7 @@ FSlider(Vars::Comp::Radar::Main::LineAlpha);
 } EndSection();
  break;
  case 14:
-if(Section("Radar Player - Comp")) {
+if(Section("Radar jogador - Comp")) {
 FToggle(Vars::Comp::Radar::Player::Enabled);
 FToggle(Vars::Comp::Radar::Player::Background);
 FDropdown(Vars::Comp::Radar::Player::Draw);
@@ -238,7 +243,7 @@ FToggle(Vars::Comp::Radar::Player::Height);
 } EndSection();
  break;
  case 15:
-if(Section("Radar World - Comp")) {
+if(Section("Radar mundo - Comp")) {
 FToggle(Vars::Comp::Radar::World::Enabled);
 FToggle(Vars::Comp::Radar::World::Background);
 FDropdown(Vars::Comp::Radar::World::Draw);
@@ -246,7 +251,7 @@ FSlider(Vars::Comp::Radar::World::Size);
 } EndSection();
  break;
  case 16:
-if(Section("Radar colors - Comp")) {
+if(Section("Radar cores - Comp")) {
 FToggle(Vars::Comp::Palette::Relative);
 FColorPicker(Vars::Comp::Palette::TeamRed);
 FColorPicker(Vars::Comp::Palette::TeamBlu);

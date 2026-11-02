@@ -1216,6 +1216,13 @@
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
+  <ItemDefinitionGroup>
+    <ClCompile><AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions></ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Features\ImGui\Menu\Localization.h" />
+    <ClInclude Include="src\Features\ImGui\Menu\Descriptions.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\boost.1.87.0\build\boost.targets" Condition="Exists('..\packages\boost.1.87.0\build\boost.targets')" />

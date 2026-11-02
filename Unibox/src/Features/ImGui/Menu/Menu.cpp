@@ -4,6 +4,7 @@
 
 #include "Components.h"
 #include "Pages.h"
+#include "Localization.h"
 #include "../Notifications/Notifications.h"
 #include "../../Configs/Configs.h"
 #include "../../Binds/Binds.h"
@@ -284,43 +285,43 @@ void CMenu::MenuESP()
 	if (Section("Group"))
 	{
 		FColorPicker("Color", &tGroup.m_tColor, FColorPickerEnum::Full);
-		FToggle("Tags override color", &tGroup.m_bTagsOverrideColor);
-		FDropdown("Targets", &tGroup.m_iTargets, { "Players", "Buildings", "Projectiles", "Ragdolls", "Objective", "NPCs", "Health", "Ammo", "Money", "Powerups", "Spellbook", "Bombs", "Gargoyle", "##Divider", "Fake angle", "Viewmodel weapon", "Viewmodel hands" }, {}, FDropdownEnum::Multi);
+		FToggle("Marcadores override cor", &tGroup.m_bTagsOverrideColor);
+		FDropdown("Alvos", &tGroup.m_iTargets, { "Players", "Buildings", "Projectiles", "Ragdolls", "Objective", "NPCs", "Health", "Ammo", "Money", "Powerups", "Spellbook", "Bombs", "Gargoyle", "##Divider", "Fake angle", "Viewmodel weapon", "Viewmodel hands" }, {}, FDropdownEnum::Multi);
 	} EndSection();
-	if (Section("Conditions"))
+	if (Section("Condições"))
 	{
-		FDropdown("Conditions", &tGroup.m_iConditions, { "Enemy", "Team", "BLU", "RED", "##Divider", "Local", "Friends", "Party", "Priority", "Target", "##Divider", "Dormant" }, {}, FDropdownEnum::Multi);
+		FDropdown("Condições", &tGroup.m_iConditions, { "Enemy", "Team", "BLU", "RED", "##Divider", "Local", "Friends", "Party", "Priority", "Target", "##Divider", "Dormant" }, {}, FDropdownEnum::Multi);
 		PushTransparent(!(tGroup.m_iTargets & TargetsEnum::Players));
 		{
 			RoleDropdown("Roles", tGroup.m_vRoles);
-			FDropdown("Players", &tGroup.m_iPlayers, { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy", "##Divider", "Invulnerable", "Crits", (tGroup.m_iPlayers & PlayerEnum::NotInvis) ? "Not invisible" : "Invisible", "Disguise", "Hurt", "##Divider", "Invisible -> Not invisible" }, {}, FDropdownEnum::Multi, 0, "All");
+			FDropdown("Jogadores", &tGroup.m_iPlayers, { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy", "##Divider", "Invulnerable", "Crits", (tGroup.m_iPlayers & PlayerEnum::NotInvis) ? "Not invisible" : "Invisible", "Disguise", "Hurt", "##Divider", "Invisible -> Not invisible" }, {}, FDropdownEnum::Multi, 0, "All");
 		}
 		PopTransparent();
 		PushTransparent(!(tGroup.m_iTargets & TargetsEnum::Buildings));
 		{
-			FDropdown("Buildings", &tGroup.m_iBuildings, { "Sentry", "Dispenser", "Teleporter", "##Divider", "Hurt" }, {}, FDropdownEnum::Multi, 0, "All");
+			FDropdown("Construções", &tGroup.m_iBuildings, { "Sentry", "Dispenser", "Teleporter", "##Divider", "Hurt" }, {}, FDropdownEnum::Multi, 0, "All");
 		}
 		PopTransparent();
 		PushTransparent(!(tGroup.m_iTargets & TargetsEnum::Projectiles));
 		{
-			FDropdown("Projectiles", &tGroup.m_iProjectiles, { "Rocket", "Sticky", "Pipe", "Arrow", "Heal", "Flare", "Fire", "Repair", "Cleaver", "Milk", "Jarate", "Gas", "Bauble", "Baseball", "Energy", "Short circuit", "Meteor shower", "Lightning", "Fireball", "Bomb", "Bats", "Pumpkin", "Monoculus", "Skeleton", "Misc", "##Divider", "Crit", "Minicrit" }, {}, FDropdownEnum::Multi, 0, "All");
+			FDropdown("Projéteis", &tGroup.m_iProjectiles, { "Rocket", "Sticky", "Pipe", "Arrow", "Heal", "Flare", "Fire", "Repair", "Cleaver", "Milk", "Jarate", "Gas", "Bauble", "Baseball", "Energy", "Short circuit", "Meteor shower", "Lightning", "Fireball", "Bomb", "Bats", "Pumpkin", "Monoculus", "Skeleton", "Misc", "##Divider", "Crit", "Minicrit" }, {}, FDropdownEnum::Multi, 0, "All");
 		}
 		PopTransparent();
 	} EndSection();
-	if (Section("Misc"))
+	if (Section("Utilidades"))
 	{
 		FToggle("Offscreen arrows", &tGroup.m_bOffscreenArrows);
 		if (FPopupButton("OffscreenArrows"))
 		{
-			FSlider("Offset", &tGroup.m_iOffscreenArrowsOffset, 0, 1000, 25, "%i", FSliderEnum::Precision);
-			FSlider("Max distance", &tGroup.m_flOffscreenArrowsMaxDistance, 0.f, 5000.f, 50.f, "%g", FSliderEnum::Min | FSliderEnum::Precision);
+			FSlider("Deslocamento", &tGroup.m_iOffscreenArrowsOffset, 0, 1000, 25, "%i", FSliderEnum::Precision);
+			FSlider("Máxima distância", &tGroup.m_flOffscreenArrowsMaxDistance, 0.f, 5000.f, 50.f, "%g", FSliderEnum::Min | FSliderEnum::Precision);
 
 			EndPopup();
 		}
 
-		FToggle("Pickup timer", &tGroup.m_bPickupTimer);
+		FToggle("Item timer", &tGroup.m_bPickupTimer);
 
-		FToggle("Backtrack", &tGroup.m_iBacktrack, BacktrackEnum::Enabled);
+		FToggle("Compensação temporal", &tGroup.m_iBacktrack, BacktrackEnum::Enabled);
 		if (FPopupButton("Backtrack"))
 		{
 			FDropdown("Draw##Backtrack", &tGroup.m_iBacktrack, { "Last", "First", "##Divider", "Always" }, { BacktrackEnum::Last, BacktrackEnum::First, BacktrackEnum::Always }, FDropdownEnum::Multi | FDropdownEnum::NoSanitization, 0, "All");
@@ -348,8 +349,8 @@ void CMenu::MenuESP()
 		FToggle("Trajectory", &tGroup.m_iTrajectory, TrajectoryEnum::Enabled);
 		if (FPopupButton("Trajectory"))
 		{
-			FDropdown("Flags", &tGroup.m_iTrajectory, { "Predict", "##Divider", "Radius", "Trace", "Sphere", "##Divider", "Path" }, { TrajectoryEnum::Predict, TrajectoryEnum::Radius, TrajectoryEnum::Trace, TrajectoryEnum::Sphere, TrajectoryEnum::Path }, FDropdownEnum::Multi | FDropdownEnum::NoSanitization);
-			FToggle("Ignore Z", &tGroup.m_iTrajectory, SightlinesEnum::IgnoreZ);
+			FDropdown("Estados", &tGroup.m_iTrajectory, { "Predict", "##Divider", "Radius", "Trace", "Sphere", "##Divider", "Path" }, { TrajectoryEnum::Predict, TrajectoryEnum::Radius, TrajectoryEnum::Trace, TrajectoryEnum::Sphere, TrajectoryEnum::Path }, FDropdownEnum::Multi | FDropdownEnum::NoSanitization);
+			FToggle("Ignorar Z", &tGroup.m_iTrajectory, SightlinesEnum::IgnoreZ);
 
 			EndPopup();
 		}
@@ -357,7 +358,7 @@ void CMenu::MenuESP()
 		FToggle("Sightlines", &tGroup.m_iSightlines, SightlinesEnum::Enabled);
 		if (FPopupButton("Sightlines"))
 		{
-			FToggle("Ignore Z", &tGroup.m_iSightlines, SightlinesEnum::IgnoreZ);
+			FToggle("Ignorar Z", &tGroup.m_iSightlines, SightlinesEnum::IgnoreZ);
 
 			EndPopup();
 		}
@@ -411,16 +412,16 @@ void CMenu::MenuESP()
 
 		PushTransparent(tGroup.m_iTargets && !(tGroup.m_iTargets & TargetsEnum::ESP));
 		{
-			FDropdown("Draw", &tGroup.m_tESP.Draw, vEntries, vValues, FDropdownEnum::Multi);
+			FDropdown("Desenho", &tGroup.m_tESP.Draw, vEntries, vValues, FDropdownEnum::Multi);
 			PushTransparent(Transparent || !(tGroup.m_tESP.Draw & ESPEnum::Box));
 			{
-				FDropdown("Box style", &tGroup.m_tESP.BoxStyle, { "Solid", "Corner accent", "Corners only", "Outline", "Rounded" });
+				FDropdown("Caixa estilo", &tGroup.m_tESP.BoxStyle, { "Solid", "Corner accent", "Corners only", "Outline", "Rounded" });
 			}
 			PopTransparent();
 			PushTransparent(Transparent || !(tGroup.m_tESP.Draw & ESPEnum::NameBackground));
 			{
 				int iOpacity = tGroup.m_tESP.BackgroundOpacity;
-				FSlider("Background opacity", &iOpacity, 0, 255, 5, "%i", FSliderEnum::Clamp);
+				FSlider("Fundo opacity", &iOpacity, 0, 255, 5, "%i", FSliderEnum::Clamp);
 				tGroup.m_tESP.BackgroundOpacity = byte(iOpacity);
 			}
 			PopTransparent();
@@ -444,12 +445,12 @@ void CMenu::MenuESP()
 	{
 		PushTransparent(!tGroup.m_tGlow.Stencil);
 		{
-			FSlider("Stencil scale", &tGroup.m_tGlow.Stencil, 0, 10, 1, "%i", FSliderEnum::Min);
+			FSlider("Stencil escala", &tGroup.m_tGlow.Stencil, 0, 10, 1, "%i", FSliderEnum::Min);
 		}
 		PopTransparent();
 		PushTransparent(!tGroup.m_tGlow.Blur);
 		{
-			FSlider("Blur scale", &tGroup.m_tGlow.Blur, 0.f, 10.f, 1.f, "%g", FSliderEnum::Min | FSliderEnum::Precision);
+			FSlider("Blur escala", &tGroup.m_tGlow.Blur, 0.f, 10.f, 1.f, "%g", FSliderEnum::Min | FSliderEnum::Precision);
 		}
 		PopTransparent();
 		FSlider("Render start## Glow", &tGroup.m_tGlow.Start, 0.f, 2048.f, 128, "%.fHU", FSliderEnum::Clamp);
@@ -1002,17 +1003,17 @@ void CMenu::MenuLogs(int iTab)
 			PushDisabled(iID == DEFAULT_TAG || iID == IGNORED_TAG);
 			{
 				int iLabel = Disabled ? 0 : tTag.m_bLabel;
-				FDropdown("Type", &iLabel, { "Priority", "Label" });
+				FDropdown("Tipo", &iLabel, { "Priority", "Label" });
 				tTag.m_bLabel = Disabled ? false : iLabel;
 			}
 			PopDisabled();
 			PushTransparent(tTag.m_bLabel);
 			{
-				FSlider("Priority", &tTag.m_iPriority, -10, 10, 1, "%i");
-				FSlider("Followbot priority", &tTag.m_iFollowPriority, -1, 10, 1, tTag.m_iFollowPriority < 0 ? "Ignore" : "%i");
+				FSlider("Prioridade", &tTag.m_iPriority, -10, 10, 1, "%i");
+				FSlider("Followbot prioridade", &tTag.m_iFollowPriority, -1, 10, 1, tTag.m_iFollowPriority < 0 ? "Ignore" : "%i");
 				PushDisabled(bDisableVotePriority);
 				{
-					FDropdown("Vote priority", &tTag.m_iVotePriority, { "Defend", "Ignore", "Kick" }, { -1, 0, 1 });
+					FDropdown("Votação prioridade", &tTag.m_iVotePriority, { "Defend", "Ignore", "Kick" }, { -1, 0, 1 });
 				}
 				PopDisabled();
 			}
@@ -1221,7 +1222,7 @@ void CMenu::MenuLogs(int iTab)
 			}
 			DebugDummy({});
 		} EndSection();
-		if (!bChanged && Section("Labels"))
+		if (!bChanged && Section("Rótulos"))
 		{
 			if (vLabels.empty())
 				FEmptyState("No labels", GetCursorPosY() - H::Draw.Scale(16));
@@ -1453,7 +1454,7 @@ void CMenu::MenuLogs(int iTab)
 				}
 
 				DebugDummy({ 0, H::Draw.Scale(10) });
-				if (FButton("Cancel", FButtonEnum::Left))
+				if (FButton("Cancelar", FButtonEnum::Left))
 					CloseCurrentPopup();
 				if (FButton("Import", FButtonEnum::Right | FButtonEnum::Primary))
 				{
@@ -1555,7 +1556,7 @@ void CMenu::MenuLogs(int iTab)
 
 	case 4:
 	{
-		if (Section("Output", 0, GetWindowHeight() - GetStyle().WindowPadding.y * 2))
+		if (Section("Avisos", 0, GetWindowHeight() - GetStyle().WindowPadding.y * 2))
 		{
 			const float flPad = GetStyle().WindowPadding.x, flWidth = GetWindowWidth() - flPad * 2;
 			bool bClear = false;
@@ -2187,11 +2188,11 @@ void CMenu::MenuSkins(int iTab)
 		const bool bAllowUnsupported = Vars::Visuals::SkinChanger::AllowUnsupported.Value;
 
 		TableNextColumn();
-		if (Section("Weapon"))
+		if (Section("Arma"))
 		{
 			FToggle(Vars::Visuals::SkinChanger::Enabled);
 			FToggle(Vars::Visuals::SkinChanger::AllowUnsupported);
-			FDropdown("Weapon", &iSelectedWeapon, vWeaponNames, vWeaponIds);
+			FDropdown("Arma", &iSelectedWeapon, vWeaponNames, vWeaponIds);
 			if (!bValid)
 				FNote("Pick a weapon or hold one to edit it");
 			else if (iSelectedWeapon < 0)
@@ -2245,7 +2246,7 @@ void CMenu::MenuSkins(int iTab)
 				FDropdown("Quality", &tSkin.iQuality, vQualityNames, vQualityValues);
 			}
 			PopDisabled();
-			FSlider("StatTrak kills", &tSkin.iStatTrak, -1, 100000, 1, tSkin.iStatTrak < 0 ? "Off" : "%i", FSliderEnum::Clamp);
+			FSlider("StatTrak eliminações", &tSkin.iStatTrak, -1, 100000, 1, tSkin.iStatTrak < 0 ? "Off" : "%i", FSliderEnum::Clamp);
 			if (tSkin.iStatTrak >= 0)
 				FNote("StatTrak forces Strange quality");
 			PushDisabled(!CSkinChanger::CanBotkiller(iKey));
@@ -2281,7 +2282,7 @@ void CMenu::MenuSkins(int iTab)
 				bool bPaintColor = tSkin.iPaintColor >= 0;
 				const bool bOldPaintColor = bPaintColor;
 				Color_t tPaintColor = bPaintColor ? Color_t{ byte(tSkin.iPaintColor & 255), byte((tSkin.iPaintColor >> 8) & 255), byte((tSkin.iPaintColor >> 16) & 255) } : Color_t{ 255, 255, 255 };
-				FToggle("Paint color", &bPaintColor);
+				FToggle("Paint cor", &bPaintColor);
 				if (bPaintColor)
 				{
 					if (!bOldPaintColor)
@@ -2320,11 +2321,11 @@ void CMenu::MenuSkins(int iTab)
 			DebugDummy({ 0, H::Draw.Scale(8) });
 			PushDisabled(!bValid);
 			{
-				if (FButton("Reset weapon", FButtonEnum::Left) && bValid)
+				if (FButton("Restaurar arma", FButtonEnum::Left) && bValid)
 					F::SkinChanger.Set(iKey, Skin_t{});
 			}
 			PopDisabled();
-			if (FButton("Reset all", FButtonEnum::Right | FButtonEnum::Danger))
+			if (FButton("Restaurar todos", FButtonEnum::Right | FButtonEnum::Danger))
 				OpenPopup("##ResetSkins");
 			if (FConfirmModal("##ResetSkins", "Reset all skins", "Every weapon goes back to its default look.", "Reset"))
 				F::SkinChanger.Clear();
@@ -2335,7 +2336,7 @@ void CMenu::MenuSkins(int iTab)
 			FToggle(Vars::Misc::Exploits::EquipRegionUnlock);
 			FSDropdown(Vars::Visuals::Effects::BulletTracer);
 			DebugDummy({ 0, H::Draw.Scale(4) });
-			if (FButton("Full update"))
+			if (FButton("Completo atualização"))
 				F::SkinChanger.RequestFullUpdate();
 		} EndSection();
 
@@ -2352,7 +2353,7 @@ void CMenu::MenuSkins(int iTab)
 		TableSetupColumn("##Owned", ImGuiTableColumnFlags_WidthStretch, 1.f);
 		TableSetupColumn("##Catalogue", ImGuiTableColumnFlags_WidthStretch, 1.35f);
 		TableNextColumn();
-		if (Section("Backpack", 0, flSectionHeight, true))
+		if (Section("Mochila", 0, flSectionHeight, true))
 		{
 			FToggle(Vars::Visuals::SkinChanger::Enabled);
 			DebugDummy({ 0, H::Draw.Scale(4) });
@@ -2403,12 +2404,12 @@ void CMenu::MenuSkins(int iTab)
 					std::vector<int> vIds;
 					for (const auto& [iId, sName] : pSelected->vStyles) { vNames.push_back(sName.c_str()); vIds.push_back(iId); }
 					int iStyle = it->iStyle;
-					FDropdown("Style", &iStyle, vNames, vIds);
+					FDropdown("Estilo", &iStyle, vNames, vIds);
 					if (iStyle != it->iStyle)
 						F::SkinChanger.SetBackpackStyle(it->uSerial, iStyle);
 				}
 			}
-			if (bLocalCrate && FButton("Open locally", FButtonEnum::Primary))
+			if (bLocalCrate && FButton("Abrir locally", FButtonEnum::Primary))
 				F::SkinChanger.QueueLocalCrate(uBackpackSelected);
 			PushDisabled(!bSelectedAdded);
 			{
@@ -2423,7 +2424,7 @@ void CMenu::MenuSkins(int iTab)
 		{
 			static const std::vector<const char*> vFilters = { "All", "Weapons", "Hats", "Misc", "Tools & cases" };
 			static const std::vector<int> vFilterIds = { 0, 1, 2, 3, 4 };
-			FDropdown("Show", &iBackpackFilter, vFilters, vFilterIds);
+			FDropdown("Mostrar", &iBackpackFilter, vFilters, vFilterIds);
 			DebugDummy({ 0, H::Draw.Scale(4) });
 			FInputText("Search", sItemSearch, GetWindowWidth() - GetStyle().WindowPadding.x * 2);
 
@@ -2501,7 +2502,7 @@ void CMenu::MenuSkins(int iTab)
 				std::vector<const char*> vNames;
 				std::vector<int> vIds;
 				for (const auto& [iId, sName] : pSelected->vStyles) { vNames.push_back(sName.c_str()); vIds.push_back(iId); }
-				FDropdown("Style", &iSelectedStyle, vNames, vIds);
+				FDropdown("Estilo", &iSelectedStyle, vNames, vIds);
 			}
 			PushDisabled(!pSelected);
 			{
@@ -2511,7 +2512,7 @@ void CMenu::MenuSkins(int iTab)
 			PopDisabled();
 			PushDisabled(tBackpack.empty());
 			{
-				if (FButton("Clear backpack", FButtonEnum::Right))
+				if (FButton("Clear mochila", FButtonEnum::Right))
 					OpenPopup("##ClearBackpack");
 			}
 			PopDisabled();
@@ -2712,14 +2713,14 @@ void CMenu::MenuSettings(int iTab)
 		};
 
 		TableNextColumn();
-		if (Section("Config"))
+		if (Section("Configuração"))
 		{
 			static std::string sStaticName;
 			fDrawConfigs(sStaticName);
 		} EndSection();
 
 		TableNextColumn();
-		if (Section("Visuals"))
+		if (Section("Visuais"))
 		{
 			static std::string sStaticName;
 			fDrawConfigs(sStaticName, 1);
@@ -2777,24 +2778,24 @@ void CMenu::MenuSettings(int iTab)
 				FDropdown("Parent", &tBind.m_iParent, vParentEntries, vParentIds);
 			}
 
-			Subheader("Condition");
-			FDropdown("Type", &tBind.m_iType, { "Key", "Class", "Weapon type", "Item slot", "Misc" });
+			Subheader("Condição");
+			FDropdown("Tipo", &tBind.m_iType, { "Key", "Class", "Weapon type", "Item slot", "Misc" });
 			switch (tBind.m_iType)
 			{
 			case BindEnum::Key: FDropdown("Behavior", &tBind.m_iInfo, { "Hold", "Toggle", "Double click" }); break;
-			case BindEnum::Class: FDropdown("Class", &tBind.m_iInfo, { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" }); break;
-			case BindEnum::WeaponType: FDropdown("Weapon type", &tBind.m_iInfo, { "Hitscan", "Projectile", "Melee", "Throwable" }); break;
+			case BindEnum::Class: FDropdown("Classe", &tBind.m_iInfo, { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" }); break;
+			case BindEnum::WeaponType: FDropdown("Arma tipo", &tBind.m_iInfo, { "Hitscan", "Projectile", "Melee", "Throwable" }); break;
 			case BindEnum::ItemSlot: FDropdown("Item slot", &tBind.m_iInfo, { "1", "2", "3", "4", "5", "6", "7", "8", "9" }); break;
-			case BindEnum::Misc: FDropdown("Misc", &tBind.m_iInfo, { "Spectated", "Spectated 1st", "Spectated 3rd", "##Divider", "Zoomed", "Aiming" }); break;
+			case BindEnum::Misc: FDropdown("Utilidades", &tBind.m_iInfo, { "Spectated", "Spectated 1st", "Spectated 3rd", "##Divider", "Zoomed", "Aiming" }); break;
 			}
 			if (tBind.m_iType == BindEnum::Key)
-				FKeybind("Key", tBind.m_iKey, FKeybindEnum::None, { Vars::Menu::PrimaryKey[DEFAULT_BIND], Vars::Menu::SecondaryKey[DEFAULT_BIND] });
+				FKeybind("Tecla", tBind.m_iKey, FKeybindEnum::None, { Vars::Menu::PrimaryKey[DEFAULT_BIND], Vars::Menu::SecondaryKey[DEFAULT_BIND] });
 			{
 				int iNot = tBind.m_bNot;
 				FDropdown("While", &iNot, { "Active", "Not active" });
 				tBind.m_bNot = iNot;
 			}
-			FDropdown("Visibility", &tBind.m_iVisibility, { "Always", "While active", "Hidden" });
+			FDropdown("Visibilidade", &tBind.m_iVisibility, { "Always", "While active", "Hidden" });
 
 			const bool bMatch = iBind != DEFAULT_BIND && F::Binds.m_vBinds.size() > iBind;
 			const bool bParentValid = tBind.m_iParent == DEFAULT_BIND || F::Binds.m_vBinds.size() > tBind.m_iParent;
@@ -2823,7 +2824,7 @@ void CMenu::MenuSettings(int iTab)
 		} EndSection();
 
 		TableNextColumn();
-		if (Section("Binds"))
+		if (Section("Atalhos"))
 		{
 			const float flStep = H::Draw.Scale(32);
 			const float flListTop = GetCursorPosY();
@@ -3088,7 +3089,7 @@ void CMenu::MenuSettings(int iTab)
 			TableNextColumn();
 		}
 
-		if (Section("Materials"))
+		if (Section("Materiais"))
 		{
 			static std::string sStaticName;
 			bool bFolder = false;
@@ -3265,13 +3266,13 @@ void CMenu::MenuSettings(int iTab)
 		TableNextColumn();
 		if (Section("Game"))
 		{
-			if (FButton("Full update", FButtonEnum::Left))
+			if (FButton("Completo atualização", FButtonEnum::Left))
 				I::EngineClient->ClientCmd_Unrestricted("cl_fullupdate");
 			if (FButton("Retry", FButtonEnum::Right))
 				I::EngineClient->ClientCmd_Unrestricted("retry");
 			if (FButton("Console", FButtonEnum::Left))
 				I::EngineClient->ClientCmd_Unrestricted("toggleconsole");
-			if (FButton("Reload materials", FButtonEnum::Right) && F::Materials.m_bLoaded)
+			if (FButton("Reload materiais", FButtonEnum::Right) && F::Materials.m_bLoaded)
 				F::Materials.ReloadMaterials();
 		} EndSection();
 		if (!I::EngineClient->IsConnected())
@@ -3279,7 +3280,7 @@ void CMenu::MenuSettings(int iTab)
 			if (Section("Achievements"))
 			{
 				static int iAchievementOp = 0;
-				if (FButton("Unlock all", FButtonEnum::Left))
+				if (FButton("Unlock todos", FButtonEnum::Left))
 				{
 					iAchievementOp = 0;
 					OpenPopup("##Unlock");
@@ -3289,7 +3290,7 @@ void CMenu::MenuSettings(int iTab)
 					iAchievementOp = 1;
 					OpenPopup("##Unlock");
 				}
-				if (FButton("Lock all", FButtonEnum::Left))
+				if (FButton("Lock todos", FButtonEnum::Left))
 				{
 					iAchievementOp = 0;
 					OpenPopup("##Lock");
@@ -3312,7 +3313,7 @@ void CMenu::MenuSettings(int iTab)
 			} EndSection();
 		}
 #ifdef WORLD_DEBUG
-		if (Section("World"))
+		if (Section("Mundo"))
 		{
 			FDropdown(Vars::World::Faces);
 			FDropdown(Vars::World::Draw);
@@ -3327,7 +3328,7 @@ void CMenu::MenuSettings(int iTab)
 #endif
 
 		TableNextColumn();
-		if (Section("Debug"))
+		if (Section("Avançado"))
 		{
 			FToggle(Vars::Debug::Info);
 			FToggle(Vars::Debug::Logging);
@@ -3342,7 +3343,7 @@ void CMenu::MenuSettings(int iTab)
 		} EndSection();
 		if (Vars::Debug::Options.Value && I::EngineClient->IsConnected())
 		{
-			if (Section("Debug drawing"))
+			if (Section("Avançado desenho"))
 			{
 				FToggle(Vars::Debug::DrawHitboxes);
 				DebugDummy({ 0, H::Draw.Scale(6) });
@@ -3357,7 +3358,7 @@ void CMenu::MenuSettings(int iTab)
 					if (FButton(std::format("Clear {}", sLabel).c_str(), FButtonEnum::Right))
 						vStorage.clear();
 				};
-				if (FButton("Restore all", FButtonEnum::Left))
+				if (FButton("Restore todos", FButtonEnum::Left))
 				{
 					for (auto& tLine : G::LineStorage)
 						tLine.m_flTime = I::GlobalVars->curtime + 60.f;
@@ -3372,7 +3373,7 @@ void CMenu::MenuSettings(int iTab)
 					for (auto& tTriangle : G::TriangleStorage)
 						tTriangle.m_flTime = I::GlobalVars->curtime + 60.f;
 				}
-				if (FButton("Clear all", FButtonEnum::Right))
+				if (FButton("Clear todos", FButtonEnum::Right))
 				{
 					G::LineStorage.clear();
 					G::PathStorage.clear();
@@ -3409,9 +3410,9 @@ void CMenu::MenuSettings(int iTab)
 					}
 				}
 			};
-			if (FButton("Enable all", FButtonEnum::Left))
+			if (FButton("Ativar todos", FButtonEnum::Left))
 				SetAll(true);
-			if (FButton("Disable all", FButtonEnum::Right))
+			if (FButton("Desativar todos", FButtonEnum::Right))
 				SetAll(false);
 
 			for (auto& pBase : G::Vars)
@@ -3907,6 +3908,14 @@ void CMenu::Render()
 	if (!(GetIO().DisplaySize.x > 160.f && GetIO().DisplaySize.y > 28.f))
 		return;
 
+    static bool localized=false;
+    if(!localized) {
+        for(auto var:G::Vars) {
+            for(auto& name:var->m_vNames)name=MenuPTBR::Text(name);
+            for(auto& choice:var->m_vValues)choice=MenuPTBR::Text(choice);
+        }
+        localized=true;
+    }
 	m_bInKeybind = false;
 	if (m_bIsOpen)
 	{
