@@ -918,7 +918,7 @@ inline const char* Text(const char* text) {
  {"Segments","Segmentos"},
  {"Select font file","Selecionar fonte file"},
  {"Selection","Seleção"},
- {"Sentries through walls","sentries através paredes"},
+ {"Sentries through walls","Torres visíveis através de paredes"},
  {"Sentry overlay distance","Distância dos indicadores de torres"},
  {"Sentry target overlay","Indicadores de torres automáticas"},
  {"SentryESP","Indicadores de torres"},
@@ -946,7 +946,7 @@ inline const char* Text(const char* text) {
  {"Show enemy medics","Mostrar médicos inimigos"},
  {"Show filled polygon","Mostrar filled polígono"},
  {"Show friendly medics","Mostrar médicos aliados"},
- {"Show friendly sentries","Mostrar aliado sentries"},
+ {"Show friendly sentries","Mostrar torres aliadas"},
  {"Show ground pie charts","Mostrar gráficos circulares no chão"},
  {"Show health drop","Mostrar vida queda"},
  {"Show hitboxes","Mostrar hitboxes"},
@@ -1303,6 +1303,12 @@ inline const char* Text(const char* text) {
  {"Sentry busters","Destruidores de torres (MvM)"},
  {"Tick tolerance","Tolerância de atraso (ticks)"},
  {"Linear","Linear"},
+ {"Dispenser","Dispensador"},
+ {"Dispensers","Dispensadores"},
+ {"Teleporter","Teleportador"},
+ {"Teleporters","Teleportadores"},
+ {"Unprioritized","Sem prioridade marcada"},
+ {"Sentry range","Alcance das torres"},
 
 };
  auto it=catalog.find(text);return it==catalog.end()?text:it->second.c_str();

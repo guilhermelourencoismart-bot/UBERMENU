@@ -10,7 +10,7 @@ static void FullCompSettings()
    if(std::find(groups[i].begin(),groups[i].end(),selected)!=groups[i].end())category=int(i);
   s_CompRequestedModule=-1;
  }
- const std::vector<const char*> names={"ESP principal","Retorno de suprimentos","Risco de queda","Cura crítica","Câmera de inimigos","Fogo concentrado","Barras de vida","Jogadores parados","Barras de Über","Jogadores fora da tela","Rastros de jogadores","Médicos ocultos","Radar: construções","Radar: aparência","Radar: jogadores","Radar: itens","Paleta do ESP e Radar","Sentries","Área de explosão","Stickies","Resumo de Über"};
+ const std::vector<const char*> names={"ESP principal","Retorno de suprimentos","Risco de queda","Cura crítica","Câmera de inimigos","Fogo concentrado","Barras de vida","Jogadores parados","Barras de Über","Jogadores fora da tela","Rastros de jogadores","Médicos ocultos","Radar: construções","Radar: aparência","Radar: jogadores","Radar: itens","Paleta do ESP e Radar","Torres automáticas","Área de explosão","Stickies","Resumo de Über"};
  if(Section("Módulos Comp")) {
   FDropdown("Categoria",&category,{"ESP e cores","Vida e médicos","Ameaças e combate","Radar","Acompanhamento e itens"});
   const auto& values=groups.at(category);

@@ -13,7 +13,8 @@ em Configurações → Arquivos como antes.
 
 Botão direito em um controle abre o popup original de binds, agora com
 Adicionar/Remover dos favoritos. Início → Favoritos edita o valor original.
-A lista é persistida automaticamente em Menu.Favorites no arquivo de estado
+A lista usa snapshots protegidos por mutex entre renderização e persistência.
+É persistida automaticamente em Menu.Favorites no arquivo de estado
 existente do Unibox, usando identificadores Vars:: estáveis. Limite: 64 opções.
 Identificadores inválidos e duplicados são ignorados ao carregar. Opções ausentes
 continuam removíveis e não modificam a configuração. Opções NOSAVE/NOBIND que
@@ -45,5 +46,5 @@ específico; não se deve considerar toda a documentação do menu revisada.
 - 101 verificações de cálculo/cache/política.
 - 34 verificações de codec, incluindo round trip JSON de favoritos e estado antigo.
 - 25 verificações de apresentação/ajuda e 64 inserções para limite de favoritos.
-- Windows/MSVC: aguardando CI desta revisão; não usar a CI anterior como prova.
+- Windows/MSVC: aguardando [CI desta revisão](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41388085381); não usar a CI anterior como prova.
 - Aparência, legibilidade, hover, navegação e interação no jogo: avaliação local pendente.

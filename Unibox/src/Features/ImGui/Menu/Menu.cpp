@@ -299,7 +299,7 @@ void CMenu::MenuESP()
 		PopTransparent();
 		PushTransparent(!(tGroup.m_iTargets & TargetsEnum::Buildings));
 		{
-			FDropdown("Construções", &tGroup.m_iBuildings, { "Sentry", "Dispenser", "Teleporter", "##Divider", "Hurt" }, {}, FDropdownEnum::Multi, 0, "Todos");
+			FDropdown("Construções", &tGroup.m_iBuildings, { "Torres automáticas", "Dispensadores", "Teleportadores", "##Divider", "Danificadas" }, {}, FDropdownEnum::Multi, 0, "Todos");
 		}
 		PopTransparent();
 		PushTransparent(!(tGroup.m_iTargets & TargetsEnum::Projectiles));

@@ -60,7 +60,7 @@ inline std::string Help(std::string_view key,const char* caption,bool toggle,boo
  {"Vars::PlayerTrails::Enabled","Mostra o caminho recente de jogadores. Os pontos expiram conforme duração, visibilidade e limites configurados."},
  {"Vars::AmmoTracker::Enabled","Mostra estimativas de retorno de suprimentos após a coleta. Substitui o desenho dos temporizadores nativos enquanto ativo."},
  {"Vars::OffScreenIndicators::Enabled","Mostra jogadores fora da tela com setas ou avatares e informações opcionais. Substitui as setas nativas de jogadores."},
- {"Vars::SentryESP::Enabled","Acrescenta direção de mira, perigo, caixas e materiais de sentries. Caixas principais já desenhadas podem ter prioridade."},
+ {"Vars::SentryESP::Enabled","Acrescenta direção de mira, perigo, caixas e materiais de torres automáticas. Caixas principais já desenhadas podem ter prioridade."},
  {"Vars::StickyESP::Enabled","Mostra stickies conforme equipe, distância e visibilidade. Caixas principais já desenhadas podem ter prioridade."}
  };
  if(auto it=exact.find(key);it!=exact.end())return it->second;
