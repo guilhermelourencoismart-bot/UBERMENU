@@ -65,3 +65,13 @@ ImGui (FreeType, stb, user hooks); não são dependências dos ports Windows atu
 Os oito hooks .cpp fora do projeto já estavam excluídos na base e não foram
 removidos. Todos os .cpp novos Comp/V2 possuem referência no vcxproj.
 PORT-MANIFEST.json registra hashes e comparação de métodos dos ports.
+
+## Atualização de menu PT-BR
+
+Código `9e8df21b` aprovado em https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41384099020.
+Quatro jobs x64; 17 artefatos. Passaram 11 testes Python, 101 verificações de
+cálculos/cache/política, 31 do codec e 13 de apresentação/ajuda.
+Foi verificado o PE real das DLLs antes de publicar. Tradução preserva IDs e
+valores de recursos; migração F3→Mouse4 preserva outras teclas personalizadas.
+Nenhum teste gráfico no TF2 foi executado. A presença e legibilidade dos
+acentos, hover, layout e botão físico Mouse4 permanecem para avaliação local.

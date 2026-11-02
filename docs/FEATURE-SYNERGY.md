@@ -91,3 +91,10 @@ Config antiga pode produzir mensagens de chave ausente e restaurar defaults
 nas opções novas; isso não prova conflito entre módulos. Overrides de binds
 também podem mudar valores enquanto ativos. Compare com uma config nova e
 confira o contexto do bind antes de concluir que uma cor não é configurável.
+
+## Navegação na atualização PT-BR
+
+Na atualização de menu posterior à candidata f180e6b4, use **Visuais → ESP Comp**.
+A paleta fica na categoria **ESP e cores**, módulo **Paleta do ESP e Radar**.
+As regras de cores e os algoritmos descritos acima permanecem iguais.
+Para novos nomes de categorias, ajuda ao passar o mouse e Mouse4, veja MENU-PTBR.md.

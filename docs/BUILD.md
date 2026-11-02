@@ -14,6 +14,8 @@ cl /nologo /EHsc /std:c++20 tests\radar_math_tests.cpp /Fe:calculation_tests.exe
 .\calculation_tests.exe
 cl /nologo /EHsc /utf-8 /std:c++20 /Ipackages\boost.1.87.0\lib\native\include tests\config_codec_tests.cpp /Fe:config_codec_tests.exe
 .\config_codec_tests.exe
+cl /nologo /EHsc /utf-8 /std:c++20 tests\menu_presentation_tests.cpp /Fe:menu_presentation_tests.exe
+.\menu_presentation_tests.exe
 msbuild Unibox.sln /m:2 /p:Configuration=Release /p:Platform=x64 /bl:msbuild-Release.binlog
 python scripts/verify_pe.py output/x64/Release/Uniboxx64Release.dll
 python scripts/package_delivery.py --dll output/x64/Release/Uniboxx64Release.dll --output artifacts/Amalgam-Ultimate-Release.zip

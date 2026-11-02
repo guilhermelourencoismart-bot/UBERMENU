@@ -1,6 +1,6 @@
 # Pendências e limites verificáveis
 
-1. Build `f180e6b4` aprovada nas quatro variantes x64 em 41370128705.
+1. Build de menu `9e8df21b` aprovada nas quatro variantes x64 em 41384099020.
    Execução no TF2 não testada; ver KNOWN-RUNTIME-RISKS.md e TEST-RESULTS.md.
 2. ProfileStalker .cpp/.h originais não distribuídos (também ignorados no upstream).
    A integração condicional está preservada; não foi inventado substituto.

@@ -56,3 +56,10 @@ Build: https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/4137
 - [Amalgam-Ultimate-source](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41370128705/artifacts/13109019650)
 - [Uniboxx64Release](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41370128705/artifacts/13109238394)
 - [Uniboxx64ReleaseAVX2](https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41370128705/artifacts/13109297401)
+
+## Menu, categorias e Mouse4
+
+Itens 3/5/6/7 implementados e compilados em `9e8df21b`: categorias Comp
+separadas, rótulos PT-BR, ajuda por hover, busca sem acentos e Mouse4.
+Build aprovada: https://github.com/guilhermelourencoismart-bot/UBERMENU/actions/runs/41384099020
+Os dois backends de ESP/Aimbot permanecem. Detalhes: MENU-PTBR.md.
