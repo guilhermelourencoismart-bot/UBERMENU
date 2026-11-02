@@ -45,15 +45,45 @@ static bool DetailLayer(const char* title)
     return CollapsingHeader(title, ImGuiTreeNodeFlags_None);
 }
 
+// Text visible beside the controls: no need to discover essential behavior by hovering.
+static void CompactExplanation(const char* explanation)
+{
+    PushStyleColor(ImGuiCol_Text, GetStyleColorVec4(ImGuiCol_TextDisabled));
+    TextWrapped("%s", explanation);
+    PopStyleColor();
+    Spacing();
+}
+
+static const char* CurrentAimModeExplanation()
+{
+    // AimType is an enum in Vars.h (Off, Plain, Smooth, Silent, Locking,
+    // Assistive, Legit, SmoothVelocity). These are display-only descriptions.
+    constexpr const char* descriptions[] = {
+        "Desativado: nenhuma correção automática de mira. O ESP funciona separadamente.",
+        "Plain: direciona a mira para o alvo no momento do disparo. Smooth e curvas não têm efeito aqui.",
+        "Smooth: aproxima a mira aos poucos. O fator e o algoritmo de suavização podem alterar o movimento.",
+        "Silent: muda a direção aplicada ao tiro sem acompanhar o movimento na câmera. Não usa Smooth.",
+        "Locking: acompanha o alvo entre disparos. A curva de suavização não se aplica.",
+        "Assistive: ajuda a corrigir o movimento do seu próprio mouse; depende de você mover a mira.",
+        "Legit: mantém a direção da câmera; a verificação de acerto decide quando pode disparar.",
+        "SmoothVelocity: aproxima a mira de forma gradual considerando a velocidade do alvo. Não usa os algoritmos cúbicos do Smooth."
+    };
+    return descriptions[std::clamp(int(Vars::Aimbot::General::AimType[DEFAULT_BIND]), 0, 7)];
+}
+
 static void CompactHome()
 {
     if (!PageTable("CompactHome", 2)) return;
     TableNextColumn();
     if (Section("Aimbot")) {
+        CompactExplanation("Escolha como a mira deve ajudar. Você não precisa ajustar os cálculos avançados para começar.");
         FDropdown(Vars::Aimbot::General::AimType);
+        CompactExplanation(CurrentAimModeExplanation());
         if (Vars::Aimbot::General::AimType[DEFAULT_BIND]) {
             FSlider(Vars::Aimbot::General::AimFOV);
+            CompactExplanation("FOV é a área angular em que a mira procura alvos: menor é mais restrito, maior aceita alvos mais afastados do centro. Não é distância.");
             FToggle(Vars::Aimbot::General::AutoShoot);
+            CompactExplanation("Disparo automático: atira quando as condições da arma e do alvo são atendidas. Desligado, você decide quando atirar.");
         }
         if (DetailLayer("Personalizar mira")) {
             FDropdown(Vars::Aimbot::General::Target);
@@ -61,6 +91,7 @@ static void CompactHome()
             FToggle(Vars::Aimbot::General::FOVCircle);
             FColorPicker(Vars::Colors::FOVCircle);
             if (DetailLayer("Avançado: suavização e motor")) {
+                CompactExplanation("Estas opções são específicas: não alteram Plain ou Silent. O motor V2 e o Unibox preservam caminhos diferentes conforme a arma.");
                 FDropdown(Vars::Aimbot::General::Solver);
                 FDropdown(Vars::Aimbot::General::SmoothingAlgorithm);
                 FSlider(Vars::Aimbot::General::AssistStrength);
@@ -72,9 +103,13 @@ static void CompactHome()
                 if(FButton("Todas as opções de armas")) OpenDetail(MenuPageAimbot,1);
             }
         }
+        if (FButton("Abrir todas as opções do Aimbot")) OpenDetail(MenuPageAimbot, 0);
     } EndSection();
     if (Section("Críticos")) {
+        PushDisabled(F::AntiCheatCompatibility.Active());
         FToggle(Vars::CritHack::ForceCrits);
+        PopDisabled();
+        CompactExplanation("Tenta aproveitar disparos críticos aleatórios quando a arma e o servidor permitem. NÃO garante 100% dos críticos e não funciona com todas as armas.");
         if (DetailLayer("Personalizar críticos")) {
             FToggle(Vars::CritHack::AvoidRandomCrits);
             FToggle(Vars::CritHack::AlwaysMeleeCrit);
@@ -83,7 +118,9 @@ static void CompactHome()
     } EndSection();
     TableNextColumn();
     if (Section("ESP")) {
+        CompactExplanation("Exibe informações sobre jogadores e construções na tela. Só usa dados disponíveis ao cliente; não altera a mira.");
         FToggle(Vars::Comp::ESP::Enabled);
+        CompactExplanation("Ligado: usa o ESP do Comp. Desligado: mantém o ESP por grupos do Unibox. Não são duas camadas principais sobrepostas.");
         if(Vars::Comp::ESP::Enabled[DEFAULT_BIND]) {
             FDropdown(Vars::Comp::ESP::Draw);
             FDropdown(Vars::Comp::ESP::Player);
@@ -96,6 +133,7 @@ static void CompactHome()
         }
     } EndSection();
     if (Section("Radar")) {
+        CompactExplanation("Mini-mapa com jogadores e outras entidades. O alcance controla a área mostrada, não a distância do Aimbot.");
         FToggle(Vars::Radar::Enabled);
         if(Vars::Radar::Enabled[DEFAULT_BIND]) {
             FToggle(Vars::Radar::Players);
