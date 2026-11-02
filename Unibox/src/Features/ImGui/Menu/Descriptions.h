@@ -83,7 +83,6 @@ inline std::string Help(std::string_view key,const char* caption,bool toggle,boo
  {"Vars::Aimbot::General::SmoothCurve","Distribui a velocidade de aproximação: início rápido, final rápido ou avanço linear. Afeta a suavização compartilhada; não altera Plain ou Silent."},
  {"Vars::Aimbot::General::SmoothCurveAmount","Intensidade da curva de aproximação. Zero reduz a influência da curva. Não altera Plain, Silent ou os algoritmos próprios do Smooth V2."},
  {"Vars::Aimbot::General::V2SmoothFactor","Controla o passo dos algoritmos cúbico e remapeado no modo Smooth. Valores maiores tornam a aproximação mais lenta. Não altera Plain ou SmoothVelocity."},
- {"Vars::Aimbot::General::SmoothingAlgorithm","Escolhe a curva do modo de mira suave. Suave por velocidade mantém sua própria curva ligada à velocidade do alvo."},
  {"Vars::Menu::SecondaryKey","Segundo botão para abrir ou fechar o menu. O padrão é Mouse4, o primeiro botão lateral do mouse. A tecla principal continua disponível."},
  {"Vars::Menu::PrimaryKey","Tecla principal para abrir ou fechar o menu. O atalho secundário também funciona."},
  {"Vars::Aimbot::Hitscan::ForwardTrack","Prevê a posição futura do alvo para armas de acerto instantâneo. Ao ativar, essa arma usa o sistema Unibox para preservar a função."},
