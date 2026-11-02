@@ -15,9 +15,9 @@ enum EMenuPage
 
 inline const std::vector<NavPage_t> vMenuPages = {
 	{ "Aimbot", ICON_MD_GPS_FIXED, { "Geral", "Armas", "Apoio", "Indicadores" } },
-	{ "Visuais", ICON_MD_VISIBILITY, { "ESP Unibox", "Câmera e interface", "Cenário", "Interface", "ESP Comp" } },
+	{ "Visuais", ICON_MD_VISIBILITY, { "ESP Unibox", "Câmera", "Cenário", "Interface", "ESP Comp" } },
 	{ "Combate avançado (HvH)", ICON_MD_BOLT, { "Ritmo de comandos", "Ângulos" } },
-	{ "Utilidades", ICON_MD_TUNE, { "Movimento e utilidades", "Automação", "Navegação e acompanhamento", "Filas de partidas" } },
+	{ "Utilidades", ICON_MD_TUNE, { "Movimento", "Automação", "Bots e navegação", "Filas" } },
 	{ "Monitoramento", ICON_MD_GPP_MAYBE, { "Suspeitos", "Detecção" } },
 	{ "Jogadores", ICON_MD_GROUP, { "Sala", "Marcadores", "Marcados", "Registros", "Avisos" } },
 	{ "Skins", ICON_MD_PALETTE, { "Armas", "Mochila" } },

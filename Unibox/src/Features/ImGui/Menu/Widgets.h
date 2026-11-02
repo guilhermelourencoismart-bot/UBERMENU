@@ -1916,6 +1916,7 @@ namespace ImGui
 
 	inline bool FDropdown(const char* sLabel, int* pVar, std::vector<const char*> vEntries, std::vector<int> vValues = {}, int iFlags = FDropdownEnum::None, int iSizeOffset = 0, const char* sDefaultPreview = "None", bool* pHovered = nullptr, int* pModified = nullptr, std::initializer_list<std::tuple<int, const char*, int>> group_headers = {})
 	{
+        sDefaultPreview=MenuPTBR::Text(sDefaultPreview);
 		bool bReturn = false;
 
 		if (vValues.empty())
