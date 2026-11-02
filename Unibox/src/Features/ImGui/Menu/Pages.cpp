@@ -119,7 +119,7 @@ static void AimbotGeneral()
 		FDropdown(Vars::Aimbot::General::SmoothingAlgorithm);
 		V2SolverSettings();
 		FSlider(Vars::Aimbot::General::V2SmoothFactor);
-		FTooltip("V2 cubic/remapped applies to Smooth aim. SmoothVelocity uses the shared velocity-aware curve.");
+		FTooltip("Cúbico e Remapeado do V2 funcionam apenas no modo Smooth. SmoothVelocity usa sua própria curva, baseada na velocidade do alvo. Plain e Silent não usam essas opções.");
 		FToggle(Vars::Aimbot::General::AutoShoot);
 		FToggle(Vars::Aimbot::General::LeadAndRestrict);
 		PushDisabled(F::AntiCheatCompatibility.Active());
@@ -159,7 +159,7 @@ static void AimbotGeneral()
 			{
 				FDropdown(Vars::Aimbot::General::AimHoldsFire);
 				FSlider(Vars::Aimbot::General::MoveSimAccuracy);
-				FTooltip("high = cpu rape, low = misswaffen");
+				FTooltip("Valores maiores fazem mais cálculos de movimento e podem reduzir o FPS. Valores menores economizam processamento, mas diminuem a qualidade da previsão.");
 				FSlider(Vars::Aimbot::General::NoSpreadOffset);
 				FSlider(Vars::Aimbot::General::NoSpreadAverage);
 				FSlider(Vars::Aimbot::General::NoSpreadInterval);
@@ -197,7 +197,7 @@ static void AimbotWeapons()
 		}
 		PopTransparent();
 		FToggle(Vars::Aimbot::Hitscan::ForwardTrack);
-		FTooltip("Simulates the target forward to where they will be by the time your shot lands. The mode adapts automatically. Likes to miss when your ping is >80.");
+		FTooltip("Prevê onde o alvo estará quando o disparo chegar. A função usa o cálculo compatível do Unibox. Com ping alto (especialmente acima de 80 ms), a previsão pode perder precisão.");
 	} EndSection();
 	if (Section("Corpo a corpo"))
 	{
@@ -215,7 +215,7 @@ static void AimbotWeapons()
 			{
 				FDropdown(Vars::Aimbot::Hitscan::ForwardTrackMode);
 				FToggle(Vars::Aimbot::Hitscan::ForwardTrackAirOnly);
-				FDropdown(Vars::Aimbot::Hitscan::PeekCheck, FDropdownEnum::None, 0, &Hovered); FTooltip("This should stay as doubletap only or off if you want to be able to target hitboxes other than the highest priority one", Hovered);
+				FDropdown(Vars::Aimbot::Hitscan::PeekCheck, FDropdownEnum::None, 0, &Hovered); FTooltip("A verificação de espiada pode restringir o teste à região de acerto de maior prioridade. Para considerar outras regiões, prefira Desligado ou Apenas Doubletap.", Hovered);
 				FSlider(Vars::Aimbot::Hitscan::PeekAmount);
 				FSlider(Vars::Aimbot::Hitscan::BoneSizeSubtract);
 				FSlider(Vars::Aimbot::Hitscan::BoneSizeMinimumScale);
@@ -232,7 +232,7 @@ static void AimbotWeapons()
 #ifdef PROJ_PROFILER
 				FToggle(Vars::Aimbot::Projectile::LagProfile);
 				FSlider(Vars::Aimbot::Projectile::LagProfileFPS);
-				FTooltip("writes unibox/ProjLag.txt when fps drops below this");
+				FTooltip("Registra informações de desempenho em unibox/ProjLag.txt quando o FPS cair abaixo do limite escolhido. Opção de diagnóstico, não melhora o desempenho por si só.");
 #endif
 
 				Subheader("Huntsman");
@@ -339,7 +339,7 @@ static void AimbotWeapons()
         else FDropdown(Vars::Aimbot::Projectile::SplashMode);
 		FDropdown(Vars::Aimbot::Projectile::Modifiers);
 		FSlider(Vars::Aimbot::Projectile::MaxSimulationTime);
-		FTooltip("Longer = less accuracy, shorter = less shoot candidates");
+		FTooltip("Uma janela maior considera mais situações de disparo, mas pode reduzir a precisão prevista. Uma janela menor restringe os candidatos.");
 		PushTransparent(!Vars::Aimbot::Projectile::StrafePrediction.Value);
 		{
 			FSlider(Vars::Aimbot::Projectile::HitChance);
@@ -379,7 +379,7 @@ static void AimbotSupport()
 		PushTransparent(!Vars::Aimbot::Healing::AutoArrow.Value);
 		{
 			FToggleSlider(Vars::Aimbot::Healing::AutoSwitch, Vars::Aimbot::Healing::AutoSwitchHealth);
-			FTooltip("Automatically switch to crossbow and heal if target is below the selected health percent and has resistance or invulnerability or medigun does not have enough charges.");
+			FTooltip("Troca automaticamente para a Crusader's Crossbow para tentar curar aliados abaixo do limite de vida definido quando a Medigun não é adequada. Depende da arma disponível e das condições do alvo.");
 		}
 		PopTransparent();
 		FToggle(Vars::Aimbot::Healing::AutoSandvich);
@@ -420,7 +420,7 @@ static void AimbotSupport()
 		FDropdown(Vars::Aimbot::Zombie::Abilities);
 		FToggle(Vars::Aimbot::Zombie::AutoCast);
 		FSlider(Vars::Aimbot::Zombie::MaxDistance, FSliderEnum::None, Vars::Aimbot::Zombie::MaxDistance[DEFAULT_BIND] <= 0.f ? "Auto" : "%g");
-		FTooltip("Aims the Sniper spit, Spy EMP, Pyro spew and Heavy rock abilities on zi_ maps. Needs an aim type other than off. Auto = no distance limit besides what the projectile can reach.");
+		FTooltip("Ajuda a mirar habilidades especiais do modo Zombie Infection (Sniper, Spy, Pyro e Heavy). Exige Aimbot ligado. Em Auto, o alcance depende do que o projétil realmente consegue alcançar.");
 	} EndSection();
 	if (Section("Passtime"))
 	{
@@ -432,7 +432,7 @@ static void AimbotSupport()
 		FSlider(Vars::Aimbot::Passtime::PreferGoalDistance, FSliderEnum::None, Vars::Aimbot::Passtime::PreferGoalDistance[DEFAULT_BIND] <= 0.f ? "Auto" : "%g");
 		FSlider(Vars::Aimbot::Passtime::MinPassGain, FSliderEnum::None, Vars::Aimbot::Passtime::MinPassGain[DEFAULT_BIND] <= 0.f ? "Auto" : "%g");
 		FSlider(Vars::Aimbot::Passtime::PressureRange, FSliderEnum::None, Vars::Aimbot::Passtime::PressureRange[DEFAULT_BIND] <= 0.f ? "Auto" : "%g");
-		FTooltip("Jack throws: shoots goals when a collision free arc exists, otherwise passes to a teammate the game can lock. Auto values come from the game: max goal distance = whatever the throw can reach, prefer goal within = the class' flat ground throw range (speed^2 / gravity), min pass gain = tf_passtime_ball_seek_range, pressure range = tf_passtime_pack_range.");
+		FTooltip("No Passtime, tenta arremessar a bola ao gol quando há uma trajetória livre. Caso contrário, procura um aliado válido para passe. Os limites em Auto seguem valores e alcance calculados pelo jogo; não garantem acerto.");
 	} EndSection();
 
 	EndTable();
@@ -1301,7 +1301,7 @@ static void MiscBots()
 			if (DebugRow("Bot utils"))
 			{
 				FToggle(Vars::Misc::Movement::BotUtils::AutoScopeUseCachedResults);
-				FTooltip("should increase performance of autoscope by only checking every 2nd tick");
+				FTooltip("Reduz a frequência de verificação do zoom automático para uma vez a cada dois ticks. Pode economizar processamento, mas aumenta ligeiramente o intervalo entre verificações.");
 
 				EndPopup();
 			}
@@ -1369,7 +1369,7 @@ static void MiscBots()
 		PushTransparent(!NavEngine::LookAtPath.Value && !FollowBot::LookAtPath.Value);
 		{
 			FSlider(BotUtils::LookAtPathSpeed);
-			FTooltip("Specifies how smooth the viewangles will change when using 'Look at path' in nav engine or followbot");
+			FTooltip("Controla a suavidade ao virar a câmera para acompanhar o caminho no Navbot ou Followbot. Valores maiores podem tornar as mudanças mais graduais; não alteram a velocidade de caminhada.");
 			FToggle(BotUtils::LookAtPathDebug);
 		}
 		PopTransparent();
