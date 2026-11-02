@@ -1311,6 +1311,7 @@ inline const char* Text(const char* text) {
  {"Sentry range","Alcance das torres"},
  {"Crit Hack","Controle de críticos"},
  {"FOV Circle","Mostrar círculo de busca"},
+ {"Lead and restrict","Mostrar direção prevista e limites"},
  {"Peek check","Verificação de espiada"},
  {"Peek amount","Margem da verificação de espiada"},
  {"Hit chance","Probabilidade estimada de acerto"},
